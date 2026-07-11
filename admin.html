@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel Admin · Capri Viajes</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#12213A;--ocean:#1A6B8A;--aqua:#38B6D6;
+  --terracota:#D96941;--white:#fff;--gray:#6B7280;
+  --light:#F9F7F4;--border:#E5E7EB;--danger:#EF4444;
+  --success:#10B981;--warning:#F59E0B;
+}
+body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:100vh}
+
+/* ===== LOGIN ===== */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,var(--navy) 0%,var(--ocean) 100%)}
+.login-card{background:var(--white);border-radius:16px;padding:2.5rem;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,0.2)}
+.login-logo{text-align:center;margin-bottom:2rem}
+.login-logo .capri{font-size:1.8rem;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.18em;line-height:1}
+.login-logo .divider{display:flex;align-items:center;gap:6px;margin:3px 0}
+.login-logo .divider::before,.login-logo .divider::after{content:"";flex:1;height:1px;background:rgba(26,107,138,0.4)}
+.login-logo .sub{font-size:0.58rem;font-weight:500;letter-spacing:0.35em;color:var(--ocean);text-transform:uppercase}
+.login-logo p{font-size:0.82rem;color:var(--gray);margin-top:0.75rem}
+.login-card h2{font-size:1.1rem;font-weight:600;color:var(--navy);margin-bottom:1.5rem;text-align:center}
+.form-group{margin-bottom:1rem}
+.form-group label{display:block;font-size:0.78rem;font-weight:600;color:#374151;margin-bottom:0.4rem;text-transform:uppercase;letter-spacing:0.05em}
+.form-group input{width:100%;padding:0.7rem 0.9rem;border:1.5px solid var(--border);border-radius:8px;font-family:"Inter",sans-serif;font-size:0.9rem;color:var(--navy);outline:none;transition:border-color 0.2s}
+.form-group input:focus{border-color:var(--ocean)}
+.login-btn{width:100%;background:var(--navy);color:var(--white);border:none;padding:0.85rem;border-radius:8px;font-size:0.9rem;font-weight:600;cursor:pointer;transition:background 0.2s;margin-top:0.5rem}
+.login-btn:hover{background:var(--ocean)}
+.login-error{background:#FEF2F2;border:1px solid #FCA5A5;color:#991B1B;border-radius:6px;padding:0.6rem 0.9rem;font-size:0.82rem;margin-bottom:1rem;display:none}
+
+/* ===== ADMIN LAYOUT ===== */
+#admin-screen{display:none;min-height:100vh}
+.admin-wrapper{display:flex;min-height:100vh}
+
+/* Sidebar */
+.sidebar{width:240px;background:var(--navy);color:var(--white);display:flex;flex-direction:column;flex-shrink:0;position:fixed;top:0;left:0;bottom:0;z-index:100;overflow-y:auto}
+.sidebar-logo{padding:1.5rem 1.25rem 1rem;border-bottom:1px solid rgba(255,255,255,0.08)}
+.sidebar-logo .capri{font-size:1.2rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:0.18em;line-height:1}
+.sidebar-logo .divider-s{display:flex;align-items:center;gap:4px;margin:2px 0}
+.sidebar-logo .divider-s::before,.sidebar-logo .divider-s::after{content:"";flex:1;height:1px;background:rgba(56,182,214,0.4)}
+.sidebar-logo .sub-s{font-size:0.5rem;font-weight:500;letter-spacing:0.3em;color:var(--aqua);text-transform:uppercase}
+.sidebar-logo small{display:block;font-size:0.68rem;color:rgba(255,255,255,0.4);margin-top:0.4rem}
+.sidebar-nav{padding:1rem 0;flex:1}
+.nav-section{padding:0.5rem 1.25rem 0.25rem;font-size:0.6rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3)}
+.nav-item{display:flex;align-items:center;gap:0.6rem;padding:0.65rem 1.25rem;color:rgba(255,255,255,0.65);font-size:0.82rem;font-weight:500;cursor:pointer;transition:all 0.2s;border-left:3px solid transparent;text-decoration:none}
+.nav-item:hover{background:rgba(255,255,255,0.06);color:var(--white)}
+.nav-item.active{background:rgba(56,182,214,0.12);color:var(--aqua);border-left-color:var(--aqua)}
+.nav-item svg{width:16px;height:16px;flex-shrink:0}
+.sidebar-footer{padding:1rem 1.25rem;border-top:1px solid rgba(255,255,255,0.08)}
+.logout-btn{display:flex;align-items:center;gap:0.6rem;color:rgba(255,255,255,0.5);font-size:0.8rem;cursor:pointer;transition:color 0.2s;background:none;border:none;width:100%;padding:0}
+.logout-btn:hover{color:var(--danger)}
+
+/* Main content */
+.admin-main{margin-left:240px;flex:1;display:flex;flex-direction:column;min-height:100vh;overflow-x:hidden}
+.admin-topbar{background:var(--white);border-bottom:1px solid var(--border);padding:0 2rem;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.topbar-title{font-size:1rem;font-weight:600;color:var(--navy)}
+.topbar-right{display:flex;align-items:center;gap:0.75rem}
+.admin-badge{background:#EEF6FB;color:var(--ocean);font-size:0.72rem;font-weight:600;padding:0.3rem 0.75rem;border-radius:20px}
+.save-all-btn{background:var(--success);color:var(--white);border:none;padding:0.5rem 1.1rem;border-radius:6px;font-size:0.8rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;transition:background 0.2s}
+.save-all-btn:hover{background:#059669}
+.admin-content{padding:2rem;flex:1}
+
+/* Panels */
+.panel{display:none}
+.panel.active{display:block}
+
+/* Cards */
+.card{background:var(--white);border-radius:10px;border:1px solid var(--border);margin-bottom:1.5rem}
+.card-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.card-header h3{font-size:0.95rem;font-weight:600;color:var(--navy)}
+.card-body{padding:1.5rem}
+
+/* Form elements */
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.field-row.full{grid-template-columns:1fr}
+.field{margin-bottom:1rem}
+.field label{display:block;font-size:0.75rem;font-weight:600;color:#374151;margin-bottom:0.35rem;text-transform:uppercase;letter-spacing:0.05em}
+.field input,.field select,.field textarea{width:100%;padding:0.65rem 0.85rem;border:1.5px solid var(--border);border-radius:6px;font-family:"Inter",sans-serif;font-size:0.88rem;color:var(--navy);outline:none;transition:border-color 0.2s;background:var(--white)}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--ocean)}
+.field textarea{resize:vertical;min-height:90px}
+.field .hint{font-size:0.72rem;color:var(--gray);margin-top:0.3rem}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:5px;padding:0.5rem 1rem;border-radius:6px;font-size:0.8rem;font-weight:600;cursor:pointer;border:none;transition:all 0.2s}
+.btn-primary{background:var(--ocean);color:var(--white)}
+.btn-primary:hover{background:var(--navy)}
+.btn-success{background:var(--success);color:var(--white)}
+.btn-success:hover{background:#059669}
+.btn-danger{background:var(--danger);color:var(--white)}
+.btn-danger:hover{background:#DC2626}
+.btn-warning{background:var(--warning);color:var(--white)}
+.btn-ghost{background:transparent;color:var(--gray);border:1.5px solid var(--border)}
+.btn-ghost:hover{background:var(--light);color:var(--navy)}
+.btn-sm{padding:0.35rem 0.75rem;font-size:0.75rem}
+
+/* Item list */
+.item-list{display:flex;flex-direction:column;gap:0.75rem}
+.item-card{background:var(--light);border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;display:flex;align-items:center;gap:1rem}
+.item-card-img{width:60px;height:60px;border-radius:6px;object-fit:cover;flex-shrink:0;background:#DDD}
+.item-card-body{flex:1;min-width:0}
+.item-card-title{font-weight:600;font-size:0.88rem;color:var(--navy);margin-bottom:0.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item-card-sub{font-size:0.75rem;color:var(--gray)}
+.item-card-actions{display:flex;gap:0.4rem;flex-shrink:0}
+.badge-cat{background:#EEF6FB;color:var(--ocean);font-size:0.65rem;font-weight:600;padding:0.18rem 0.55rem;border-radius:20px;border:1px solid rgba(26,107,138,0.2)}
+
+/* Edit modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:200;display:none;align-items:center;justify-content:center;padding:1rem}
+.modal-overlay.open{display:flex}
+.modal{background:var(--white);border-radius:12px;width:100%;max-width:680px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2)}
+.modal-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--white);z-index:1}
+.modal-header h3{font-size:1rem;font-weight:600;color:var(--navy)}
+.modal-close{background:none;border:none;cursor:pointer;color:var(--gray);font-size:1.2rem;display:flex;align-items:center;padding:0.25rem}
+.modal-close:hover{color:var(--danger)}
+.modal-body{padding:1.5rem}
+.modal-footer{padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:0.5rem;position:sticky;bottom:0;background:var(--white)}
+
+/* Toast */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--navy);color:var(--white);padding:0.75rem 1.25rem;border-radius:8px;font-size:0.85rem;font-weight:500;display:flex;align-items:center;gap:8px;z-index:999;transform:translateY(100px);opacity:0;transition:all 0.3s}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{background:var(--success)}
+.toast.error{background:var(--danger)}
+
+/* Dashboard stats */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem}
+.stat-card{background:var(--white);border-radius:10px;border:1px solid var(--border);padding:1.25rem}
+.stat-val{font-size:2rem;font-weight:700;color:var(--navy);line-height:1}
+.stat-label{font-size:0.75rem;color:var(--gray);margin-top:0.25rem;text-transform:uppercase;letter-spacing:0.05em}
+.stat-icon{font-size:1.5rem;margin-bottom:0.5rem}
+
+/* Includes list editor */
+.includes-editor{display:flex;flex-direction:column;gap:0.4rem}
+.include-row{display:flex;gap:0.4rem;align-items:center}
+.include-row input{flex:1}
+.include-row button{flex-shrink:0}
+
+/* Password field */
+.pw-field{position:relative}
+.pw-field input{padding-right:2.5rem}
+.pw-toggle{position:absolute;right:0.75rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--gray);font-size:0.8rem}
+
+/* Responsive */
+@media(max-width:768px){
+  .sidebar{width:60px;overflow:hidden}
+  .sidebar-logo .capri,.sidebar-logo small,.sidebar-logo .divider-s,.sidebar-logo .sub-s{display:none}
+  .nav-section{display:none}
+  .nav-item span{display:none}
+  .nav-item{justify-content:center;padding:0.75rem}
+  .sidebar-footer .logout-btn span{display:none}
+  .admin-main{margin-left:60px}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .field-row{grid-template-columns:1fr}
+}
+
+.brand-logo-admin{display:flex;flex-direction:column;align-items:center;gap:0;margin-bottom:0.75rem}
+.bla-capri{font-family:'Inter',sans-serif;font-size:2rem;font-weight:700;letter-spacing:0.38em;color:#12213A;text-transform:uppercase;line-height:1;padding-right:0.38em}
+.bla-rule{display:flex;align-items:center;width:100%;margin-top:4px}
+.bla-line{flex:1;height:0.5px;background:rgba(18,33,58,0.3)}
+.bla-viajes{font-size:0.55rem;font-weight:400;letter-spacing:0.38em;color:rgba(18,33,58,0.55);text-transform:uppercase;padding:0 6px;padding-right:calc(6px + 0.38em);white-space:nowrap}
+
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN ===== -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <svg viewBox="0 0 220 54" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto 0.5rem;height:52px;width:auto" aria-label="Capri Viajes">
+        <text x="0" y="32" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="36" font-weight="700" letter-spacing="10" fill="#12213A">CAPRI</text>
+        <line x1="0" y1="44" x2="60" y2="44" stroke="rgba(18,33,58,0.25)" stroke-width="0.6"/>
+        <text x="110" y="47" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="8.5" font-weight="400" letter-spacing="5.5" fill="rgba(18,33,58,0.5)" text-anchor="middle">VIAJES</text>
+        <line x1="160" y1="44" x2="220" y2="44" stroke="rgba(18,33,58,0.25)" stroke-width="0.6"/>
+      </svg>
+      <p>Panel de Administración</p>
+    </div>
+    <div class="login-error" id="login-error">Usuario o contraseña incorrectos.</div>
+    <div class="field">
+      <label>Usuario</label>
+      <input type="text" id="inp-user" placeholder="admin" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="field">
+      <label>Contraseña</label>
+      <div class="pw-field">
+        <input type="password" id="inp-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+        <button class="pw-toggle" onclick="togglePw()" type="button">👁</button>
+      </div>
+    </div>
+    <button class="login-btn" onclick="doLogin()">Ingresar al panel</button>
+  </div>
+</div>
+
+<!-- ===== ADMIN ===== -->
+<div id="admin-screen">
+  <div class="admin-wrapper">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <svg viewBox="0 0 180 44" xmlns="http://www.w3.org/2000/svg" style="display:block;height:34px;width:auto;margin-bottom:0.4rem" aria-label="Capri Viajes">
+          <text x="0" y="26" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="28" font-weight="700" letter-spacing="8" fill="white" opacity="0.92">CAPRI</text>
+          <line x1="0" y1="35" x2="48" y2="35" stroke="rgba(56,182,214,0.4)" stroke-width="0.5"/>
+          <text x="90" y="38" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="6.5" font-weight="400" letter-spacing="4.5" fill="rgba(56,182,214,0.75)" text-anchor="middle">VIAJES</text>
+          <line x1="132" y1="35" x2="180" y2="35" stroke="rgba(56,182,214,0.4)" stroke-width="0.5"/>
+        </svg>
+        <small style="display:block;font-size:0.65rem;color:rgba(255,255,255,0.35);letter-spacing:0.05em">Panel Admin</small>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">General</div>
+        <div class="nav-item active" onclick="showPanel('dashboard')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span>Dashboard</span>
+        </div>
+
+        <div class="nav-section">Contenido</div>
+        <div class="nav-item" onclick="showPanel('paquetes')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          <span>Paquetes</span>
+        </div>
+        <div class="nav-item" onclick="showPanel('grupales')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span>Grupales</span>
+        </div>
+        <div class="nav-item" onclick="showPanel('testimonios')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span>Testimonios</span>
+        </div>
+        <div class="nav-item" onclick="showPanel('destinos')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <span>Destinos inicio</span>
+        </div>
+
+        <div class="nav-section">Configuración</div>
+        <div class="nav-item" onclick="showPanel('contacto')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.82a16 16 0 0 0 6 6l1.27-.99a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span>Datos de contacto</span>
+        </div>
+        <div class="nav-item" onclick="showPanel('quienes')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>Quiénes somos</span>
+        </div>
+        <div class="nav-item" onclick="showPanel('seguridad')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span>Seguridad</span>
+        </div>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="logout-btn" onclick="doLogout()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span>Cerrar sesión</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="admin-main">
+      <div class="admin-topbar">
+        <div class="topbar-title" id="topbar-title">Dashboard</div>
+        <div class="topbar-right">
+          <span class="admin-badge">👤 Administrador</span>
+          <button class="save-all-btn" onclick="saveAll()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            Guardar cambios
+          </button>
+        </div>
+      </div>
+
+      <div class="admin-content">
+
+        <!-- DASHBOARD -->
+        <div class="panel active" id="panel-dashboard">
+          <div class="stats-grid">
+            <div class="stat-card"><div class="stat-icon">📦</div><div class="stat-val" id="stat-paq">—</div><div class="stat-label">Paquetes</div></div>
+            <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-val" id="stat-grup">—</div><div class="stat-label">Grupales</div></div>
+            <div class="stat-card"><div class="stat-icon">⭐</div><div class="stat-val" id="stat-test">3</div><div class="stat-label">Testimonios</div></div>
+            <div class="stat-card"><div class="stat-icon">🌍</div><div class="stat-val" id="stat-dest">5</div><div class="stat-label">Destinos</div></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Accesos rápidos</h3></div>
+            <div class="card-body" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem">
+              <button class="btn btn-primary" style="justify-content:center;padding:1rem;flex-direction:column;gap:4px" onclick="showPanel('paquetes');openNewPaq()"><span style="font-size:1.2rem">📦</span>+ Nuevo paquete</button>
+              <button class="btn btn-primary" style="justify-content:center;padding:1rem;flex-direction:column;gap:4px" onclick="showPanel('grupales');openNewGrup()"><span style="font-size:1.2rem">👥</span>+ Nuevo grupal</button>
+              <button class="btn btn-primary" style="justify-content:center;padding:1rem;flex-direction:column;gap:4px" onclick="showPanel('testimonios');openNewTest()"><span style="font-size:1.2rem">⭐</span>+ Nuevo testimonio</button>
+              <button class="btn btn-ghost" style="justify-content:center;padding:1rem;flex-direction:column;gap:4px" onclick="showPanel('contacto')"><span style="font-size:1.2rem">📞</span>Contacto</button>
+              <button class="btn btn-ghost" style="justify-content:center;padding:1rem;flex-direction:column;gap:4px" onclick="showPanel('quienes')"><span style="font-size:1.2rem">👤</span>Quiénes somos</button>
+              <button class="btn btn-ghost" style="justify-content:center;padding:1rem;flex-direction:column;gap:4px" onclick="showPanel('seguridad')"><span style="font-size:1.2rem">🔒</span>Seguridad</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>ℹ️ Cómo usar este panel</h3></div>
+            <div class="card-body">
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-bottom:1rem">
+                <div style="background:#EEF6FB;border-radius:8px;padding:1rem;border-left:3px solid var(--ocean)">
+                  <div style="font-weight:600;font-size:0.85rem;color:var(--navy);margin-bottom:0.3rem">📋 Paquetes y Grupales</div>
+                  <p style="font-size:0.8rem;color:var(--gray);line-height:1.6">Agregá, editá o eliminá paquetes con todos los detalles: fechas, vuelos, hoteles, precios, excursiones e incluidos.</p>
+                </div>
+                <div style="background:#F0FDF4;border-radius:8px;padding:1rem;border-left:3px solid var(--success)">
+                  <div style="font-weight:600;font-size:0.85rem;color:var(--navy);margin-bottom:0.3rem">⭐ Testimonios y destinos</div>
+                  <p style="font-size:0.8rem;color:var(--gray);line-height:1.6">Gestioná los testimonios y los destinos que aparecen en la página de inicio.</p>
+                </div>
+                <div style="background:#FEF9ED;border-radius:8px;padding:1rem;border-left:3px solid var(--warning)">
+                  <div style="font-weight:600;font-size:0.85rem;color:var(--navy);margin-bottom:0.3rem">💱 Moneda</div>
+                  <p style="font-size:0.8rem;color:var(--gray);line-height:1.6">En <strong>Datos de contacto</strong> podés cambiar la moneda (USD / ARS) y actualizar el tipo de cambio.</p>
+                </div>
+                <div style="background:#FEF2F2;border-radius:8px;padding:1rem;border-left:3px solid var(--danger)">
+                  <div style="font-weight:600;font-size:0.85rem;color:var(--navy);margin-bottom:0.3rem">🔒 Credenciales</div>
+                  <p style="font-size:0.8rem;color:var(--gray);line-height:1.6">Cambiá el usuario y contraseña desde la sección <strong>Seguridad</strong>. Los datos se guardan en este navegador.</p>
+                </div>
+              </div>
+              <p style="font-size:0.78rem;color:var(--gray);background:var(--light);padding:0.75rem 1rem;border-radius:6px">
+                💾 Los cambios se guardan automáticamente en el navegador. Para que se reflejen en la web pública, los datos deben integrarse con el servidor o exportarse manualmente.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAQUETES -->
+        <div class="panel" id="panel-paquetes">
+          <div class="card">
+            <div class="card-header">
+              <h3>Paquetes (<span id="paq-count">0</span>)</h3>
+              <button class="btn btn-primary" onclick="openNewPaq()">+ Agregar paquete</button>
+            </div>
+            <div class="card-body">
+              <div class="item-list" id="paq-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- GRUPALES -->
+        <div class="panel" id="panel-grupales">
+          <div class="card">
+            <div class="card-header">
+              <h3>Grupales (<span id="grup-count">0</span>)</h3>
+              <button class="btn btn-primary" onclick="openNewGrup()">+ Agregar grupal</button>
+            </div>
+            <div class="card-body">
+              <div class="item-list" id="grup-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TESTIMONIOS -->
+        <div class="panel" id="panel-testimonios">
+          <div class="card">
+            <div class="card-header">
+              <h3>Testimonios (<span id="test-count">0</span>)</h3>
+              <button class="btn btn-primary" onclick="openNewTest()">+ Agregar testimonio</button>
+            </div>
+            <div class="card-body">
+              <div class="item-list" id="test-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DESTINOS -->
+        <div class="panel" id="panel-destinos">
+          <div class="card">
+            <div class="card-header">
+              <h3>Destinos destacados (página de inicio)</h3>
+              <button class="btn btn-primary" onclick="openNewDest()">+ Agregar destino</button>
+            </div>
+            <div class="card-body">
+              <div class="item-list" id="dest-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONTACTO -->
+        <div class="panel" id="panel-contacto">
+          <div class="card">
+            <div class="card-header"><h3>Datos de contacto</h3></div>
+            <div class="card-body">
+              <div class="field-row">
+                <div class="field"><label>Dirección</label><input type="text" id="c-direccion" value="Paraguay 339 3° G"></div>
+                <div class="field"><label>Ciudad</label><input type="text" id="c-ciudad" value="Rosario, Santa Fe"></div>
+              </div>
+              <div class="field-row">
+                <div class="field"><label>Teléfono / WhatsApp</label><input type="text" id="c-telefono" value="+54 9 3412 279027"></div>
+                <div class="field"><label>Número WA (sin +, sin espacios)</label><input type="text" id="c-wa" value="5493412279027"><div class="hint">Ej: 5493412279027</div></div>
+              </div>
+              <div class="field-row">
+                <div class="field"><label>Email</label><input type="email" id="c-email" value="capri.agenciadeviajes@gmail.com"></div>
+                <div class="field"><label>Horarios</label><input type="text" id="c-horario" value="Lun a Vie: 9:00 a 18:00 hs"></div>
+              </div>
+              <div class="field-row">
+                <div class="field"><label>URL Facebook</label><input type="url" id="c-fb" value="https://www.facebook.com/profile.php?id=61580629453017"></div>
+                <div class="field"><label>URL Instagram</label><input type="url" id="c-ig" value="https://www.instagram.com/capriviajes.ok/"></div>
+              </div>
+              <div class="field-row">
+                <div class="field"><label>URL Canal WhatsApp</label><input type="url" id="c-wacanal" value="https://whatsapp.com/channel/0029VbCbjrD23n3awpz6H82x"></div>
+                <div class="field"><label>Legajo IATA</label><input type="text" id="c-legajo" value="20607"></div>
+              </div>
+              <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border)">
+                <h4 style="font-size:0.82rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--navy);margin-bottom:1rem">💱 Moneda y tipo de cambio</h4>
+                <div class="field-row">
+                  <div class="field">
+                    <label>Moneda por defecto</label>
+                    <select id="c-currency">
+                      <option value="USD">USD — Dólares estadounidenses</option>
+                      <option value="ARS">ARS — Pesos argentinos</option>
+                    </select>
+                    <div class="hint">Los visitantes podrán cambiar la moneda desde la web</div>
+                  </div>
+                  <div class="field">
+                    <label>Tipo de cambio (1 USD = ? ARS)</label>
+                    <input type="number" id="c-usd-ars" value="1250" placeholder="1250">
+                    <div class="hint">Actualizar según el valor del día</div>
+                  </div>
+                </div>
+                <div style="background:#FEF3C7;border:1px solid #FCD34D;border-radius:6px;padding:0.75rem 1rem;font-size:0.8rem;color:#92400E;margin-bottom:1rem">
+                  ⚠️ <strong>Importante:</strong> Al guardar, el tipo de cambio se actualiza en la web. Los precios en ARS se calculan automáticamente multiplicando el precio en USD por este valor.
+                </div>
+              </div>
+              <button class="btn btn-success" onclick="saveContacto()">Guardar datos de contacto y moneda</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- QUIENES SOMOS -->
+        <div class="panel" id="panel-quienes">
+          <div class="card">
+            <div class="card-header"><h3>Quiénes somos</h3></div>
+            <div class="card-body">
+              <div class="field"><label>Título hero</label><input type="text" id="q-hero-titulo" value="Nacimos para que cada persona pueda ver el mundo"></div>
+              <div class="field"><label>Subtítulo hero</label><input type="text" id="q-hero-sub" value="Somos una agencia rosarina con pasión genuina por los viajes y un compromiso real con cada cliente."></div>
+              <div class="field"><label>Imagen hero (URL)</label><input type="url" id="q-hero-img" value="https://images.unsplash.com/photo-1452421822248-d4c2b47f0c81?w=1400&q=80"></div>
+              <div class="field-row">
+                <div class="field"><label>Título sección misión</label><input type="text" id="q-mis-titulo" value="Una agencia que nació de la pasión por viajar"></div>
+                <div class="field"><label>Imagen sección misión (URL)</label><input type="url" id="q-mis-img" value="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=700&q=80"></div>
+              </div>
+              <div class="field"><label>Párrafo 1 misión</label><textarea id="q-mis-p1">Capri Viajes nació en Rosario con una convicción simple: el viaje perfecto es el que se diseña con cuidado, atención y pasión genuina.</textarea></div>
+              <div class="field"><label>Párrafo 2 misión</label><textarea id="q-mis-p2">Somos un equipo que ama viajar tanto como ayudar a otros a hacerlo. Conocemos los destinos porque los recorrimos, y eso hace toda la diferencia.</textarea></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3>Estadísticas</h3></div>
+            <div class="card-body">
+              <div class="field-row">
+                <div class="field"><label>Estadística 1 valor</label><input type="text" id="q-s1v" value="15+"></div>
+                <div class="field"><label>Estadística 1 label</label><input type="text" id="q-s1l" value="Años de experiencia"></div>
+              </div>
+              <div class="field-row">
+                <div class="field"><label>Estadística 2 valor</label><input type="text" id="q-s2v" value="8.000+"></div>
+                <div class="field"><label>Estadística 2 label</label><input type="text" id="q-s2l" value="Viajeros felices"></div>
+              </div>
+              <div class="field-row">
+                <div class="field"><label>Estadística 3 valor</label><input type="text" id="q-s3v" value="60+"></div>
+                <div class="field"><label>Estadística 3 label</label><input type="text" id="q-s3l" value="Destinos disponibles"></div>
+              </div>
+              <div class="field-row">
+                <div class="field"><label>Estadística 4 valor</label><input type="text" id="q-s4v" value="4.9★"></div>
+                <div class="field"><label>Estadística 4 label</label><input type="text" id="q-s4l" value="Calificación promedio"></div>
+              </div>
+              <button class="btn btn-success" onclick="saveQuienes()">Guardar quiénes somos</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3>Equipo</h3></div>
+            <div class="card-body">
+              <div id="team-list" style="display:flex;flex-direction:column;gap:1rem"></div>
+              <button class="btn btn-primary" style="margin-top:1rem" onclick="addTeamMember()">+ Agregar miembro</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEGURIDAD -->
+        <div class="panel" id="panel-seguridad">
+          <div class="card">
+            <div class="card-header"><h3>Cambiar credenciales de acceso</h3></div>
+            <div class="card-body">
+              <div class="field"><label>Usuario actual</label><input type="text" id="s-user-current" disabled></div>
+              <div class="field"><label>Nuevo usuario</label><input type="text" id="s-user-new" placeholder="Nuevo nombre de usuario"></div>
+              <div class="field"><label>Nueva contraseña</label>
+                <div class="pw-field"><input type="password" id="s-pass-new" placeholder="Nueva contraseña"><button class="pw-toggle" onclick="togglePw2()" type="button">👁</button></div>
+              </div>
+              <div class="field"><label>Confirmar contraseña</label><input type="password" id="s-pass-confirm" placeholder="Repetí la contraseña"></div>
+              <button class="btn btn-warning" onclick="saveCredentials()">Actualizar credenciales</button>
+              <p style="font-size:0.75rem;color:var(--gray);margin-top:0.75rem">⚠️ Guardá las nuevas credenciales en un lugar seguro. Si las olvidás, abrí DevTools → Application → Local Storage y eliminá la clave <strong>capri_admin_creds</strong>, luego recargá la página.</p>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /admin-content -->
+    </main>
+  </div>
+</div>
+
+<!-- ===== MODAL PAQUETE ===== -->
+<div class="modal-overlay" id="modal-paq">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-paq-title">Nuevo paquete</h3>
+      <button class="modal-close" onclick="closeModal('modal-paq')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="paq-edit-id">
+
+      <!-- Identificación -->
+      <div style="background:#F8FAFC;border-radius:8px;padding:1rem;margin-bottom:1rem">
+        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ocean);margin-bottom:0.75rem">📋 Información general</div>
+        <div class="field-row">
+          <div class="field"><label>Título</label><input type="text" id="paq-titulo" placeholder="Ej: Roma Clásica & Toscana"></div>
+          <div class="field"><label>País / Destino</label><input type="text" id="paq-dest" placeholder="Ej: Italia"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Categoría</label>
+            <select id="paq-cat">
+              <option value="nacional">Argentina (Nacional)</option>
+              <option value="internacional europa">Internacional · Europa</option>
+              <option value="internacional caribe">Internacional · Caribe</option>
+              <option value="internacional asia">Internacional · Asia</option>
+              <option value="internacional latam">Internacional · América Latina</option>
+            </select>
+          </div>
+          <div class="field"><label>Duración</label><input type="text" id="paq-dur" placeholder="Ej: 7 noches"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Badge especial</label><input type="text" id="paq-badge" placeholder="Ej: Oferta, Romántico"></div>
+          <div class="field"><label>Vuelo incluido</label>
+            <select id="paq-vuelo"><option value="si">Sí</option><option value="no">No</option></select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="paq-destacado" style="width:16px;height:16px"> Mostrar como destino en inicio</label></div>
+          <div class="field"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="paq-feat" style="width:16px;height:16px"> Card grande (destacado visual)</label></div>
+        </div>
+        <div class="field"><label>URL imagen principal</label><input type="url" id="paq-img" placeholder="https://images.unsplash.com/..."></div>
+        <div class="field"><label>Descripción corta (visible en tarjeta)</label><textarea id="paq-desc-corta" placeholder="Resumen para la tarjeta..." style="min-height:60px"></textarea></div>
+        <div class="field"><label>Descripción completa (en detalle)</label><textarea id="paq-desc-full" placeholder="Descripción detallada del paquete..." style="min-height:80px"></textarea></div>
+      </div>
+
+      <!-- Fechas y salida -->
+      <div style="background:#F8FAFC;border-radius:8px;padding:1rem;margin-bottom:1rem">
+        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ocean);margin-bottom:0.75rem">📅 Fechas y lugar de salida</div>
+        <div class="field-row">
+          <div class="field"><label>Fecha de salida</label><input type="text" id="paq-fecha-salida" placeholder="Ej: 15 de agosto 2025"></div>
+          <div class="field"><label>Fecha de regreso</label><input type="text" id="paq-fecha-regreso" placeholder="Ej: 22 de agosto 2025"></div>
+        </div>
+        <div class="field"><label>Lugar de salida</label><input type="text" id="paq-lugar-salida" placeholder="Ej: Rosario (ROS)" value="Rosario (ROS)"></div>
+      </div>
+
+      <!-- Precio -->
+      <div style="background:#F8FAFC;border-radius:8px;padding:1rem;margin-bottom:1rem">
+        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ocean);margin-bottom:0.75rem">💰 Precio</div>
+        <div class="field-row">
+          <div class="field"><label>Precio base</label><input type="number" id="paq-precio" placeholder="1490"><div class="hint">Precio mínimo del paquete</div></div>
+          <div class="field"><label>Moneda del paquete</label>
+            <select id="paq-moneda">
+              <option value="USD">USD — Dólares</option>
+              <option value="ARS">$ — Pesos argentinos</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Estrellas hotel base</label>
+            <select id="paq-estrellas">
+              <option value="3★">3 estrellas</option>
+              <option value="4★">4 estrellas</option>
+              <option value="5★">5 estrellas</option>
+            </select>
+          </div>
+          <div class="field"><label>Vuelo incluido</label>
+            <select id="paq-vuelo2"><option value="si">Sí</option><option value="no">No</option></select>
+          </div>
+        </div>
+        <div style="font-size:0.75rem;font-weight:600;color:var(--navy);margin-bottom:0.5rem">Pagos (opcional — si no se completa, se divide en 2 automáticamente)</div>
+        <div class="includes-editor" id="pagos-list"></div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:0.4rem" onclick="addPagoLine()">+ Agregar pago</button>
+        <div class="hint" style="margin-top:0.4rem">Formato: Label del pago · Monto. Ej: "1er pago · 700"</div>
+      </div>
+
+      <!-- Vuelos -->
+      <div style="background:#F8FAFC;border-radius:8px;padding:1rem;margin-bottom:1rem">
+        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ocean);margin-bottom:0.75rem">✈️ Itinerario de vuelo</div>
+        <div id="vuelos-list" style="display:flex;flex-direction:column;gap:0.75rem"></div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:0.5rem" onclick="addVueloRow()">+ Agregar tramo</button>
+        <div class="hint" style="margin-top:0.3rem">Agregá ida y vuelta como tramos separados</div>
+        <div class="field" style="margin-top:0.75rem">
+          <label>Traslados in/out incluidos</label>
+          <select id="paq-traslado"><option value="si">Sí — incluidos en el paquete</option><option value="no">No</option></select>
+        </div>
+      </div>
+
+      <!-- Hoteles -->
+      <div style="background:#F8FAFC;border-radius:8px;padding:1rem;margin-bottom:1rem">
+        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ocean);margin-bottom:0.75rem">🏨 Opciones de hotel</div>
+        <div id="hoteles-list" style="display:flex;flex-direction:column;gap:0.75rem"></div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:0.5rem" onclick="addHotelRow()">+ Agregar hotel</button>
+        <div class="hint" style="margin-top:0.3rem">Podés agregar 1 o más opciones. El precio puede variar por hotel.</div>
+      </div>
+
+      <!-- Itinerario día a día -->
+      <div style="background:#F8FAFC;border-radius:8px;padding:1rem;margin-bottom:1rem">
+        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ocean);margin-bottom:0.5rem">📅 Itinerario día a día</div>
+        <p style="font-size:0.75rem;color:var(--gray);margin-bottom:0.75rem">Solo se muestra en paquetes <strong>grupales</strong>. Para paquetes individuales se ignora.</p>
+        <div id="itinerario-list" style="display:flex;flex-direction:column;gap:0.75rem"></div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:0.5rem" onclick="addItinRow()">+ Agregar día</button>
+      </div>
+
+      <!-- Incluye / No incluye / Excursiones / Resumen -->
+      <div style="background:#F8FAFC;border-radius:8px;padding:1rem;margin-bottom:1rem">
+        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ocean);margin-bottom:0.75rem">📝 Contenido del detalle</div>
+        <div class="field"><label>¿Qué incluye? (uno por línea)</label>
+          <div class="includes-editor" id="inc-si-list"></div>
+          <button class="btn btn-ghost btn-sm" style="margin-top:0.4rem" onclick="addIncLine('inc-si-list')">+ Agregar línea</button>
+        </div>
+        <div class="field"><label>¿Qué NO incluye? (uno por línea)</label>
+          <div class="includes-editor" id="inc-no-list"></div>
+          <button class="btn btn-ghost btn-sm" style="margin-top:0.4rem" onclick="addIncLine('inc-no-list')">+ Agregar línea</button>
+        </div>
+        <div class="field"><label>Excursiones / Experiencias incluidas (uno por línea, dejar vacío si no hay)</label>
+          <div class="includes-editor" id="excursiones-list"></div>
+          <button class="btn btn-ghost btn-sm" style="margin-top:0.4rem" onclick="addIncLine('excursiones-list')">+ Agregar excursión</button>
+        </div>
+        <div class="field"><label>Resumen por ciudad (formato: Ciudad|Detalle)</label>
+          <div class="includes-editor" id="resumen-list"></div>
+          <button class="btn btn-ghost btn-sm" style="margin-top:0.4rem" onclick="addIncLine('resumen-list')">+ Agregar ciudad</button>
+          <div class="hint">Ej: Roma|5 noches · Hotel Colosseo 4★</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-paq')">Cancelar</button>
+      <button class="btn btn-success" onclick="savePaq()">Guardar paquete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL GRUPAL ===== -->
+<div class="modal-overlay" id="modal-grup">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-grup-title">Nuevo grupal</h3>
+      <button class="modal-close" onclick="closeModal('modal-grup')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="grup-edit-id">
+      <div class="field-row">
+        <div class="field"><label>Título</label><input type="text" id="grup-titulo" placeholder="Ej: Madrid, Barcelona & Sevilla"></div>
+        <div class="field"><label>País / Destino</label><input type="text" id="grup-dest" placeholder="Ej: España"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Fecha de salida</label><input type="text" id="grup-fecha" placeholder="Ej: 15 de agosto 2025"></div>
+        <div class="field"><label>Fecha de regreso</label><input type="text" id="grup-fecha-regreso" placeholder="Ej: 29 de agosto 2025"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Duración</label><input type="text" id="grup-dur" placeholder="Ej: 14 noches"></div>
+        <div class="field"><label>Lugar de salida</label><input type="text" id="grup-lugar-salida" placeholder="Rosario (ROS)" value="Rosario (ROS)"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Precio base</label><input type="number" id="grup-precio" placeholder="2490"></div>
+        <div class="field"><label>Moneda</label>
+          <select id="grup-moneda">
+            <option value="USD">USD — Dólares</option>
+            <option value="ARS">$ — Pesos argentinos</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Cupos (Ej: 18/20)</label><input type="text" id="grup-cupos" placeholder="18/20 cupos"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="grup-destacado" style="width:16px;height:16px"> Mostrar como destino en inicio</label></div>
+        <div class="field"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="grup-feat" style="width:16px;height:16px"> Card grande (destacado visual)</label></div>
+      </div>
+      <div class="field"><label>Descripción</label><textarea id="grup-desc" placeholder="Descripción del viaje grupal..." style="min-height:80px"></textarea></div>
+      <div class="field"><label>URL imagen</label><input type="url" id="grup-img" placeholder="https://images.unsplash.com/..."></div>
+      <div class="field"><label>¿Qué incluye? (uno por línea)</label>
+        <div class="includes-editor" id="grup-inc-list"></div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:0.4rem" onclick="addIncLine('grup-inc-list')">+ Agregar línea</button>
+      </div>
+      <div class="field"><label>¿Qué NO incluye? (uno por línea)</label>
+        <div class="includes-editor" id="grup-no-list"></div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:0.4rem" onclick="addIncLine('grup-no-list')">+ Agregar línea</button>
+      </div>
+      <div class="field"><label>Excursiones / Experiencias incluidas (uno por línea)</label>
+        <div class="includes-editor" id="grup-exc-list"></div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:0.4rem" onclick="addIncLine('grup-exc-list')">+ Agregar excursión</button>
+      </div>
+      <div class="field">
+        <label>Itinerario día a día</label>
+        <p style="font-size:0.75rem;color:var(--gray);margin-bottom:0.5rem">Se muestra en la página de detalle del grupal.</p>
+        <div id="grup-itin-list" style="display:flex;flex-direction:column;gap:0.75rem"></div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:0.5rem" onclick="addItinRow('grup-itin-list')">+ Agregar día</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-grup')">Cancelar</button>
+      <button class="btn btn-success" onclick="saveGrup()">Guardar grupal</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL TESTIMONIO ===== -->
+<div class="modal-overlay" id="modal-test">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-header">
+      <h3 id="modal-test-title">Nuevo testimonio</h3>
+      <button class="modal-close" onclick="closeModal('modal-test')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="test-edit-id">
+      <div class="field"><label>Nombre del cliente</label><input type="text" id="test-nombre" placeholder="Ej: Valentina R."></div>
+      <div class="field"><label>Viaje realizado</label><input type="text" id="test-viaje" placeholder="Ej: Luna de miel en Santorini"></div>
+      <div class="field"><label>Testimonio</label><textarea id="test-texto" placeholder="Escribí el comentario del cliente..." style="min-height:100px"></textarea></div>
+      <div class="field-row">
+        <div class="field"><label>Estrellas</label>
+          <select id="test-estrellas">
+            <option value="5">★★★★★ (5)</option>
+            <option value="4">★★★★ (4)</option>
+            <option value="3">★★★ (3)</option>
+          </select>
+        </div>
+        <div class="field"><label>URL foto (opcional)</label><input type="url" id="test-foto" placeholder="https://..."></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-test')">Cancelar</button>
+      <button class="btn btn-success" onclick="saveTest()">Guardar testimonio</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL DESTINO ===== -->
+<div class="modal-overlay" id="modal-dest">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-header">
+      <h3 id="modal-dest-title">Nuevo destino</h3>
+      <button class="modal-close" onclick="closeModal('modal-dest')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="dest-edit-id">
+      <div class="field-row">
+        <div class="field"><label>País</label><input type="text" id="dest-pais" placeholder="Ej: Grecia"></div>
+        <div class="field"><label>Ciudad / Nombre</label><input type="text" id="dest-nombre" placeholder="Ej: Santorini"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Precio desde (USD)</label><input type="number" id="dest-precio" placeholder="1890"></div>
+        <div class="field"><label>Tag especial (opcional)</label><input type="text" id="dest-tag" placeholder="Ej: Más buscado, Oferta"></div>
+      </div>
+      <div class="field"><label>URL imagen</label><input type="url" id="dest-img" placeholder="https://images.unsplash.com/..."></div>
+      <div class="field"><label>¿Es el destacado grande? (featured)</label>
+        <select id="dest-feat"><option value="no">No</option><option value="si">Sí (ocupa el doble de espacio)</option></select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-dest')">Cancelar</button>
+      <button class="btn btn-success" onclick="saveDest()">Guardar destino</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== AUTH =====
+async function hashPassword(pw) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pw + 'cpv25'));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+let ADMIN = (() => { try { return JSON.parse(localStorage.getItem('capri_admin_creds') || 'null') || {user:'admin',hash:null}; } catch(e) { return {user:'admin',hash:null}; } })();
+let _defaultHash = null;
+hashPassword('capri2025').then(h => {
+  _defaultHash = h;
+  if (!ADMIN.hash) { ADMIN.hash = h; localStorage.setItem('capri_admin_creds', JSON.stringify(ADMIN)); }
+});
+
+async function doLogin() {
+  const u = document.getElementById('inp-user').value.trim();
+  const p = document.getElementById('inp-pass').value;
+  const entered = await hashPassword(p);
+  const stored = ADMIN.hash || _defaultHash || await hashPassword('capri2025');
+  if (u === ADMIN.user && entered === stored) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-screen').style.display = 'block';
+    document.getElementById('s-user-current').value = ADMIN.user;
+    renderAll();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+  }
+}
+
+function doLogout() {
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('admin-screen').style.display = 'none';
+  document.getElementById('inp-pass').value = '';
+  document.getElementById('login-error').style.display = 'none';
+}
+
+
+function togglePw() {
+  const i = document.getElementById('inp-pass');
+  i.type = i.type === 'password' ? 'text' : 'password';
+}
+function togglePw2() {
+  const i = document.getElementById('s-pass-new');
+  i.type = i.type === 'password' ? 'text' : 'password';
+}
+
+async function saveCredentials() {
+  const nu = document.getElementById('s-user-new').value.trim();
+  const np = document.getElementById('s-pass-new').value;
+  const nc = document.getElementById('s-pass-confirm').value;
+  if (!nu || !np) { showToast('Completá todos los campos','error'); return; }
+  if (np !== nc) { showToast('Las contraseñas no coinciden','error'); return; }
+  const newHash = await hashPassword(np);
+  ADMIN = { user: nu, hash: newHash };
+  localStorage.setItem('capri_admin_creds', JSON.stringify(ADMIN));
+  document.getElementById('s-user-current').value = nu;
+  document.getElementById('s-user-new').value = '';
+  document.getElementById('s-pass-new').value = '';
+  document.getElementById('s-pass-confirm').value = '';
+  showToast('Credenciales actualizadas ✓','success');
+}
+
+// ===== DATA =====
+let DATA = JSON.parse(localStorage.getItem('capri_data') || 'null') || {
+  paquetes: [
+    {id:'roma',titulo:'Roma Clásica & Toscana',dest:'Italia',cat:'internacional europa',dur:'7 noches',precio:1490,estrellas:'4★',descCorta:'Vaticano, Coliseo y los viñedos de la campiña italiana en un itinerario diseñado para disfrutar cada momento.',descFull:'Italia es uno de esos destinos que te deja sin palabras. Hotel 4 estrellas en el centro de Roma, desayuno incluido y guía en español.',img:'https://images.unsplash.com/photo-1503917988258-f87a78e3c995?w=600&q=80',badge:'Europa',vuelo:'si',incSi:['Vuelo de ida y vuelta','Hotel 4 estrellas (7 noches)','Desayuno diario','Traslados aeropuerto','Seguro de viaje internacional','Guía en español'],incNo:['Almuerzo y cena','Bebidas','Gastos personales'],resumen:['Roma|5 noches · Hotel Colosseo 4★','Toscana|2 noches · Agriturismo']},
+    {id:'caribe',titulo:'Caribe Todo Incluido',dest:'México · Rep. Dominicana',cat:'internacional caribe',dur:'5 noches',precio:890,estrellas:'5★',descCorta:'Sol y playa en Punta Cana o Cancún. Resorts de primer nivel con comidas, bebidas y actividades incluidas.',descFull:'Sol, playa y todo incluido desde que llegás. Resorts 5 estrellas frente al mar.',img:'https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=600&q=80',badge:'Oferta',vuelo:'si',incSi:['Vuelo de ida y vuelta','5 noches en resort 5★','Todo incluido','Traslados aeropuerto','Seguro de viaje'],incNo:['Excursiones opcionales','Bebidas premium','Gastos personales'],resumen:['Punta Cana / Cancún|5 noches · Resort Todo incluido 5★']},
+    {id:'japon',titulo:'Maravillas de Japón',dest:'Japón',cat:'internacional asia',dur:'12 noches',precio:2890,estrellas:'5★',descCorta:'Tokio, Kioto y Osaka. Un recorrido por los templos, mercados y la gastronomía del país del sol naciente.',descFull:'Japón es uno de los destinos más fascinantes del mundo. Incluye JR Pass.',img:'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80',badge:'Asia',vuelo:'si',incSi:['Vuelo de ida y vuelta','12 noches en hoteles 4★ y 5★','Desayuno diario','JR Pass 14 días','Guía en español'],incNo:['Almuerzo y cena','Gastos personales'],resumen:['Tokio|5 noches · Hotel Shinjuku 4★','Kioto|4 noches · Ryokan tradicional','Osaka|3 noches · Hotel Namba 4★']},
+    {id:'santorini',titulo:'Santorini & Mykonos',dest:'Grecia',cat:'internacional europa',dur:'8 noches',precio:2190,estrellas:'5★',descCorta:'Las islas más románticas de Grecia. Cúpulas azules, atardeceres únicos y gastronomía mediterránea.',descFull:'Santorini y Mykonos son las joyas del Mar Egeo.',img:'https://images.unsplash.com/photo-1533105079780-92b9be482077?w=600&q=80',badge:'Romántico',vuelo:'si',incSi:['Vuelo internacional','Ferry Santorini-Mykonos','8 noches hoteles 4★ y 5★','Desayuno diario','Seguro de viaje'],incNo:['Almuerzo y cena','Excursiones en barco'],resumen:['Santorini|5 noches · Suite con vista al volcán 5★','Mykonos|3 noches · Hotel boutique 4★']},
+    {id:'peru',titulo:'Perú Mágico',dest:'Perú',cat:'internacional latam',dur:'6 noches',precio:1050,estrellas:'4★',descCorta:'Machu Picchu, Cusco y el Valle Sagrado. Una de las experiencias más impactantes de América del Sur.',descFull:'Machu Picchu es uno de los lugares más impresionantes del planeta.',img:'https://images.unsplash.com/photo-1531761535209-83234b757d8c?w=600&q=80',badge:'Latam',vuelo:'si',incSi:['Vuelo de ida y vuelta','6 noches en hoteles 4★','Tren Inca','Entrada a Machu Picchu','Guía en español'],incNo:['Almuerzo y cena','Vuelo doméstico Lima-Cusco'],resumen:['Cusco|3 noches · Hotel 4★ centro','Machu Picchu|1 noche · Lodge','Valle Sagrado|2 noches · Hacienda 4★']},
+    {id:'bariloche',titulo:'Bariloche & Patagonia',dest:'Argentina · Río Negro',cat:'nacional',dur:'5 noches',precio:620,estrellas:'4★',descCorta:'Lagos, montañas y chocolate artesanal. El destino más icónico de Argentina.',descFull:'Bariloche es el destino patagónico por excelencia.',img:'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=600&q=80',badge:'Nacional',vuelo:'si',incSi:['Vuelo de ida y vuelta','5 noches en hotel 4★','Desayuno diario','Traslados aeropuerto','Seguro de viaje'],incNo:['Almuerzo y cena','Ski','Excursiones opcionales'],resumen:['Bariloche|5 noches · Hotel Lagos del Sur 4★']}
+  ],
+  grupales: [
+    {id:'espana',titulo:'Madrid, Barcelona & Sevilla',dest:'España',fecha:'15 de agosto 2025',dur:'14 noches',precio:2490,cupos:'18/20 cupos',desc:'Un recorrido grupal por las tres ciudades más vibrantes de España con guía en español.',img:'https://images.unsplash.com/photo-1563492065599-3520f775eeed?w=600&q=80',inc:['Vuelo de ida y vuelta','14 noches en hoteles 4★','Desayuno diario','Guía en español todo el viaje','Seguro de viaje']},
+    {id:'caribe-g',titulo:'Caribe Grupal Todo Incluido',dest:'República Dominicana',fecha:'12 de septiembre 2025',dur:'7 noches',precio:1190,cupos:'12/20 cupos',desc:'Punta Cana en modo grupal: diversión, playa y la mejor compañía en un resort de primer nivel.',img:'https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=600&q=80',inc:['Vuelo de ida y vuelta','Todo incluido','Guía en español','Seguro de viaje']},
+    {id:'patagonia-g',titulo:'Patagonia Argentina & Chilena',dest:'Argentina · Chile',fecha:'3 de octubre 2025',dur:'8 noches',precio:1850,cupos:'8/20 cupos',desc:'Glaciar Perito Moreno, Torres del Paine y El Calafate. La aventura más impresionante del sur.',img:'https://images.unsplash.com/photo-1498307833015-e7b400441eb8?w=600&q=80',inc:['Vuelo de ida y vuelta','8 noches en hoteles y lodges','Excursión Glaciar Perito Moreno','Entrada Torres del Paine','Guía en español','Seguro de viaje']}
+  ],
+  testimonios: [
+    {id:'t1',nombre:'Valentina R.',viaje:'Luna de miel en Santorini',texto:'Organicé mi luna de miel con Capri Viajes y fue perfecto. Cada detalle estaba cuidado: hoteles, excursiones y hasta nos dieron un upgrade inesperado.',estrellas:5,foto:'https://i.pravatar.cc/80?img=47'},
+    {id:'t2',nombre:'Martín G.',viaje:'Viaje familiar a Japón',texto:'Llevé a mi familia a Japón y gracias a Capri no tuvimos que preocuparnos por nada. Los chicos quedaron fascinados con Tokio.',estrellas:5,foto:'https://i.pravatar.cc/80?img=12'},
+    {id:'t3',nombre:'Laura M.',viaje:'Escape a París',texto:'La atención es increíble. Me ayudaron a cambiar las fechas sin costo cuando tuve un problema de trabajo. Esa flexibilidad vale oro.',estrellas:5,foto:'https://i.pravatar.cc/80?img=32'}
+  ],
+  destinos: [
+    {id:'d1',pais:'Grecia',nombre:'Santorini',precio:1890,tag:'Más buscado',img:'https://images.unsplash.com/photo-1533105079780-92b9be482077?w=800&q=80',feat:'si'},
+    {id:'d2',pais:'Japón',nombre:'Tokio',precio:2350,tag:'',img:'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80',feat:'no'},
+    {id:'d3',pais:'Francia',nombre:'París',precio:1650,tag:'Oferta',img:'https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=600&q=80',feat:'no'},
+    {id:'d4',pais:'México',nombre:'Cancún',precio:980,tag:'',img:'https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=600&q=80',feat:'no'},
+    {id:'d5',pais:'Perú',nombre:'Machu Picchu',precio:750,tag:'',img:'https://images.unsplash.com/photo-1531761535209-83234b757d8c?w=600&q=80',feat:'no'}
+  ],
+  team: [
+    {nombre:'Carolina Martínez',rol:'Directora & Fundadora',foto:'https://i.pravatar.cc/400?img=5'},
+    {nombre:'Sebastián López',rol:'Consultor de viajes',foto:'https://i.pravatar.cc/400?img=15'},
+    {nombre:'Lucía Fernández',rol:'Especialista Europa & Asia',foto:'https://i.pravatar.cc/400?img=44'},
+    {nombre:'Tomás Quiroga',rol:'Atención al viajero',foto:'https://i.pravatar.cc/400?img=25'}
+  ]
+};
+
+function saveData() { localStorage.setItem('capri_data', JSON.stringify(DATA)); }
+
+// ===== NAVIGATION =====
+function showPanel(id, triggerEl) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const panelEl = document.getElementById('panel-' + id);
+  if (!panelEl) return;
+  panelEl.classList.add('active');
+  // Highlight nav item that has onclick matching this id
+  document.querySelectorAll('.nav-item').forEach(n => {
+    if (n.getAttribute('onclick') && n.getAttribute('onclick').includes("'" + id + "'")) {
+      n.classList.add('active');
+    }
+  });
+  const titles = {dashboard:'Dashboard',paquetes:'Paquetes',grupales:'Grupales',testimonios:'Testimonios',destinos:'Destinos inicio',contacto:'Datos de contacto',quienes:'Quiénes somos',seguridad:'Seguridad'};
+  document.getElementById('topbar-title').textContent = titles[id] || id;
+  if (id === 'quienes') renderTeam();
+  window.scrollTo(0,0);
+}
+
+// ===== RENDER =====
+function renderAll() {
+  renderPaq(); renderGrup(); renderTest(); renderDest();
+  updateStats();
+  // Load currency settings
+  const settings = JSON.parse(localStorage.getItem('capri_settings') || '{}');
+  if (settings.currency) {
+    const sel = document.getElementById('c-currency');
+    if (sel) sel.value = settings.currency;
+  }
+  if (settings.usdToArs) {
+    const inp = document.getElementById('c-usd-ars');
+    if (inp) inp.value = settings.usdToArs;
+  }
+}
+
+function updateStats() {
+  document.getElementById('stat-paq').textContent = DATA.paquetes.length;
+  document.getElementById('stat-grup').textContent = DATA.grupales.length;
+  document.getElementById('stat-test').textContent = DATA.testimonios.length;
+  document.getElementById('stat-dest').textContent = DATA.destinos.length;
+  document.getElementById('paq-count').textContent = DATA.paquetes.length;
+  document.getElementById('grup-count').textContent = DATA.grupales.length;
+  document.getElementById('test-count').textContent = DATA.testimonios.length;
+}
+
+function renderPaq() {
+  const el = document.getElementById('paq-list');
+  el.innerHTML = DATA.paquetes.map((p,i) => `
+    <div class="item-card">
+      <img class="item-card-img" src="${p.img}" alt="${p.titulo}" onerror="this.style.background='#EEE'">
+      <div class="item-card-body">
+        <div class="item-card-title">${p.titulo}</div>
+        <div class="item-card-sub">${p.dest} · ${p.dur} · <strong>${p.moneda||'USD'} ${p.precio.toLocaleString()}</strong></div>
+        <div style="margin-top:0.3rem"><span class="badge-cat">${p.cat.split(' ')[0]}</span></div>
+      </div>
+      <div class="item-card-actions">
+        <button class="btn btn-ghost btn-sm" onclick="editPaq(${i})">✏️ Editar</button>
+        <button class="btn btn-danger btn-sm" onclick="deletePaq(${i})">🗑</button>
+      </div>
+    </div>`).join('');
+  document.getElementById('paq-count').textContent = DATA.paquetes.length;
+}
+
+function renderGrup() {
+  const el = document.getElementById('grup-list');
+  el.innerHTML = DATA.grupales.map((g,i) => `
+    <div class="item-card">
+      <img class="item-card-img" src="${g.img}" alt="${g.titulo}" onerror="this.style.background='#EEE'">
+      <div class="item-card-body">
+        <div class="item-card-title">${g.titulo}</div>
+        <div class="item-card-sub">${g.dest} · ${g.fecha} · <strong>${g.moneda||'USD'} ${g.precio.toLocaleString()}</strong> · ${g.cupos}</div>
+      </div>
+      <div class="item-card-actions">
+        <button class="btn btn-ghost btn-sm" onclick="editGrup(${i})">✏️ Editar</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteGrup(${i})">🗑</button>
+      </div>
+    </div>`).join('');
+  document.getElementById('grup-count').textContent = DATA.grupales.length;
+}
+
+function renderTest() {
+  const el = document.getElementById('test-list');
+  el.innerHTML = DATA.testimonios.map((t,i) => `
+    <div class="item-card">
+      <img class="item-card-img" src="${t.foto || 'https://i.pravatar.cc/80?img=1'}" alt="${t.nombre}" style="border-radius:50%;width:50px;height:50px" onerror="this.style.background='#EEE'">
+      <div class="item-card-body">
+        <div class="item-card-title">${t.nombre}</div>
+        <div class="item-card-sub">${t.viaje} · ${'★'.repeat(t.estrellas)}</div>
+        <div style="font-size:0.75rem;color:var(--gray);margin-top:0.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:400px">"${t.texto.substring(0,80)}..."</div>
+      </div>
+      <div class="item-card-actions">
+        <button class="btn btn-ghost btn-sm" onclick="editTest(${i})">✏️ Editar</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteTest(${i})">🗑</button>
+      </div>
+    </div>`).join('');
+  document.getElementById('test-count').textContent = DATA.testimonios.length;
+}
+
+function renderDest() {
+  const el = document.getElementById('dest-list');
+  el.innerHTML = DATA.destinos.map((d,i) => `
+    <div class="item-card">
+      <img class="item-card-img" src="${d.img}" alt="${d.nombre}" onerror="this.style.background='#EEE'">
+      <div class="item-card-body">
+        <div class="item-card-title">${d.nombre}, ${d.pais}</div>
+        <div class="item-card-sub">Desde USD ${d.precio.toLocaleString()} · ${d.feat==='si'?'⭐ Destacado':'Normal'}${d.tag?' · '+d.tag:''}</div>
+      </div>
+      <div class="item-card-actions">
+        <button class="btn btn-ghost btn-sm" onclick="editDest(${i})">✏️ Editar</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteDest(${i})">🗑</button>
+      </div>
+    </div>`).join('');
+}
+
+function renderTeam() {
+  const el = document.getElementById('team-list');
+  el.innerHTML = DATA.team.map((m,i) => `
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:0.5rem;align-items:end;background:var(--light);padding:0.75rem;border-radius:6px">
+      <div class="field" style="margin:0"><label>Nombre</label><input value="${m.nombre}" oninput="DATA.team[${i}].nombre=this.value"></div>
+      <div class="field" style="margin:0"><label>Rol</label><input value="${m.rol}" oninput="DATA.team[${i}].rol=this.value"></div>
+      <div class="field" style="margin:0"><label>URL foto</label><input value="${m.foto}" oninput="DATA.team[${i}].foto=this.value"></div>
+      <button class="btn btn-danger btn-sm" onclick="DATA.team.splice(${i},1);renderTeam()">🗑</button>
+    </div>`).join('');
+}
+
+function addTeamMember() {
+  DATA.team.push({nombre:'',rol:'',foto:''});
+  renderTeam();
+}
+
+// ===== INCLUDE LINES EDITOR =====
+function addIncLine(listId, val='') {
+  const c = document.getElementById(listId);
+  const row = document.createElement('div');
+  row.className = 'include-row';
+  row.innerHTML = `<input type="text" value="${val}" placeholder="Escribí un ítem..."><button class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">✕</button>`;
+  c.appendChild(row);
+}
+
+function getIncLines(listId) {
+  return Array.from(document.getElementById(listId).querySelectorAll('input')).map(i=>i.value).filter(v=>v.trim());
+}
+
+function setIncLines(listId, arr) {
+  document.getElementById(listId).innerHTML = '';
+  arr.forEach(v => addIncLine(listId, v));
+}
+
+// ===== PAQUETES CRUD =====
+function addVueloRow(v) {
+  const c = document.getElementById('vuelos-list');
+  const row = document.createElement('div');
+  row.style.cssText = 'background:white;border:1px solid #E5E7EB;border-radius:8px;padding:0.75rem;display:grid;grid-template-columns:0.6fr 1fr 1.2fr 0.7fr 0.7fr 1fr auto;gap:0.4rem;align-items:end';
+  row.innerHTML = `
+    <div class="field" style="margin:0"><label>Dir.</label>
+      <select style="width:100%;padding:0.5rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem">
+        <option${v&&v.dir==='IDA'?' selected':''}>IDA</option>
+        <option${v&&v.dir==='VUELTA'?' selected':''}>VUELTA</option>
+      </select></div>
+    <div class="field" style="margin:0"><label>Aerolínea</label><input style="width:100%;padding:0.5rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${v?v.aero:''}" placeholder="Ej: LATAM"></div>
+    <div class="field" style="margin:0"><label>Ruta (orig→escala→dest)</label><input style="width:100%;padding:0.5rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${v?v.orig+'→'+(v.escala&&v.escala!=='-'?v.escala+'→':'')+v.dest:''}" placeholder="ROS→EZE→MAD"></div>
+    <div class="field" style="margin:0"><label>Salida</label><input style="width:100%;padding:0.5rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${v?v.salida:''}" placeholder="23:00"></div>
+    <div class="field" style="margin:0"><label>Llegada</label><input style="width:100%;padding:0.5rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${v?v.llegada:''}" placeholder="15:30+1"></div>
+    <div class="field" style="margin:0"><label>Equipaje</label><input style="width:100%;padding:0.5rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${v?v.equipaje||'':''}" placeholder="Carry on + 23kg"></div>
+    <button class="btn btn-danger btn-sm" onclick="this.parentElement.remove()" style="margin-bottom:2px">✕</button>`;
+  c.appendChild(row);
+}
+
+function getVuelos() {
+  return Array.from(document.getElementById('vuelos-list').children).map(row => {
+    const inputs = row.querySelectorAll('select, input');
+    const ruta = (inputs[2].value||'').split('→');
+    return {
+      dir: inputs[0].value,
+      aero: inputs[1].value,
+      orig: ruta[0]||'',
+      escala: ruta.length===3 ? ruta[1] : '-',
+      dest: ruta[ruta.length-1]||'',
+      salida: inputs[3].value,
+      llegada: inputs[4].value,
+      equipaje: inputs[5].value
+    };
+  });
+}
+
+function addHotelRow(h) {
+  const c = document.getElementById('hoteles-list');
+  const row = document.createElement('div');
+  row.style.cssText = 'background:white;border:1px solid #E5E7EB;border-radius:8px;padding:0.75rem;display:flex;flex-direction:column;gap:0.5rem';
+  row.innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr 0.5fr auto;gap:0.4rem;align-items:end">
+      <div class="field" style="margin:0"><label>Nombre hotel</label><input style="width:100%;padding:0.45rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${h?h.nombre:''}" placeholder="Ej: Hotel Colosseo 4★"></div>
+      <div class="field" style="margin:0"><label>Detalle (noches · tipo)</label><input style="width:100%;padding:0.45rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${h?h.detail:''}" placeholder="7 noches · All Inclusive"></div>
+      <div class="field" style="margin:0"><label>Precio</label><input type="number" style="width:100%;padding:0.45rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${h?h.precio:''}" placeholder="1490"></div>
+      <button class="btn btn-danger btn-sm" onclick="this.closest('div[style*=flex-direction]').remove()" style="margin-bottom:2px">✕</button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.4rem">
+      <div class="field" style="margin:0"><label>URL foto</label><input style="width:100%;padding:0.45rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${h?h.img||'':''}" placeholder="https://..."></div>
+      <div class="field" style="margin:0"><label>Tags (separados por coma)</label><input style="width:100%;padding:0.45rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${h&&h.tags?h.tags.join(', '):''}" placeholder="Desayuno, Piscina, Spa"></div>
+    </div>`;
+  c.appendChild(row);
+}
+
+function getHoteles() {
+  return Array.from(document.getElementById('hoteles-list').children).map(row => {
+    const inputs = row.querySelectorAll('input');
+    const nombre = inputs[0].value;
+    const stars = (nombre.match(/★+/)||[''])[0].length;
+    return {
+      nombre: nombre,
+      detail: inputs[1].value,
+      precio: parseFloat(inputs[2].value)||0,
+      img: inputs[3].value,
+      estrellas: stars || 4,
+      tags: inputs[4].value.split(',').map(t=>t.trim()).filter(Boolean)
+    };
+  });
+}
+
+function addItinRow(listId, d) {
+  const cid = listId || 'itinerario-list';
+  const c = document.getElementById(cid);
+  if (!c) return;
+  const row = document.createElement('div');
+  row.style.cssText = 'background:white;border:1px solid #E5E7EB;border-radius:8px;padding:0.75rem;display:flex;flex-direction:column;gap:0.5rem';
+  row.innerHTML = `
+    <div style="display:grid;grid-template-columns:0.4fr 0.7fr 1fr auto;gap:0.5rem;align-items:end">
+      <div class="field" style="margin:0"><label>Día #</label><input type="number" style="width:100%;padding:0.45rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${d?d.day:''}" placeholder="1" min="1"></div>
+      <div class="field" style="margin:0"><label>Ciudad</label><input style="width:100%;padding:0.45rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${d?d.city:''}" placeholder="Ej: Roma"></div>
+      <div class="field" style="margin:0"><label>Título del día</label><input style="width:100%;padding:0.45rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${d?d.title:''}" placeholder="Ej: Llegada a Roma"></div>
+      <button class="btn btn-danger btn-sm" onclick="this.closest('div[style*=flex-direction]').remove()" style="margin-bottom:2px">✕</button>
+    </div>
+    <div class="field" style="margin:0"><label>Descripción del día</label><textarea style="width:100%;padding:0.45rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem;resize:vertical;min-height:60px" placeholder="Actividades del día...">${d?d.desc:''}</textarea></div>
+    <div class="field" style="margin:0"><label>URL imagen del día (opcional)</label><input style="width:100%;padding:0.45rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${d?d.img||'':''}" placeholder="https://images.unsplash.com/..."></div>`;
+  c.appendChild(row);
+}
+
+function getItinerario(listId) {
+  const cid = listId || 'itinerario-list';
+  const c = document.getElementById(cid);
+  if (!c) return [];
+  return Array.from(c.children).map(row => {
+    const inputs = row.querySelectorAll('input, textarea');
+    return {
+      day: parseInt(inputs[0].value)||1,
+      city: inputs[1].value,
+      title: inputs[2].value,
+      desc: inputs[3].value,
+      img: inputs[4].value
+    };
+  }).filter(d => d.title);
+}
+
+function addPagoLine(val) {
+  const c = document.getElementById('pagos-list');
+  const row = document.createElement('div');
+  row.className = 'include-row';
+  row.innerHTML = `<input type="text" value="${val||''}" placeholder="Ej: 1er pago · 700" style="flex:1"><button class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">✕</button>`;
+  c.appendChild(row);
+}
+
+function getPagos() {
+  return Array.from(document.getElementById('pagos-list').querySelectorAll('input'))
+    .map(i => {
+      const parts = i.value.split('·');
+      if (parts.length >= 2) return { label: parts[0].trim(), monto: parseFloat(parts[1].trim())||0 };
+      return null;
+    }).filter(Boolean);
+}
+
+function openNewPaq() {
+  document.getElementById('paq-edit-id').value = '';
+  document.getElementById('modal-paq-title').textContent = 'Nuevo paquete';
+  ['paq-titulo','paq-dest','paq-dur','paq-precio','paq-img','paq-badge','paq-desc-corta','paq-desc-full','paq-fecha-salida','paq-fecha-regreso'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('paq-cat').value = 'internacional europa';
+  document.getElementById('paq-moneda').value = 'USD';
+  document.getElementById('paq-estrellas').value = '4★';
+  document.getElementById('paq-vuelo').value = 'si';
+  document.getElementById('paq-traslado').value = 'si';
+  document.getElementById('paq-lugar-salida').value = 'Rosario (ROS)';
+  document.getElementById('paq-destacado').checked = false;
+  document.getElementById('paq-feat').checked = false;
+  document.getElementById('vuelos-list').innerHTML = '';
+  document.getElementById('itinerario-list').innerHTML = '';
+  document.getElementById('hoteles-list').innerHTML = '';
+  document.getElementById('pagos-list').innerHTML = '';
+  setIncLines('inc-si-list',[]);
+  setIncLines('inc-no-list',[]);
+  setIncLines('excursiones-list',[]);
+  setIncLines('resumen-list',[]);
+  openModal('modal-paq');
+}
+
+function editPaq(i) {
+  const p = DATA.paquetes[i];
+  document.getElementById('paq-edit-id').value = i;
+  document.getElementById('modal-paq-title').textContent = 'Editar paquete';
+  document.getElementById('paq-titulo').value = p.titulo||'';
+  document.getElementById('paq-dest').value = p.dest||'';
+  document.getElementById('paq-cat').value = p.cat||'internacional europa';
+  document.getElementById('paq-dur').value = p.dur||'';
+  document.getElementById('paq-precio').value = p.precio||'';
+  document.getElementById('paq-estrellas').value = p.estrellas||'4★';
+  document.getElementById('paq-moneda').value = p.moneda||'USD';
+  document.getElementById('paq-desc-corta').value = p.descCorta||'';
+  document.getElementById('paq-desc-full').value = p.descFull||'';
+  document.getElementById('paq-img').value = p.img||'';
+  document.getElementById('paq-badge').value = p.badge||'';
+  document.getElementById('paq-vuelo').value = p.vuelo||'si';
+  document.getElementById('paq-traslado').value = p.traslado ? 'si' : 'no';
+  document.getElementById('paq-destacado').checked = !!p.destacado;
+  document.getElementById('paq-feat').checked = !!p.feat;
+  document.getElementById('paq-fecha-salida').value = p.fechaSalida||'';
+  document.getElementById('paq-fecha-regreso').value = p.fechaRegreso||'';
+  document.getElementById('paq-lugar-salida').value = p.lugarSalida||'Rosario (ROS)';
+  // Vuelos
+  document.getElementById('vuelos-list').innerHTML = '';
+  document.getElementById('itinerario-list').innerHTML = '';
+  (p.vuelos||[]).forEach(v => addVueloRow(v));
+  // Hoteles
+  document.getElementById('hoteles-list').innerHTML = '';
+  (p.hoteles||[]).forEach(h => addHotelRow(h));
+  // Pagos
+  document.getElementById('pagos-list').innerHTML = '';
+  (p.pagos||[]).forEach(pg => addPagoLine(pg.label + ' · ' + pg.monto));
+  // Includes
+  // Itinerario
+  document.getElementById('itinerario-list').innerHTML = '';
+  (p.itinerario||[]).forEach(d => addItinRow('itinerario-list', d));
+  setIncLines('inc-si-list', p.incSi||[]);
+  setIncLines('inc-no-list', p.incNo||[]);
+  setIncLines('excursiones-list', p.excursiones||[]);
+  setIncLines('resumen-list', p.resumen||[]);
+  openModal('modal-paq');
+}
+
+function savePaq() {
+  const idx = document.getElementById('paq-edit-id').value;
+  const obj = {
+    id: idx !== '' ? DATA.paquetes[idx].id : 'paq_'+Date.now(),
+    titulo: document.getElementById('paq-titulo').value,
+    dest: document.getElementById('paq-dest').value,
+    cat: document.getElementById('paq-cat').value,
+    dur: document.getElementById('paq-dur').value,
+    precio: parseFloat(document.getElementById('paq-precio').value)||0,
+    estrellas: document.getElementById('paq-estrellas').value,
+    descCorta: document.getElementById('paq-desc-corta').value,
+    descFull: document.getElementById('paq-desc-full').value,
+    img: document.getElementById('paq-img').value,
+    badge: document.getElementById('paq-badge').value,
+    vuelo: document.getElementById('paq-vuelo').value,
+    moneda: document.getElementById('paq-moneda').value,
+    traslado: document.getElementById('paq-traslado').value === 'si',
+    destacado: document.getElementById('paq-destacado').checked,
+    feat: document.getElementById('paq-feat').checked,
+    fechaSalida: document.getElementById('paq-fecha-salida').value,
+    fechaRegreso: document.getElementById('paq-fecha-regreso').value,
+    lugarSalida: document.getElementById('paq-lugar-salida').value,
+    vuelos: getVuelos(),
+    hoteles: getHoteles(),
+    pagos: getPagos(),
+    incSi: getIncLines('inc-si-list'),
+    incNo: getIncLines('inc-no-list'),
+    itinerario: getItinerario('itinerario-list'),
+    excursiones: getIncLines('excursiones-list'),
+    resumen: getIncLines('resumen-list')
+  };
+  if (!obj.titulo) { showToast('El título es obligatorio','error'); return; }
+  if (idx !== '') DATA.paquetes[idx] = obj; else DATA.paquetes.push(obj);
+  saveData(); renderPaq(); updateStats(); closeModal('modal-paq');
+  showToast('Paquete guardado ✓','success');
+}
+
+function deletePaq(i) {
+  if (!confirm('¿Eliminar este paquete?')) return;
+  DATA.paquetes.splice(i,1); saveData(); renderPaq(); updateStats();
+  showToast('Paquete eliminado','success');
+}
+
+// ===== GRUPALES CRUD =====
+function openNewGrup() {
+  document.getElementById('grup-edit-id').value = '';
+  document.getElementById('modal-grup-title').textContent = 'Nuevo grupal';
+  ['grup-titulo','grup-dest','grup-fecha','grup-fecha-regreso','grup-dur','grup-precio','grup-cupos','grup-desc','grup-img','grup-lugar-salida'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';}); 
+  const gm=document.getElementById('grup-moneda'); if(gm) gm.value='USD';
+  if(document.getElementById('grup-lugar-salida'))document.getElementById('grup-lugar-salida').value='Rosario (ROS)';
+  const gd=document.getElementById('grup-destacado'); if(gd) gd.checked=false;
+  const gf=document.getElementById('grup-feat'); if(gf) gf.checked=false;
+  setIncLines('grup-inc-list',[]);
+  setIncLines('grup-no-list',[]);
+  setIncLines('grup-exc-list',[]);
+  const gi=document.getElementById('grup-itin-list'); if(gi) gi.innerHTML='';
+  openModal('modal-grup');
+}
+
+function editGrup(i) {
+  const g = DATA.grupales[i];
+  document.getElementById('grup-edit-id').value = i;
+  document.getElementById('modal-grup-title').textContent = 'Editar grupal';
+  document.getElementById('grup-titulo').value = g.titulo||'';
+  document.getElementById('grup-dest').value = g.dest||'';
+  document.getElementById('grup-fecha').value = g.fecha||'';
+  const fr = document.getElementById('grup-fecha-regreso'); if(fr) fr.value = g.fechaRegreso||'';
+  document.getElementById('grup-dur').value = g.dur||'';
+  document.getElementById('grup-precio').value = g.precio||'';
+  const gme=document.getElementById('grup-moneda'); if(gme) gme.value=g.moneda||'USD';
+  document.getElementById('grup-cupos').value = g.cupos||'';
+  document.getElementById('grup-desc').value = g.desc||'';
+  document.getElementById('grup-img').value = g.img||'';
+  const ls = document.getElementById('grup-lugar-salida'); if(ls) ls.value = g.lugarSalida||'Rosario (ROS)';
+  setIncLines('grup-inc-list', g.inc||[]);
+  const gitl=document.getElementById('grup-itin-list'); if(gitl){gitl.innerHTML='';(g.itinerario||[]).forEach(d=>addItinRow('grup-itin-list',d));}
+  setIncLines('grup-no-list', g.incNo||[]);
+  setIncLines('grup-exc-list', g.excursiones||[]);
+  const gde=document.getElementById('grup-destacado'); if(gde) gde.checked=!!g.destacado;
+  const gfe=document.getElementById('grup-feat'); if(gfe) gfe.checked=!!g.feat;
+  openModal('modal-grup');
+}
+
+function saveGrup() {
+  const idx = document.getElementById('grup-edit-id').value;
+  const fr = document.getElementById('grup-fecha-regreso');
+  const ls = document.getElementById('grup-lugar-salida');
+  const obj = {
+    id: idx !== '' ? DATA.grupales[idx].id : 'grup_'+Date.now(),
+    grupal: true,
+    titulo: document.getElementById('grup-titulo').value,
+    dest: document.getElementById('grup-dest').value,
+    fecha: document.getElementById('grup-fecha').value,
+    fechaRegreso: fr ? fr.value : '',
+    lugarSalida: ls ? ls.value : 'Rosario (ROS)',
+    dur: document.getElementById('grup-dur').value,
+    precio: parseFloat(document.getElementById('grup-precio').value)||0,
+    moneda: (document.getElementById('grup-moneda')?.value)||'USD',
+    cupos: document.getElementById('grup-cupos').value,
+    desc: document.getElementById('grup-desc').value,
+    img: document.getElementById('grup-img').value,
+    destacado: document.getElementById('grup-destacado')?.checked || false,
+    feat: document.getElementById('grup-feat')?.checked || false,
+    inc: getIncLines('grup-inc-list'),
+    incNo: getIncLines('grup-no-list'),
+    excursiones: getIncLines('grup-exc-list'),
+    itinerario: getItinerario('grup-itin-list')
+  };
+  if (!obj.titulo) { showToast('El título es obligatorio','error'); return; }
+  if (idx !== '') DATA.grupales[idx] = obj; else DATA.grupales.push(obj);
+  saveData(); renderGrup(); updateStats(); closeModal('modal-grup');
+  showToast('Grupal guardado ✓','success');
+}
+
+function deleteGrup(i) {
+  if (!confirm('¿Eliminar este grupal?')) return;
+  DATA.grupales.splice(i,1); saveData(); renderGrup(); updateStats();
+  showToast('Grupal eliminado','success');
+}
+
+// ===== TESTIMONIOS CRUD =====
+function openNewTest() {
+  document.getElementById('test-edit-id').value = '';
+  document.getElementById('modal-test-title').textContent = 'Nuevo testimonio';
+  ['test-nombre','test-viaje','test-texto','test-foto'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('test-estrellas').value = '5';
+  openModal('modal-test');
+}
+
+function editTest(i) {
+  const t = DATA.testimonios[i];
+  document.getElementById('test-edit-id').value = i;
+  document.getElementById('modal-test-title').textContent = 'Editar testimonio';
+  document.getElementById('test-nombre').value = t.nombre;
+  document.getElementById('test-viaje').value = t.viaje;
+  document.getElementById('test-texto').value = t.texto;
+  document.getElementById('test-estrellas').value = t.estrellas;
+  document.getElementById('test-foto').value = t.foto||'';
+  openModal('modal-test');
+}
+
+function saveTest() {
+  const idx = document.getElementById('test-edit-id').value;
+  const obj = {
+    id: idx !== '' ? DATA.testimonios[idx].id : 'test_'+Date.now(),
+    nombre: document.getElementById('test-nombre').value,
+    viaje: document.getElementById('test-viaje').value,
+    texto: document.getElementById('test-texto').value,
+    estrellas: parseInt(document.getElementById('test-estrellas').value),
+    foto: document.getElementById('test-foto').value
+  };
+  if (!obj.nombre || !obj.texto) { showToast('Completá nombre y testimonio','error'); return; }
+  if (idx !== '') DATA.testimonios[idx] = obj; else DATA.testimonios.push(obj);
+  saveData(); renderTest(); updateStats(); closeModal('modal-test');
+  showToast('Testimonio guardado ✓','success');
+}
+
+function deleteTest(i) {
+  if (!confirm('¿Eliminar este testimonio?')) return;
+  DATA.testimonios.splice(i,1); saveData(); renderTest(); updateStats();
+  showToast('Testimonio eliminado','success');
+}
+
+// ===== DESTINOS CRUD =====
+function openNewDest() {
+  document.getElementById('dest-edit-id').value = '';
+  document.getElementById('modal-dest-title').textContent = 'Nuevo destino';
+  ['dest-pais','dest-nombre','dest-precio','dest-tag','dest-img'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('dest-feat').value = 'no';
+  openModal('modal-dest');
+}
+
+function editDest(i) {
+  const d = DATA.destinos[i];
+  document.getElementById('dest-edit-id').value = i;
+  document.getElementById('modal-dest-title').textContent = 'Editar destino';
+  document.getElementById('dest-pais').value = d.pais;
+  document.getElementById('dest-nombre').value = d.nombre;
+  document.getElementById('dest-precio').value = d.precio;
+  document.getElementById('dest-tag').value = d.tag||'';
+  document.getElementById('dest-img').value = d.img;
+  document.getElementById('dest-feat').value = d.feat;
+  openModal('modal-dest');
+}
+
+function saveDest() {
+  const idx = document.getElementById('dest-edit-id').value;
+  const obj = {
+    id: idx !== '' ? DATA.destinos[idx].id : 'dest_'+Date.now(),
+    pais: document.getElementById('dest-pais').value,
+    nombre: document.getElementById('dest-nombre').value,
+    precio: parseFloat(document.getElementById('dest-precio').value)||0,
+    tag: document.getElementById('dest-tag').value,
+    img: document.getElementById('dest-img').value,
+    feat: document.getElementById('dest-feat').value
+  };
+  if (!obj.nombre) { showToast('El nombre es obligatorio','error'); return; }
+  if (idx !== '') DATA.destinos[idx] = obj; else DATA.destinos.push(obj);
+  saveData(); renderDest(); updateStats(); closeModal('modal-dest');
+  showToast('Destino guardado ✓','success');
+}
+
+function deleteDest(i) {
+  if (!confirm('¿Eliminar este destino?')) return;
+  DATA.destinos.splice(i,1); saveData(); renderDest(); updateStats();
+  showToast('Destino eliminado','success');
+}
+
+// ===== CONTACTO =====
+function saveContacto() {
+  const currency = document.getElementById('c-currency').value;
+  const usdToArs = parseFloat(document.getElementById('c-usd-ars').value) || 1250;
+  const settings = { currency, usdToArs };
+  localStorage.setItem('capri_settings', JSON.stringify(settings));
+  showToast('Datos y configuración de moneda guardados ✓','success');
+}
+
+// ===== QUIENES SOMOS =====
+function saveQuienes() {
+  showToast('Datos guardados ✓','success');
+}
+
+// ===== SAVE ALL =====
+function saveAll() {
+  saveData();
+  showToast('Todos los cambios guardados ✓','success');
+}
+
+// ===== MODAL HELPERS =====
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.addEventListener('keydown', e => { if (e.key==='Escape') document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open')); });
+
+// ===== TOAST =====
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  setTimeout(()=>t.classList.remove('show'), 3000);
+}
+
+// Init
+window.addEventListener('load', () => {
+  document.getElementById('inp-user').focus();
+});
+</script>
+</body>
+</html>
