@@ -1,4 +1,4 @@
-# Capri Viajes
+# Capri Viajes.
 
 Este proyecto incluye dos páginas estáticas para la marca Capri Viajes: una versión pública para mostrar el sitio y una versión de administración para gestionar el contenido.
 
