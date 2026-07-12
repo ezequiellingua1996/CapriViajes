@@ -1599,23 +1599,18 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
     </div>
   </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="supabase-config.js"></script>
 <script>
 // ===== DATA DE PAQUETES =====
-// Currency state
-// Currency settings — controlled from admin panel
-const _adminSettings = JSON.parse(localStorage.getItem('capri_settings') || '{}');
-let currentCurrency = _adminSettings.currency || "USD";
-const USD_TO_ARS = _adminSettings.usdToArs || 1250;
+// Currency state — se actualiza cuando llegan los datos desde Supabase (ver loadFromAdmin)
+let currentCurrency = "USD";
+const USD_TO_ARS = 1250;
 
-// Apply saved currency on load
+// Carga los datos publicados desde el panel admin (Supabase)
 window.addEventListener('load', () => {
   loadFromAdmin();
   setTimeout(initCardPrices, 100);
-  if (currentCurrency !== "USD") {
-    document.querySelectorAll(".currency-btn").forEach(b => {
-      b.classList.toggle("active", b.textContent.trim() === currentCurrency);
-    });
-  }
 });
 
 function setCurrency(cur) {
@@ -2179,9 +2174,12 @@ function renderGrupCard(g) {
   </div>`;
 }
 
-function loadFromAdmin() {
+async function loadFromAdmin() {
   let stored = null;
-  try { stored = JSON.parse(localStorage.getItem('capri_data') || 'null'); } catch(e) {}
+  try {
+    const { data, error } = await sb.from('site_data').select('value').eq('id','capri_data').maybeSingle();
+    if (!error && data && data.value && Object.keys(data.value).length) stored = data.value;
+  } catch(e) {}
   if (!stored) return;
   // Merge admin data into paquetes object (used by showDetalle)
   (stored.paquetes||[]).forEach(p => { paquetes[p.id] = adminPaqToDetalle(p, false); });
@@ -2226,7 +2224,11 @@ function loadFromAdmin() {
       </div>`).join('');
   }
   // Apply currency setting from admin
-  const settings = JSON.parse(localStorage.getItem('capri_settings') || '{}');
+  let settings = {};
+  try {
+    const { data, error } = await sb.from('site_data').select('value').eq('id','capri_settings').maybeSingle();
+    if (!error && data && data.value) settings = data.value;
+  } catch(e) {}
   if (settings.currency && settings.currency !== currentCurrency) setCurrency(settings.currency);
   setTimeout(initCardPrices, 50);
 }

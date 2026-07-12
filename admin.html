@@ -180,8 +180,8 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
     </div>
     <div class="login-error" id="login-error">Usuario o contraseña incorrectos.</div>
     <div class="field">
-      <label>Usuario</label>
-      <input type="text" id="inp-user" placeholder="admin" onkeydown="if(event.key==='Enter')doLogin()">
+      <label>Email</label>
+      <input type="email" id="inp-user" placeholder="tu@email.com" onkeydown="if(event.key==='Enter')doLogin()">
     </div>
     <div class="field">
       <label>Contraseña</label>
@@ -475,14 +475,13 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
           <div class="card">
             <div class="card-header"><h3>Cambiar credenciales de acceso</h3></div>
             <div class="card-body">
-              <div class="field"><label>Usuario actual</label><input type="text" id="s-user-current" disabled></div>
-              <div class="field"><label>Nuevo usuario</label><input type="text" id="s-user-new" placeholder="Nuevo nombre de usuario"></div>
+              <div class="field"><label>Email actual</label><input type="text" id="s-user-current" disabled></div>
               <div class="field"><label>Nueva contraseña</label>
                 <div class="pw-field"><input type="password" id="s-pass-new" placeholder="Nueva contraseña"><button class="pw-toggle" onclick="togglePw2()" type="button">👁</button></div>
               </div>
               <div class="field"><label>Confirmar contraseña</label><input type="password" id="s-pass-confirm" placeholder="Repetí la contraseña"></div>
-              <button class="btn btn-warning" onclick="saveCredentials()">Actualizar credenciales</button>
-              <p style="font-size:0.75rem;color:var(--gray);margin-top:0.75rem">⚠️ Guardá las nuevas credenciales en un lugar seguro. Si las olvidás, abrí DevTools → Application → Local Storage y eliminá la clave <strong>capri_admin_creds</strong>, luego recargá la página.</p>
+              <button class="btn btn-warning" onclick="saveCredentials()">Actualizar contraseña</button>
+              <p style="font-size:0.75rem;color:var(--gray);margin-top:0.75rem">⚠️ Si olvidás tu contraseña, se puede resetear desde el panel de Supabase → Authentication → Users.</p>
             </div>
           </div>
         </div>
@@ -761,41 +760,32 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="supabase-config.js"></script>
 <script>
 // ===== AUTH =====
-async function hashPassword(pw) {
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pw + 'cpv25'));
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
-}
-let ADMIN = (() => { try { return JSON.parse(localStorage.getItem('capri_admin_creds') || 'null') || {user:'admin',hash:null}; } catch(e) { return {user:'admin',hash:null}; } })();
-let _defaultHash = null;
-hashPassword('capri2025').then(h => {
-  _defaultHash = h;
-  if (!ADMIN.hash) { ADMIN.hash = h; localStorage.setItem('capri_admin_creds', JSON.stringify(ADMIN)); }
-});
-
 async function doLogin() {
-  const u = document.getElementById('inp-user').value.trim();
-  const p = document.getElementById('inp-pass').value;
-  const entered = await hashPassword(p);
-  const stored = ADMIN.hash || _defaultHash || await hashPassword('capri2025');
-  if (u === ADMIN.user && entered === stored) {
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('admin-screen').style.display = 'block';
-    document.getElementById('s-user-current').value = ADMIN.user;
-    renderAll();
-  } else {
+  const email = document.getElementById('inp-user').value.trim();
+  const password = document.getElementById('inp-pass').value;
+  const { data, error } = await sb.auth.signInWithPassword({ email, password });
+  if (error) {
     document.getElementById('login-error').style.display = 'block';
+    return;
   }
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('admin-screen').style.display = 'block';
+  document.getElementById('s-user-current').value = data.user.email;
+  await Promise.all([loadCloudData(), loadCloudSettings()]);
+  renderAll();
 }
 
-function doLogout() {
+async function doLogout() {
+  await sb.auth.signOut();
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('admin-screen').style.display = 'none';
   document.getElementById('inp-pass').value = '';
   document.getElementById('login-error').style.display = 'none';
 }
-
 
 function togglePw() {
   const i = document.getElementById('inp-pass');
@@ -807,23 +797,32 @@ function togglePw2() {
 }
 
 async function saveCredentials() {
-  const nu = document.getElementById('s-user-new').value.trim();
   const np = document.getElementById('s-pass-new').value;
   const nc = document.getElementById('s-pass-confirm').value;
-  if (!nu || !np) { showToast('Completá todos los campos','error'); return; }
+  if (!np) { showToast('Completá la nueva contraseña','error'); return; }
   if (np !== nc) { showToast('Las contraseñas no coinciden','error'); return; }
-  const newHash = await hashPassword(np);
-  ADMIN = { user: nu, hash: newHash };
-  localStorage.setItem('capri_admin_creds', JSON.stringify(ADMIN));
-  document.getElementById('s-user-current').value = nu;
-  document.getElementById('s-user-new').value = '';
+  const { error } = await sb.auth.updateUser({ password: np });
+  if (error) { showToast('Error: ' + error.message,'error'); return; }
   document.getElementById('s-pass-new').value = '';
   document.getElementById('s-pass-confirm').value = '';
-  showToast('Credenciales actualizadas ✓','success');
+  showToast('Contraseña actualizada ✓','success');
 }
 
 // ===== DATA =====
-let DATA = JSON.parse(localStorage.getItem('capri_data') || 'null') || {
+let SETTINGS = { currency: 'USD', usdToArs: 1250 };
+
+async function loadCloudData() {
+  const { data, error } = await sb.from('site_data').select('value').eq('id','capri_data').maybeSingle();
+  if (error) { showToast('No se pudo cargar desde la nube: ' + error.message, 'error'); return; }
+  if (data && data.value && Object.keys(data.value).length) DATA = data.value;
+}
+
+async function loadCloudSettings() {
+  const { data, error } = await sb.from('site_data').select('value').eq('id','capri_settings').maybeSingle();
+  if (!error && data && data.value && Object.keys(data.value).length) SETTINGS = data.value;
+}
+
+let DATA = {
   paquetes: [
     {id:'roma',titulo:'Roma Clásica & Toscana',dest:'Italia',cat:'internacional europa',dur:'7 noches',precio:1490,estrellas:'4★',descCorta:'Vaticano, Coliseo y los viñedos de la campiña italiana en un itinerario diseñado para disfrutar cada momento.',descFull:'Italia es uno de esos destinos que te deja sin palabras. Hotel 4 estrellas en el centro de Roma, desayuno incluido y guía en español.',img:'https://images.unsplash.com/photo-1503917988258-f87a78e3c995?w=600&q=80',badge:'Europa',vuelo:'si',incSi:['Vuelo de ida y vuelta','Hotel 4 estrellas (7 noches)','Desayuno diario','Traslados aeropuerto','Seguro de viaje internacional','Guía en español'],incNo:['Almuerzo y cena','Bebidas','Gastos personales'],resumen:['Roma|5 noches · Hotel Colosseo 4★','Toscana|2 noches · Agriturismo']},
     {id:'caribe',titulo:'Caribe Todo Incluido',dest:'México · Rep. Dominicana',cat:'internacional caribe',dur:'5 noches',precio:890,estrellas:'5★',descCorta:'Sol y playa en Punta Cana o Cancún. Resorts de primer nivel con comidas, bebidas y actividades incluidas.',descFull:'Sol, playa y todo incluido desde que llegás. Resorts 5 estrellas frente al mar.',img:'https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=600&q=80',badge:'Oferta',vuelo:'si',incSi:['Vuelo de ida y vuelta','5 noches en resort 5★','Todo incluido','Traslados aeropuerto','Seguro de viaje'],incNo:['Excursiones opcionales','Bebidas premium','Gastos personales'],resumen:['Punta Cana / Cancún|5 noches · Resort Todo incluido 5★']},
@@ -857,7 +856,11 @@ let DATA = JSON.parse(localStorage.getItem('capri_data') || 'null') || {
   ]
 };
 
-function saveData() { localStorage.setItem('capri_data', JSON.stringify(DATA)); }
+function saveData() {
+  sb.from('site_data').upsert({ id:'capri_data', value: DATA, updated_at: new Date().toISOString() }).then(({error}) => {
+    if (error) showToast('Error guardando en la nube: ' + error.message, 'error');
+  });
+}
 
 // ===== NAVIGATION =====
 function showPanel(id, triggerEl) {
@@ -883,14 +886,13 @@ function renderAll() {
   renderPaq(); renderGrup(); renderTest(); renderDest();
   updateStats();
   // Load currency settings
-  const settings = JSON.parse(localStorage.getItem('capri_settings') || '{}');
-  if (settings.currency) {
+  if (SETTINGS.currency) {
     const sel = document.getElementById('c-currency');
-    if (sel) sel.value = settings.currency;
+    if (sel) sel.value = SETTINGS.currency;
   }
-  if (settings.usdToArs) {
+  if (SETTINGS.usdToArs) {
     const inp = document.getElementById('c-usd-ars');
-    if (inp) inp.value = settings.usdToArs;
+    if (inp) inp.value = SETTINGS.usdToArs;
   }
 }
 
@@ -1407,9 +1409,11 @@ function deleteDest(i) {
 function saveContacto() {
   const currency = document.getElementById('c-currency').value;
   const usdToArs = parseFloat(document.getElementById('c-usd-ars').value) || 1250;
-  const settings = { currency, usdToArs };
-  localStorage.setItem('capri_settings', JSON.stringify(settings));
-  showToast('Datos y configuración de moneda guardados ✓','success');
+  SETTINGS = { currency, usdToArs };
+  sb.from('site_data').upsert({ id:'capri_settings', value: SETTINGS, updated_at: new Date().toISOString() }).then(({error}) => {
+    if (error) { showToast('Error: ' + error.message, 'error'); return; }
+    showToast('Datos y configuración de moneda guardados ✓','success');
+  });
 }
 
 // ===== QUIENES SOMOS =====
