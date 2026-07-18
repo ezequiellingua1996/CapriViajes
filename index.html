@@ -166,7 +166,7 @@ section{padding:5rem 5%}
 #detalle{padding-top:0}
 .det-hero{position:relative;height:55vh;min-height:380px;overflow:hidden}
 .det-hero img{width:100%;height:100%;object-fit:cover}
-.det-hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(18,33,58,0.9) 0%,rgba(18,33,58,0.3) 60%,transparent 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:2.5rem 5%}
+.det-hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(18,33,58,0.9) 0%,rgba(18,33,58,0.3) 60%,transparent 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:2.5rem 5%;pointer-events:none}
 .det-back{display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,0.8);text-decoration:none;font-size:0.82rem;font-weight:500;margin-bottom:1rem;position:absolute;top:5rem;left:5%;background:rgba(0,0,0,0.3);padding:0.4rem 0.8rem;border-radius:20px;backdrop-filter:blur(4px)}
 .det-back:hover{color:var(--white)}
 .det-hero-badges{display:flex;gap:0.5rem;margin-bottom:0.75rem;flex-wrap:wrap}
@@ -460,7 +460,7 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
 .paq-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
 .paq-card{background:#fff;border-radius:12px;overflow:hidden;border:1px solid #E8EDF2;box-shadow:0 1px 4px rgba(0,0,0,0.06);transition:box-shadow 0.25s,transform 0.2s;display:flex;flex-direction:column}
 .paq-card:hover{box-shadow:0 8px 24px rgba(0,0,0,0.12);transform:translateY(-3px)}
-.paq-img{position:relative;height:210px;overflow:hidden;flex-shrink:0}
+.paq-img{position:relative;height:210px;overflow:hidden;flex-shrink:0;cursor:pointer}
 .paq-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.4s}
 .paq-card:hover .paq-img img{transform:scale(1.03)}
 .paq-badges{position:absolute;top:0.75rem;left:0.75rem;display:flex;gap:0.4rem;flex-wrap:wrap}
@@ -1612,6 +1612,15 @@ const USD_TO_ARS = 1250;
 window.addEventListener('load', () => {
   loadFromAdmin();
   setTimeout(initCardPrices, 100);
+});
+
+// Clickear la imagen de un paquete/grupal abre el mismo detalle que "Ver más"
+document.addEventListener('click', (e) => {
+  const img = e.target.closest('.paq-img');
+  if (!img) return;
+  const card = img.closest('.paq-card');
+  const btn = card && card.querySelector('.btn-ver');
+  if (btn) btn.click();
 });
 
 function setCurrency(cur) {
