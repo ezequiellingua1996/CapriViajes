@@ -239,6 +239,10 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
           <span>Blog</span>
         </div>
+        <div class="nav-item" onclick="showPanel('asistencia')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>Asistencia al viajero</span>
+        </div>
         <div class="nav-item" onclick="showPanel('estadisticas')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
           <span>Estadísticas</span>
@@ -389,6 +393,19 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
             </div>
             <div class="card-body">
               <div class="item-list" id="blog-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ASISTENCIA AL VIAJERO -->
+        <div class="panel" id="panel-asistencia">
+          <div class="card">
+            <div class="card-header">
+              <h3>Empresas de asistencia al viajero</h3>
+              <button class="btn btn-primary" onclick="openNewAsistencia()">+ Agregar empresa</button>
+            </div>
+            <div class="card-body">
+              <div class="item-list" id="asistencia-list"></div>
             </div>
           </div>
         </div>
@@ -831,6 +848,30 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
   </div>
 </div>
 
+<!-- ===== MODAL ASISTENCIA ===== -->
+<div class="modal-overlay" id="modal-asistencia">
+  <div class="modal" style="max-width:520px">
+    <div class="modal-header">
+      <h3 id="modal-asistencia-title">Nueva empresa</h3>
+      <button class="modal-close" onclick="closeModal('modal-asistencia')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="asist-edit-id">
+      <div class="field"><label>Nombre</label><input type="text" id="asist-nombre" placeholder="Ej: Asiscard"></div>
+      <div class="field"><label>URL logo</label><input type="url" id="asist-logo" placeholder="https://..."></div>
+      <div class="field"><label>Descripción</label><textarea id="asist-descripcion" rows="3" placeholder="Cobertura médica internacional, asistencia 24hs..."></textarea></div>
+      <div class="field-row">
+        <div class="field"><label>Teléfono de emergencia (opcional)</label><input type="text" id="asist-telefono" placeholder="+54 9 11 1234-5678"></div>
+        <div class="field"><label>Sitio web (opcional)</label><input type="url" id="asist-web" placeholder="https://..."></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-asistencia')">Cancelar</button>
+      <button class="btn btn-success" onclick="saveAsistencia()">Guardar empresa</button>
+    </div>
+  </div>
+</div>
+
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
@@ -901,6 +942,7 @@ async function loadCloudData() {
   if (error) { showToast('No se pudo cargar desde la nube: ' + error.message, 'error'); return; }
   if (data && data.value && Object.keys(data.value).length) DATA = data.value;
   if (!DATA.blog) DATA.blog = [];
+  if (!DATA.asistencias) DATA.asistencias = [];
 }
 
 async function loadCloudSettings() {
@@ -940,7 +982,8 @@ let DATA = {
     {nombre:'Lucía Fernández',rol:'Especialista Europa & Asia',foto:'https://i.pravatar.cc/400?img=44'},
     {nombre:'Tomás Quiroga',rol:'Atención al viajero',foto:'https://i.pravatar.cc/400?img=25'}
   ],
-  blog: []
+  blog: [],
+  asistencias: []
 };
 
 function saveData() {
@@ -962,7 +1005,7 @@ function showPanel(id, triggerEl) {
       n.classList.add('active');
     }
   });
-  const titles = {dashboard:'Dashboard',paquetes:'Paquetes',grupales:'Grupales',testimonios:'Testimonios',destinos:'Destinos inicio',blog:'Blog',estadisticas:'Estadísticas',contacto:'Datos de contacto',quienes:'Quiénes somos',seguridad:'Seguridad'};
+  const titles = {dashboard:'Dashboard',paquetes:'Paquetes',grupales:'Grupales',testimonios:'Testimonios',destinos:'Destinos inicio',blog:'Blog',asistencia:'Asistencia al viajero',estadisticas:'Estadísticas',contacto:'Datos de contacto',quienes:'Quiénes somos',seguridad:'Seguridad'};
   document.getElementById('topbar-title').textContent = titles[id] || id;
   if (id === 'quienes') renderTeam();
   if (id === 'estadisticas') loadStats();
@@ -971,7 +1014,7 @@ function showPanel(id, triggerEl) {
 
 // ===== RENDER =====
 function renderAll() {
-  renderPaq(); renderGrup(); renderTest(); renderDest(); renderBlog();
+  renderPaq(); renderGrup(); renderTest(); renderDest(); renderBlog(); renderAsistencia();
   updateStats();
   // Load currency settings
   if (SETTINGS.currency) {
@@ -1584,6 +1627,65 @@ function deleteBlogPost(i) {
   if (!confirm('¿Eliminar esta entrada del blog?')) return;
   DATA.blog.splice(i,1); saveData(); renderBlog(); updateStats();
   showToast('Entrada eliminada','success');
+}
+
+// ===== ASISTENCIA AL VIAJERO =====
+function renderAsistencia() {
+  const el = document.getElementById('asistencia-list');
+  el.innerHTML = (DATA.asistencias||[]).map((a,i) => `
+    <div class="item-card">
+      <img class="item-card-img" src="${a.logo||''}" alt="${a.nombre||''}" onerror="this.style.background='#EEE'">
+      <div class="item-card-body">
+        <div class="item-card-title">${a.nombre||''}</div>
+        <div class="item-card-sub">${a.telefono||'Sin teléfono cargado'}</div>
+      </div>
+      <div class="item-card-actions">
+        <button class="btn btn-ghost btn-sm" onclick="editAsistencia(${i})">✏️ Editar</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteAsistencia(${i})">🗑</button>
+      </div>
+    </div>`).join('');
+}
+
+function openNewAsistencia() {
+  document.getElementById('asist-edit-id').value = '';
+  document.getElementById('modal-asistencia-title').textContent = 'Nueva empresa';
+  ['asist-nombre','asist-logo','asist-descripcion','asist-telefono','asist-web'].forEach(id=>document.getElementById(id).value='');
+  openModal('modal-asistencia');
+}
+
+function editAsistencia(i) {
+  const a = DATA.asistencias[i];
+  document.getElementById('asist-edit-id').value = i;
+  document.getElementById('modal-asistencia-title').textContent = 'Editar empresa';
+  document.getElementById('asist-nombre').value = a.nombre||'';
+  document.getElementById('asist-logo').value = a.logo||'';
+  document.getElementById('asist-descripcion').value = a.descripcion||'';
+  document.getElementById('asist-telefono').value = a.telefono||'';
+  document.getElementById('asist-web').value = a.web||'';
+  openModal('modal-asistencia');
+}
+
+function saveAsistencia() {
+  const idx = document.getElementById('asist-edit-id').value;
+  const nombre = document.getElementById('asist-nombre').value.trim();
+  if (!nombre) { showToast('El nombre es obligatorio','error'); return; }
+  const obj = {
+    id: idx !== '' ? DATA.asistencias[idx].id : 'asist_'+Date.now(),
+    nombre,
+    logo: document.getElementById('asist-logo').value,
+    descripcion: document.getElementById('asist-descripcion').value,
+    telefono: document.getElementById('asist-telefono').value,
+    web: document.getElementById('asist-web').value
+  };
+  if (idx !== '') DATA.asistencias[idx] = obj; else DATA.asistencias.push(obj);
+  saveData(); renderAsistencia(); closeModal('modal-asistencia');
+  showToast('Empresa guardada ✓','success');
+}
+
+function deleteAsistencia(i) {
+  if (!confirm('¿Eliminar esta empresa de asistencia?')) return;
+  DATA.asistencias.splice(i,1); saveData(); renderAsistencia();
+  showToast('Empresa eliminada','success');
 }
 
 // ===== ESTADISTICAS =====
