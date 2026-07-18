@@ -3,7 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Capri Viajes</title>
+<title>Capri Viajes | Agencia de viajes en Rosario</title>
+<meta name="description" content="Agencia de viajes en Rosario, Santa Fe con más de 15 años de experiencia. Paquetes nacionales e internacionales, salidas grupales y asesoramiento personalizado.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="canonical" href="https://ezequiellingua1996.github.io/CapriViajes/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Capri Viajes | Agencia de viajes en Rosario">
+<meta property="og:description" content="Agencia de viajes en Rosario, Santa Fe con más de 15 años de experiencia. Paquetes nacionales e internacionales, salidas grupales y asesoramiento personalizado.">
+<meta property="og:image" content="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=80">
+<meta property="og:url" content="https://ezequiellingua1996.github.io/CapriViajes/">
+<meta property="og:locale" content="es_AR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Capri Viajes | Agencia de viajes en Rosario">
+<meta name="twitter:description" content="Agencia de viajes en Rosario, Santa Fe con más de 15 años de experiencia. Paquetes nacionales e internacionales, salidas grupales y asesoramiento personalizado.">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=80">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -56,6 +69,26 @@ nav ul li a:hover,nav ul li a.active{color:var(--white);background:rgba(255,255,
 .mobile-menu a.m-sub{padding-left:8%;font-size:0.85rem;color:rgba(255,255,255,0.6);background:rgba(0,0,0,0.1)}
 .mobile-menu a.m-cta{background:var(--terracota);color:var(--white);text-align:center;margin:0.75rem 5% 0;border-radius:4px;border:none}
 .mobile-menu a:hover{color:var(--aqua)}
+
+/* ===== GLOBAL SEARCH ===== */
+.nav-search-btn{background:none;border:none;color:rgba(255,255,255,0.78);cursor:pointer;padding:0.45rem;display:flex;align-items:center;margin-right:0.5rem;transition:color 0.2s}
+.nav-search-btn:hover{color:var(--white)}
+.search-overlay{display:none;position:fixed;inset:0;z-index:300;background:rgba(18,33,58,0.97);backdrop-filter:blur(6px);padding:10vh 5% 2rem;overflow-y:auto}
+.search-overlay.open{display:block}
+.search-box{max-width:640px;margin:0 auto}
+.search-box-head{display:flex;align-items:center;gap:0.75rem;border-bottom:2px solid rgba(255,255,255,0.2);padding-bottom:0.75rem;margin-bottom:1.5rem}
+.search-box-head svg{flex-shrink:0;color:rgba(255,255,255,0.5)}
+#search-input{flex:1;background:none;border:none;outline:none;color:var(--white);font-family:"Inter",sans-serif;font-size:1.3rem}
+#search-input::placeholder{color:rgba(255,255,255,0.4)}
+.search-close{background:none;border:none;color:rgba(255,255,255,0.6);cursor:pointer;font-size:1.4rem;line-height:1;padding:0.25rem}
+.search-close:hover{color:var(--white)}
+.search-results{display:flex;flex-direction:column;gap:0.5rem}
+.search-result-item{display:flex;align-items:center;gap:1rem;padding:0.75rem;border-radius:8px;text-decoration:none;background:rgba(255,255,255,0.04);transition:background 0.2s;cursor:pointer}
+.search-result-item:hover{background:rgba(255,255,255,0.09)}
+.search-result-item img{width:56px;height:56px;object-fit:cover;border-radius:6px;flex-shrink:0}
+.search-result-item .sr-title{color:var(--white);font-weight:600;font-size:0.9rem;margin-bottom:0.15rem}
+.search-result-item .sr-sub{color:rgba(255,255,255,0.55);font-size:0.78rem}
+.search-empty{color:rgba(255,255,255,0.5);text-align:center;padding:2rem 0;font-size:0.9rem}
 
 /* ===== PAGES ===== */
 .page{display:none;min-height:100vh}
@@ -550,6 +583,34 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
 .traslado-toggle{display:flex;align-items:center;gap:0.75rem;background:var(--light);border:1px solid #E8E4DC;border-radius:8px;padding:0.85rem 1rem}
 .traslado-check{width:18px;height:18px;border-radius:4px;background:var(--success);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 
+/* ===== BLOG ===== */
+.blog-page-hero{background:linear-gradient(135deg,var(--navy) 0%,var(--ocean) 100%);padding:7rem 5% 4rem;color:var(--white)}
+.blog-page-hero .eyebrow{display:block;font-size:0.72rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--aqua);margin-bottom:0.5rem}
+.blog-page-hero h1{font-family:"Playfair Display",serif;font-size:clamp(2rem,4vw,3.2rem);margin-bottom:0.75rem}
+.blog-page-hero p{color:rgba(255,255,255,0.7);max-width:540px;font-size:0.95rem}
+.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;padding:2.5rem 5% 4rem}
+.blog-card{background:#fff;border-radius:12px;overflow:hidden;border:1px solid #E8EDF2;box-shadow:0 1px 4px rgba(0,0,0,0.06);transition:box-shadow 0.25s,transform 0.2s;cursor:pointer}
+.blog-card:hover{box-shadow:0 8px 24px rgba(0,0,0,0.12);transform:translateY(-3px)}
+.blog-card-img{height:190px;overflow:hidden}
+.blog-card-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.4s}
+.blog-card:hover .blog-card-img img{transform:scale(1.03)}
+.blog-card-body{padding:1.1rem 1.2rem 1.4rem}
+.blog-card-date{font-size:0.68rem;color:var(--ocean);text-transform:uppercase;letter-spacing:0.06em;font-weight:600;margin-bottom:0.4rem}
+.blog-card-body h3{font-size:1.05rem;font-weight:700;color:#1B2A3B;margin-bottom:0.5rem;line-height:1.3}
+.blog-card-excerpt{font-size:0.85rem;color:var(--gray);line-height:1.5}
+@media(max-width:1024px){.blog-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){.blog-grid{grid-template-columns:repeat(2,1fr);gap:1rem;padding:1.5rem 5% 3rem}}
+@media(max-width:480px){.blog-grid{grid-template-columns:1fr}}
+.blogpost-hero{position:relative;height:45vh;min-height:300px;overflow:hidden}
+.blogpost-hero img{width:100%;height:100%;object-fit:cover}
+.blogpost-hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(18,33,58,0.9) 0%,rgba(18,33,58,0.3) 60%,transparent 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:2.5rem 5%;pointer-events:none}
+.blogpost-hero-overlay h1{font-family:"Playfair Display",serif;font-size:clamp(1.8rem,4vw,2.8rem);color:var(--white)}
+.blogpost-date{color:rgba(255,255,255,0.7);font-size:0.85rem;margin-top:0.4rem}
+.blogpost-body{padding:3rem 5%;max-width:720px;margin:0 auto;font-size:1rem;line-height:1.8;color:#1E293B}
+.blogpost-body p{margin-bottom:1.2rem}
+.blogpost-body img{max-width:100%;border-radius:10px;margin:1.5rem 0}
+.blogpost-body h2,.blogpost-body h3{font-family:"Playfair Display",serif;margin:1.5rem 0 0.75rem;color:var(--navy)}
+
 </style>
 </head>
 <body>
@@ -578,21 +639,39 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
       </div>
     </li>
     <li><a href="#" onclick="showPage('grupales');return false" id="nav-grupales">Grupales</a></li>
+    <li><a href="#" onclick="showPage('blog');return false" id="nav-blog">Blog</a></li>
     <li><a href="#" onclick="showPage('quienes');return false" id="nav-quienes">¿Quiénes somos?</a></li>
     <li><a href="#" onclick="showPage('contacto');return false" id="nav-contacto" class="nav-cta">Contacto</a></li>
   </ul>
+  <button class="nav-search-btn" aria-label="Buscar" onclick="openSearch()">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+  </button>
   <button class="hamburger" id="hamburger" aria-label="Menú" onclick="toggleMenu()">
     <span></span><span></span><span></span>
   </button>
 </nav>
 <div class="mobile-menu" id="mobile-menu">
+  <a href="#" onclick="openSearch();closeMenu();return false">🔍 Buscar</a>
   <a href="#" onclick="showPage('inicio');closeMenu();return false">Inicio</a>
   <a href="#" onclick="showPage('paquetes');closeMenu();return false">Paquetes</a>
   <a href="#" class="m-sub" onclick="showPage('paquetes');filterPaq('nacional');closeMenu();return false">↳ Nacional</a>
   <a href="#" class="m-sub" onclick="showPage('paquetes');filterPaq('internacional');closeMenu();return false">↳ Internacional</a>
   <a href="#" onclick="showPage('grupales');closeMenu();return false">Grupales</a>
+  <a href="#" onclick="showPage('blog');closeMenu();return false">Blog</a>
   <a href="#" onclick="showPage('quienes');closeMenu();return false">¿Quiénes somos?</a>
   <a href="#" class="m-cta" onclick="showPage('contacto');closeMenu();return false">Contacto</a>
+</div>
+
+<!-- ===== GLOBAL SEARCH OVERLAY ===== -->
+<div class="search-overlay" id="search-overlay">
+  <div class="search-box">
+    <div class="search-box-head">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="search-input" placeholder="Buscar destino o paquete..." oninput="runGlobalSearch(this.value)">
+      <button class="search-close" aria-label="Cerrar" onclick="closeSearch()">✕</button>
+    </div>
+    <div class="search-results" id="search-results"></div>
+  </div>
 </div>
 
 <!-- =================== INICIO =================== -->
@@ -1246,6 +1325,86 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
   </footer>
 </div>
 
+<!-- =================== BLOG =================== -->
+<div id="blog" class="page">
+  <div class="blog-page-hero">
+    <span class="eyebrow">Blog</span>
+    <h1>Guías y consejos de viaje</h1>
+    <p>Recomendaciones, itinerarios y tips para que tu próximo viaje sea inolvidable.</p>
+  </div>
+  <div class="blog-grid" id="blog-grid"></div>
+    <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="footer-logo" onclick="showPage('inicio');return false">
+          <svg class="logo-svg-footer" viewBox="0 0 200 48" xmlns="http://www.w3.org/2000/svg" aria-label="Capri Viajes" style="display:block;margin-bottom:0.75rem">
+            <text x="100" y="30" text-anchor="middle" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="32" font-weight="700" letter-spacing="9" fill="white" opacity="0.9">CAPRI</text>
+            <line x1="0" y1="40" x2="54" y2="40" stroke="rgba(255,255,255,0.25)" stroke-width="0.5"/>
+            <text x="100" y="43" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="7.5" font-weight="400" letter-spacing="5" fill="rgba(255,255,255,0.5)" text-anchor="middle">VIAJES</text>
+            <line x1="146" y1="40" x2="200" y2="40" stroke="rgba(255,255,255,0.25)" stroke-width="0.5"/>
+          </svg>
+        </a>
+        <p>Agencia de viajes con atención personalizada en Rosario, Santa Fe. Legajo RNAV 20607.</p>
+        <div class="foot-social">
+          <a href="https://www.facebook.com/profile.php?id=61580629453017" target="_blank" class="foot-soc" aria-label="Facebook">
+            <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <a href="https://www.instagram.com/capriviajes.ok/" target="_blank" class="foot-soc" aria-label="Instagram">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+          <a href="https://wa.me/5493412279027" target="_blank" class="foot-soc" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Páginas</h5>
+        <ul>
+          <li><a href="#" onclick="showPage('inicio');return false">Inicio</a></li>
+          <li><a href="#" onclick="showPage('paquetes');return false">Paquetes</a></li>
+          <li><a href="#" onclick="showPage('grupales');return false">Grupales</a></li>
+          <li><a href="#" onclick="showPage('quienes');return false">¿Quiénes somos?</a></li>
+          <li><a href="#" onclick="showPage('contacto');return false">Contacto</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Paquetes</h5>
+        <ul>
+          <li><a href="#" onclick="showPage('paquetes');filterPaq('nacional');return false">Nacionales</a></li>
+          <li><a href="#" onclick="showPage('paquetes');filterPaq('internacional');return false">Internacionales</a></li>
+          <li><a href="#" onclick="showPage('grupales');return false">Grupales</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Contacto</h5>
+        <ul>
+          <li><a href="tel:+5493412279027">+54 9 3412 279027</a></li>
+          <li><a href="mailto:capri.agenciadeviajes@gmail.com">capri.agenciadeviajes@gmail.com</a></li>
+          <li><a href="#">Paraguay 339 3° G, Rosario</a></li>
+          <li><a href="#">Lun–Vie 9:00–18:00 hs</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Capri Viajes. Todos los derechos reservados.</span>
+      <span>Legajo RNAV 20607 · Reg. Ministerio de Turismo</span>
+    </div>
+  </footer>
+</div>
+
+<!-- =================== BLOG POST =================== -->
+<div id="blog-post" class="page">
+  <div class="blogpost-hero">
+    <img id="blogpost-cover" src="" alt="">
+    <a href="#" class="det-back" onclick="showPage('blog');return false">← Volver al blog</a>
+    <div class="blogpost-hero-overlay">
+      <h1 id="blogpost-title"></h1>
+      <p class="blogpost-date" id="blogpost-date"></p>
+    </div>
+  </div>
+  <div class="blogpost-body" id="blogpost-content"></div>
+</div>
+
 <!-- =================== QUIÉNES SOMOS =================== -->
 <div id="quienes" class="page">
   <div class="qs-hero-full">
@@ -1610,8 +1769,16 @@ const USD_TO_ARS = 1250;
 
 // Carga los datos publicados desde el panel admin (Supabase)
 window.addEventListener('load', () => {
-  loadFromAdmin();
+  loadFromAdmin().then(() => {
+    const postSlug = new URLSearchParams(location.search).get('post');
+    if (postSlug) showBlogPost(postSlug);
+  });
   setTimeout(initCardPrices, 100);
+});
+
+window.addEventListener('popstate', () => {
+  const postSlug = new URLSearchParams(location.search).get('post');
+  if (postSlug) showBlogPost(postSlug); else showPage('blog');
 });
 
 // Clickear la imagen de un paquete/grupal abre el mismo detalle que "Ver más"
@@ -1867,9 +2034,14 @@ const paquetes = {
   }
 };
 
+function logEvent(type, packageId, packageTitle) {
+  try { sb.from('page_events').insert({ type, package_id: packageId||null, package_title: packageTitle||null }).then(()=>{}); } catch(e) {}
+}
+
 function showDetalle(id) {
   const p = paquetes[id];
   if (!p) return;
+  logEvent('view', id, p.title);
   window._currentDetalle = p;
   window._currentDetalleId = id;
   p._selectedHotelPrice = p.precioBase || 0;
@@ -2004,8 +2176,9 @@ function showDetalle(id) {
 
   const waMsg = encodeURIComponent("Hola! Quiero consultar sobre " + p.title + " (salida " + (p.fechaSalida||"") + ")");
   document.getElementById("det-wa-link").href = "https://wa.me/5493412279027?text=" + waMsg;
+  document.getElementById("det-wa-link").onclick = () => logEvent('whatsapp_click', id, p.title);
   const stickyWa = document.getElementById("det-sticky-wa");
-  if (stickyWa) stickyWa.href = "https://wa.me/5493412279027?text=" + waMsg;
+  if (stickyWa) { stickyWa.href = "https://wa.me/5493412279027?text=" + waMsg; stickyWa.onclick = () => logEvent('whatsapp_click', id, p.title); }
 
   showPage("detalle");
 }
@@ -2042,8 +2215,77 @@ function showPage(id) {
   document.getElementById(id).classList.add("active");
   const navEl = document.getElementById("nav-" + id);
   if (navEl) navEl.classList.add("active");
+  if (id !== 'blog-post' && location.search) history.replaceState(null, '', location.pathname);
   window.scrollTo(0, 0);
 }
+
+// ===== BLOG =====
+let blogPosts = [];
+function renderBlogGrid() {
+  const grid = document.getElementById('blog-grid');
+  if (!grid) return;
+  if (!blogPosts.length) {
+    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--gray);padding:3rem 0">Muy pronto vas a encontrar acá nuestras guías y consejos de viaje.</p>';
+    return;
+  }
+  grid.innerHTML = blogPosts.map(p => `
+    <div class="blog-card" onclick="showBlogPost('${escapeHtml(p.slug||p.id)}')">
+      <div class="blog-card-img"><img src="${escapeHtml(p.cover||'')}" alt="${escapeHtml(p.titulo||'')}" loading="lazy"></div>
+      <div class="blog-card-body">
+        <p class="blog-card-date">${escapeHtml(p.fecha||'')}</p>
+        <h3>${escapeHtml(p.titulo||'')}</h3>
+        <p class="blog-card-excerpt">${escapeHtml(p.excerpt||'')}</p>
+      </div>
+    </div>`).join('');
+}
+function showBlogPost(slug) {
+  const post = blogPosts.find(p => (p.slug||p.id) === slug);
+  if (!post) return;
+  logEvent('blog_view', slug, post.titulo);
+  document.getElementById('blogpost-cover').src = post.cover||'';
+  document.getElementById('blogpost-cover').alt = post.titulo||'';
+  document.getElementById('blogpost-title').textContent = post.titulo||'';
+  document.getElementById('blogpost-date').textContent = post.fecha||'';
+  document.getElementById('blogpost-content').innerHTML = post.contenido||'';
+  if (new URLSearchParams(location.search).get('post') !== slug) {
+    history.pushState(null, '', '?post=' + encodeURIComponent(slug));
+  }
+  showPage('blog-post');
+}
+
+// ===== GLOBAL SEARCH (paquetes + grupales) =====
+function openSearch() {
+  document.getElementById('search-overlay').classList.add('open');
+  document.getElementById('search-input').value = '';
+  document.getElementById('search-results').innerHTML = '';
+  setTimeout(() => document.getElementById('search-input').focus(), 50);
+}
+function closeSearch() {
+  document.getElementById('search-overlay').classList.remove('open');
+}
+function runGlobalSearch(val) {
+  const q = val.toLowerCase().trim();
+  const box = document.getElementById('search-results');
+  if (!q) { box.innerHTML = ''; return; }
+  const matches = Object.entries(paquetes).filter(([id, p]) =>
+    (p.title||'').toLowerCase().includes(q) || (p.sub||'').toLowerCase().includes(q)
+  ).slice(0, 12);
+  if (!matches.length) {
+    box.innerHTML = '<div class="search-empty">No encontramos resultados para "' + escapeHtml(val) + '"</div>';
+    return;
+  }
+  box.innerHTML = matches.map(([id, p]) => `
+    <div class="search-result-item" onclick="closeSearch();showDetalle('${escapeHtml(id)}')">
+      <img src="${escapeHtml(p.img||'')}" alt="${escapeHtml(p.title||'')}">
+      <div>
+        <div class="sr-title">${escapeHtml(p.title||'')}</div>
+        <div class="sr-sub">${escapeHtml(p.sub||'')}</div>
+      </div>
+    </div>`).join('');
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeSearch();
+});
 
 function searchPaq(val) {
   const q = val.toLowerCase().trim();
@@ -2190,6 +2432,8 @@ async function loadFromAdmin() {
     const { data, error } = await sb.from('site_data').select('value').eq('id','capri_data').maybeSingle();
     if (!error && data && data.value && Object.keys(data.value).length) stored = data.value;
   } catch(e) {}
+  blogPosts = (stored && stored.blog) || [];
+  renderBlogGrid();
   if (!stored) return;
   // Merge admin data into paquetes object (used by showDetalle)
   (stored.paquetes||[]).forEach(p => { paquetes[p.id] = adminPaqToDetalle(p, false); });

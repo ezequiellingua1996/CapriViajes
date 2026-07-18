@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Panel Admin · Capri Viajes</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -233,6 +235,14 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
           <span>Destinos inicio</span>
         </div>
+        <div class="nav-item" onclick="showPanel('blog')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          <span>Blog</span>
+        </div>
+        <div class="nav-item" onclick="showPanel('estadisticas')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          <span>Estadísticas</span>
+        </div>
 
         <div class="nav-section">Configuración</div>
         <div class="nav-item" onclick="showPanel('contacto')">
@@ -367,6 +377,36 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
             <div class="card-body">
               <div class="item-list" id="dest-list"></div>
             </div>
+          </div>
+        </div>
+
+        <!-- BLOG -->
+        <div class="panel" id="panel-blog">
+          <div class="card">
+            <div class="card-header">
+              <h3>Entradas del blog</h3>
+              <button class="btn btn-primary" onclick="openNewBlog()">+ Nueva entrada</button>
+            </div>
+            <div class="card-body">
+              <div class="item-list" id="blog-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ESTADISTICAS -->
+        <div class="panel" id="panel-estadisticas">
+          <div class="stats-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem">
+            <div class="card" style="padding:1.25rem"><div style="font-size:0.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.4rem">Vistas de paquetes</div><div id="stat-views" style="font-size:2rem;font-weight:800;color:var(--navy)">–</div></div>
+            <div class="card" style="padding:1.25rem"><div style="font-size:0.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.4rem">Clicks a WhatsApp</div><div id="stat-wa" style="font-size:2rem;font-weight:800;color:var(--navy)">–</div></div>
+            <div class="card" style="padding:1.25rem"><div style="font-size:0.75rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.4rem">Vistas del blog</div><div id="stat-blogviews" style="font-size:2rem;font-weight:800;color:var(--navy)">–</div></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Paquetes más vistos</h3></div>
+            <div class="card-body"><div class="item-list" id="stats-top-views">Cargando...</div></div>
+          </div>
+          <div class="card" style="margin-top:1.5rem">
+            <div class="card-header"><h3>Paquetes con más clicks a WhatsApp</h3></div>
+            <div class="card-body"><div class="item-list" id="stats-top-wa">Cargando...</div></div>
           </div>
         </div>
 
@@ -757,6 +797,31 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
   </div>
 </div>
 
+<!-- ===== MODAL BLOG ===== -->
+<div class="modal-overlay" id="modal-blog">
+  <div class="modal" style="max-width:640px">
+    <div class="modal-header">
+      <h3 id="modal-blog-title">Nueva entrada</h3>
+      <button class="modal-close" onclick="closeModal('modal-blog')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="blog-edit-id">
+      <div class="field"><label>Título</label><input type="text" id="blog-titulo" placeholder="Ej: 5 destinos para conocer en 2026"></div>
+      <div class="field-row">
+        <div class="field"><label>Slug (URL, sin espacios)</label><input type="text" id="blog-slug" placeholder="ej-5-destinos-2026"></div>
+        <div class="field"><label>Fecha</label><input type="text" id="blog-fecha" placeholder="18 de julio de 2026"></div>
+      </div>
+      <div class="field"><label>URL imagen de portada</label><input type="url" id="blog-cover" placeholder="https://images.unsplash.com/..."></div>
+      <div class="field"><label>Extracto (resumen corto para la tarjeta)</label><textarea id="blog-excerpt" rows="2" placeholder="Una frase breve que resuma la nota"></textarea></div>
+      <div class="field"><label>Contenido</label><textarea id="blog-contenido" rows="10" placeholder="Escribí el contenido de la nota. Podés usar HTML simple como <p>, <h2>, <img>."></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-blog')">Cancelar</button>
+      <button class="btn btn-success" onclick="saveBlogPost()">Guardar entrada</button>
+    </div>
+  </div>
+</div>
+
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
@@ -826,6 +891,7 @@ async function loadCloudData() {
   const { data, error } = await sb.from('site_data').select('value').eq('id','capri_data').maybeSingle();
   if (error) { showToast('No se pudo cargar desde la nube: ' + error.message, 'error'); return; }
   if (data && data.value && Object.keys(data.value).length) DATA = data.value;
+  if (!DATA.blog) DATA.blog = [];
 }
 
 async function loadCloudSettings() {
@@ -864,7 +930,8 @@ let DATA = {
     {nombre:'Sebastián López',rol:'Consultor de viajes',foto:'https://i.pravatar.cc/400?img=15'},
     {nombre:'Lucía Fernández',rol:'Especialista Europa & Asia',foto:'https://i.pravatar.cc/400?img=44'},
     {nombre:'Tomás Quiroga',rol:'Atención al viajero',foto:'https://i.pravatar.cc/400?img=25'}
-  ]
+  ],
+  blog: []
 };
 
 function saveData() {
@@ -886,15 +953,16 @@ function showPanel(id, triggerEl) {
       n.classList.add('active');
     }
   });
-  const titles = {dashboard:'Dashboard',paquetes:'Paquetes',grupales:'Grupales',testimonios:'Testimonios',destinos:'Destinos inicio',contacto:'Datos de contacto',quienes:'Quiénes somos',seguridad:'Seguridad'};
+  const titles = {dashboard:'Dashboard',paquetes:'Paquetes',grupales:'Grupales',testimonios:'Testimonios',destinos:'Destinos inicio',blog:'Blog',estadisticas:'Estadísticas',contacto:'Datos de contacto',quienes:'Quiénes somos',seguridad:'Seguridad'};
   document.getElementById('topbar-title').textContent = titles[id] || id;
   if (id === 'quienes') renderTeam();
+  if (id === 'estadisticas') loadStats();
   window.scrollTo(0,0);
 }
 
 // ===== RENDER =====
 function renderAll() {
-  renderPaq(); renderGrup(); renderTest(); renderDest();
+  renderPaq(); renderGrup(); renderTest(); renderDest(); renderBlog();
   updateStats();
   // Load currency settings
   if (SETTINGS.currency) {
@@ -1414,6 +1482,107 @@ function deleteDest(i) {
   if (!confirm('¿Eliminar este destino?')) return;
   DATA.destinos.splice(i,1); saveData(); renderDest(); updateStats();
   showToast('Destino eliminado','success');
+}
+
+// ===== BLOG =====
+function renderBlog() {
+  const el = document.getElementById('blog-list');
+  el.innerHTML = (DATA.blog||[]).map((b,i) => `
+    <div class="item-card">
+      <img class="item-card-img" src="${b.cover||''}" alt="${b.titulo||''}" onerror="this.style.background='#EEE'">
+      <div class="item-card-body">
+        <div class="item-card-title">${b.titulo||''}</div>
+        <div class="item-card-sub">${b.fecha||''} · /${b.slug||b.id}</div>
+      </div>
+      <div class="item-card-actions">
+        <button class="btn btn-ghost btn-sm" onclick="editBlogPost(${i})">✏️ Editar</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteBlogPost(${i})">🗑</button>
+      </div>
+    </div>`).join('');
+}
+
+function slugify(s) {
+  return (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+}
+
+function openNewBlog() {
+  document.getElementById('blog-edit-id').value = '';
+  document.getElementById('modal-blog-title').textContent = 'Nueva entrada';
+  ['blog-titulo','blog-slug','blog-fecha','blog-cover','blog-excerpt','blog-contenido'].forEach(id=>document.getElementById(id).value='');
+  openModal('modal-blog');
+}
+
+function editBlogPost(i) {
+  const b = DATA.blog[i];
+  document.getElementById('blog-edit-id').value = i;
+  document.getElementById('modal-blog-title').textContent = 'Editar entrada';
+  document.getElementById('blog-titulo').value = b.titulo||'';
+  document.getElementById('blog-slug').value = b.slug||'';
+  document.getElementById('blog-fecha').value = b.fecha||'';
+  document.getElementById('blog-cover').value = b.cover||'';
+  document.getElementById('blog-excerpt').value = b.excerpt||'';
+  document.getElementById('blog-contenido').value = b.contenido||'';
+  openModal('modal-blog');
+}
+
+function saveBlogPost() {
+  const idx = document.getElementById('blog-edit-id').value;
+  const titulo = document.getElementById('blog-titulo').value.trim();
+  if (!titulo) { showToast('El título es obligatorio','error'); return; }
+  const slug = slugify(document.getElementById('blog-slug').value) || slugify(titulo);
+  const obj = {
+    id: idx !== '' ? DATA.blog[idx].id : 'post_'+Date.now(),
+    titulo, slug,
+    fecha: document.getElementById('blog-fecha').value,
+    cover: document.getElementById('blog-cover').value,
+    excerpt: document.getElementById('blog-excerpt').value,
+    contenido: document.getElementById('blog-contenido').value
+  };
+  if (idx !== '') DATA.blog[idx] = obj; else DATA.blog.push(obj);
+  saveData(); renderBlog(); updateStats(); closeModal('modal-blog');
+  showToast('Entrada guardada ✓','success');
+}
+
+function deleteBlogPost(i) {
+  if (!confirm('¿Eliminar esta entrada del blog?')) return;
+  DATA.blog.splice(i,1); saveData(); renderBlog(); updateStats();
+  showToast('Entrada eliminada','success');
+}
+
+// ===== ESTADISTICAS =====
+async function loadStats() {
+  document.getElementById('stats-top-views').innerHTML = 'Cargando...';
+  document.getElementById('stats-top-wa').innerHTML = 'Cargando...';
+  const { data, error } = await sb.from('page_events').select('type,package_id,package_title').limit(5000);
+  if (error) { showToast('Error cargando estadísticas: ' + error.message, 'error'); return; }
+  const rows = data || [];
+  const views = rows.filter(r => r.type === 'view');
+  const wa = rows.filter(r => r.type === 'whatsapp_click');
+  const blogViews = rows.filter(r => r.type === 'blog_view');
+  document.getElementById('stat-views').textContent = views.length;
+  document.getElementById('stat-wa').textContent = wa.length;
+  document.getElementById('stat-blogviews').textContent = blogViews.length;
+
+  function topList(arr) {
+    const counts = {};
+    arr.forEach(r => {
+      const key = r.package_id || '(desconocido)';
+      if (!counts[key]) counts[key] = { title: r.package_title || key, count: 0 };
+      counts[key].count++;
+    });
+    return Object.values(counts).sort((a,b) => b.count - a.count).slice(0, 10);
+  }
+  function renderTop(elId, list) {
+    const el = document.getElementById(elId);
+    if (!list.length) { el.innerHTML = '<p style="color:var(--gray);padding:1rem 0">Todavía no hay datos.</p>'; return; }
+    el.innerHTML = list.map(item => `
+      <div class="item-card">
+        <div class="item-card-body"><div class="item-card-title">${item.title}</div></div>
+        <div class="item-card-actions"><strong>${item.count}</strong></div>
+      </div>`).join('');
+  }
+  renderTop('stats-top-views', topList(views));
+  renderTop('stats-top-wa', topList(wa));
 }
 
 // ===== CONTACTO =====
