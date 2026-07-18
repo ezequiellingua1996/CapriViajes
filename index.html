@@ -547,6 +547,8 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
 
 /* ===== HOTEL SELECTION ===== */
 .hotel-selection{display:flex;flex-direction:column;gap:0.75rem;margin-top:0.5rem}
+.hotel-city-label{font-size:0.72rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--ocean);margin:1.25rem 0 0.5rem}
+.hotel-city-label:first-child{margin-top:0}
 .hotel-option{border:1.5px solid #E8E4DC;border-radius:12px;padding:1rem 1.1rem;cursor:pointer;transition:all 0.2s;background:var(--white);display:flex;align-items:center;gap:1rem;margin-bottom:0.75rem}
 .hotel-option:hover{border-color:var(--ocean);background:#F8FCFE;transform:translateY(-1px);box-shadow:0 4px 12px rgba(18,33,58,0.08)}
 .hotel-option.selected{border-color:#0EA5E9;background:#F0F9FF;box-shadow:0 0 0 2px rgba(14,165,233,0.2)}
@@ -2059,11 +2061,11 @@ function showDetalle(id) {
   document.getElementById("det-info-strip").innerHTML = `
     <div class="det-info-item">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      <div><span class="det-info-label">Salida</span><span class="det-info-val">${p.fechaSalida||"A consultar"}</span></div>
+      <div><span class="det-info-label">Salida</span><span class="det-info-val">${formatFechaLarga(p.fechaSalida)||"A consultar"}</span></div>
     </div>
     <div class="det-info-item">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      <div><span class="det-info-label">Regreso</span><span class="det-info-val">${p.fechaRegreso||"A consultar"}</span></div>
+      <div><span class="det-info-label">Regreso</span><span class="det-info-val">${formatFechaLarga(p.fechaRegreso)||"A consultar"}</span></div>
     </div>
     <div class="det-info-item">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
@@ -2123,14 +2125,23 @@ function showDetalle(id) {
   } else {
     hotelSection.style.display = "";
     if (p.hoteles && p.hoteles.length) {
-      document.getElementById("det-hoteles").innerHTML = p.hoteles.map((h,i) => `
-        <div class="hotel-option ${i===0?"selected":""}" onclick="selectHotel(this,${h.precio},'${id}')">
+      const grupos = {};
+      const ciudades = [];
+      p.hoteles.forEach(h => {
+        const ciudad = h.ciudad || '';
+        if (!(ciudad in grupos)) { grupos[ciudad] = []; ciudades.push(ciudad); }
+        grupos[ciudad].push(h);
+      });
+      document.getElementById("det-hoteles").innerHTML = ciudades.map((ciudad, gi) => `
+        ${ciudad ? `<div class="hotel-city-label">${escapeHtml(ciudad)}</div>` : ""}
+        ${grupos[ciudad].map((h,i) => `
+        <div class="hotel-option ${i===0?"selected":""}" data-group="${gi}" data-ciudad="${escapeHtml(ciudad)}" onclick="selectHotel(this,${h.precio},${gi})">
           <img class="hotel-option-img" src="${h.img}" alt="${h.nombre}" onerror="this.style.background='#EEE'">
           <div class="hotel-option-body">
             <div class="hotel-stars">${"★".repeat(h.estrellas)}</div>
             <div class="hotel-option-name">${h.nombre}</div>
             <div class="hotel-option-detail">${h.detail}</div>
-            <div class="hotel-tags">${h.tags.map(t=>`<span class="hotel-tag-small">${t}</span>`).join("")}</div>
+            <div class="hotel-tags">${(h.tags||[]).map(t=>`<span class="hotel-tag-small">${t}</span>`).join("")}</div>
           </div>
           <div class="hotel-option-price">
             <div class="hotel-price-desde">Desde</div>
@@ -2140,8 +2151,9 @@ function showDetalle(id) {
           <div class="hotel-selected-icon">
             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
-        </div>`).join("");
-      p._selectedHotelPrice = p.hoteles[0].precio;
+        </div>`).join("")}
+      `).join("");
+      p._selectedHotelPrice = ciudades.reduce((sum, ciudad) => sum + (grupos[ciudad][0]?.precio||0), 0);
     }
   }
 
@@ -2167,14 +2179,14 @@ function showDetalle(id) {
   const fechasEl = document.getElementById("det-fechas-sidebar");
   if (fechasEl) {
     fechasEl.innerHTML = (p.fechaSalida||p.fechaRegreso) ? `
-      <div class="resumen-row"><span>Salida</span><span>${p.fechaSalida||"—"}</span></div>
-      <div class="resumen-row"><span>Regreso</span><span>${p.fechaRegreso||"—"}</span></div>` : "";
+      <div class="resumen-row"><span>Salida</span><span>${formatFechaLarga(p.fechaSalida)||"—"}</span></div>
+      <div class="resumen-row"><span>Regreso</span><span>${formatFechaLarga(p.fechaRegreso)||"—"}</span></div>` : "";
   }
 
   document.getElementById("det-resumen-sidebar").innerHTML = p.resumen;
   renderDetallePrecio(p);
 
-  const waMsg = encodeURIComponent("Hola! Quiero consultar sobre " + p.title + " (salida " + (p.fechaSalida||"") + ")");
+  const waMsg = encodeURIComponent("Hola! Quiero consultar sobre " + p.title + " (salida " + (formatFechaLarga(p.fechaSalida)||"") + ")");
   document.getElementById("det-wa-link").href = "https://wa.me/5493412279027?text=" + waMsg;
   document.getElementById("det-wa-link").onclick = () => logEvent('whatsapp_click', id, p.title);
   const stickyWa = document.getElementById("det-sticky-wa");
@@ -2183,21 +2195,33 @@ function showDetalle(id) {
   showPage("detalle");
 }
 
-function selectHotel(el, price, paqId) {
-  document.querySelectorAll(".hotel-option").forEach(h => h.classList.remove("selected"));
+function selectHotel(el, price, groupIndex) {
+  // Solo se deselecciona dentro del mismo grupo (ciudad) — un hotel por ciudad
+  document.querySelectorAll(`.hotel-option[data-group="${groupIndex}"]`).forEach(h => h.classList.remove("selected"));
   el.classList.add("selected");
-  if (window._currentDetalle) {
-    window._currentDetalle._selectedHotelPrice = price;
-    renderDetallePrecio(window._currentDetalle);
-    // Also update WA message with new price
-    const p = window._currentDetalle;
-    const hotelName = el.querySelector(".hotel-option-name")?.textContent || "";
-    const waMsg = encodeURIComponent(`Hola! Quiero consultar sobre ${p.title} (salida ${p.fechaSalida||""}) — Hotel: ${hotelName}`);
-    const waEl = document.getElementById("det-wa-link");
-    if (waEl) waEl.href = `https://wa.me/5493412279027?text=${waMsg}`;
-    const stickyWa = document.getElementById("det-sticky-wa");
-    if (stickyWa) stickyWa.href = `https://wa.me/5493412279027?text=${waMsg}`;
-  }
+  if (!window._currentDetalle) return;
+  const p = window._currentDetalle;
+  // Recalcular el total sumando el hotel seleccionado en cada ciudad
+  let total = 0;
+  const seleccionados = [];
+  const grupos = new Set();
+  document.querySelectorAll('#det-hoteles .hotel-option').forEach(opt => grupos.add(opt.dataset.group));
+  grupos.forEach(gi => {
+    const sel = document.querySelector(`#det-hoteles .hotel-option.selected[data-group="${gi}"]`);
+    if (sel) {
+      total += parseFloat(sel.querySelector('.hotel-price-val')?.dataset.usd) || 0;
+      const ciudad = sel.dataset.ciudad;
+      const nombre = sel.querySelector(".hotel-option-name")?.textContent || "";
+      seleccionados.push(ciudad ? `${ciudad}: ${nombre}` : nombre);
+    }
+  });
+  p._selectedHotelPrice = total;
+  renderDetallePrecio(p);
+  const waMsg = encodeURIComponent(`Hola! Quiero consultar sobre ${p.title} (salida ${formatFechaLarga(p.fechaSalida)||""}) — Hotel: ${seleccionados.join(' | ')}`);
+  const waEl = document.getElementById("det-wa-link");
+  if (waEl) waEl.href = `https://wa.me/5493412279027?text=${waMsg}`;
+  const stickyWa = document.getElementById("det-sticky-wa");
+  if (stickyWa) stickyWa.href = `https://wa.me/5493412279027?text=${waMsg}`;
 }
 
 
@@ -2232,7 +2256,7 @@ function renderBlogGrid() {
     <div class="blog-card" onclick="showBlogPost('${escapeHtml(p.slug||p.id)}')">
       <div class="blog-card-img"><img src="${escapeHtml(p.cover||'')}" alt="${escapeHtml(p.titulo||'')}" loading="lazy"></div>
       <div class="blog-card-body">
-        <p class="blog-card-date">${escapeHtml(p.fecha||'')}</p>
+        <p class="blog-card-date">${escapeHtml(formatFechaLarga(p.fecha)||'')}</p>
         <h3>${escapeHtml(p.titulo||'')}</h3>
         <p class="blog-card-excerpt">${escapeHtml(p.excerpt||'')}</p>
       </div>
@@ -2245,7 +2269,7 @@ function showBlogPost(slug) {
   document.getElementById('blogpost-cover').src = post.cover||'';
   document.getElementById('blogpost-cover').alt = post.titulo||'';
   document.getElementById('blogpost-title').textContent = post.titulo||'';
-  document.getElementById('blogpost-date').textContent = post.fecha||'';
+  document.getElementById('blogpost-date').textContent = formatFechaLarga(post.fecha)||'';
   document.getElementById('blogpost-content').innerHTML = post.contenido||'';
   if (new URLSearchParams(location.search).get('post') !== slug) {
     history.pushState(null, '', '?post=' + encodeURIComponent(slug));
@@ -2352,8 +2376,22 @@ function adminPaqToDetalle(p, isGrupal) {
   };
 }
 
+const MESES_LARGO = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+function parseIsoFecha(fecha) {
+  return /^(\d{4})-(\d{2})-(\d{2})$/.exec((fecha||'')+'');
+}
+// Convierte una fecha guardada en formato YYYY-MM-DD (date picker) a "15 de agosto de 2025".
+// Si la fecha viene en el formato de texto libre anterior, se muestra tal cual (compatibilidad).
+function formatFechaLarga(fecha) {
+  const iso = parseIsoFecha(fecha);
+  if (!iso) return fecha || '';
+  const [, y, mo, d] = iso;
+  return `${parseInt(d,10)} de ${MESES_LARGO[parseInt(mo,10)-1]} de ${y}`;
+}
 function dateBadge(fecha) {
   if (!fecha) return '';
+  const iso = parseIsoFecha(fecha);
+  if (iso) return MESES_LARGO[parseInt(iso[2],10)-1].slice(0,3).toUpperCase()+' '+iso[1];
   const s = (fecha+'').toUpperCase();
   const meses = ['ENERO','FEBRERO','MARZO','ABRIL','MAYO','JUNIO','JULIO','AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE','DICIEMBRE'];
   const m = meses.find(x => s.includes(x));

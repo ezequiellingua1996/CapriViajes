@@ -579,8 +579,8 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
       <div style="background:#F8FAFC;border-radius:8px;padding:1rem;margin-bottom:1rem">
         <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ocean);margin-bottom:0.75rem">📅 Fechas y lugar de salida</div>
         <div class="field-row">
-          <div class="field"><label>Fecha de salida</label><input type="text" id="paq-fecha-salida" placeholder="Ej: 15 de agosto 2025"></div>
-          <div class="field"><label>Fecha de regreso</label><input type="text" id="paq-fecha-regreso" placeholder="Ej: 22 de agosto 2025"></div>
+          <div class="field"><label>Fecha de salida</label><input type="date" id="paq-fecha-salida"></div>
+          <div class="field"><label>Fecha de regreso</label><input type="date" id="paq-fecha-regreso"></div>
         </div>
         <div class="field"><label>Lugar de salida</label><input type="text" id="paq-lugar-salida" placeholder="Ej: Rosario (ROS)" value="Rosario (ROS)"></div>
       </div>
@@ -627,12 +627,26 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
         </div>
       </div>
 
+      <!-- Resumen por ciudad -->
+      <div style="background:#F8FAFC;border-radius:8px;padding:1rem;margin-bottom:1rem">
+        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ocean);margin-bottom:0.75rem">🏙️ Ciudades del viaje</div>
+        <p style="font-size:0.75rem;color:var(--gray);margin-bottom:0.75rem">Definí acá las ciudades del itinerario (formato: Ciudad|Detalle). Después, en "Opciones de hotel", vas a poder cargar los hoteles agrupados por cada una de estas ciudades.</p>
+        <div class="field" style="margin:0"><label>Resumen por ciudad</label>
+          <div class="includes-editor" id="resumen-list"></div>
+          <button class="btn btn-ghost btn-sm" style="margin-top:0.4rem" onclick="addIncLine('resumen-list')">+ Agregar ciudad</button>
+          <div class="hint">Ej: Roma|5 noches · Hotel Colosseo 4★</div>
+        </div>
+      </div>
+
       <!-- Hoteles -->
       <div style="background:#F8FAFC;border-radius:8px;padding:1rem;margin-bottom:1rem">
         <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ocean);margin-bottom:0.75rem">🏨 Opciones de hotel</div>
         <div id="hoteles-list" style="display:flex;flex-direction:column;gap:0.75rem"></div>
-        <button class="btn btn-ghost btn-sm" style="margin-top:0.5rem" onclick="addHotelRow()">+ Agregar hotel</button>
-        <div class="hint" style="margin-top:0.3rem">Podés agregar 1 o más opciones. El precio puede variar por hotel.</div>
+        <div style="display:flex;gap:0.5rem;margin-top:0.5rem">
+          <button class="btn btn-ghost btn-sm" onclick="addHotelRow()">+ Agregar hotel</button>
+          <button class="btn btn-ghost btn-sm" onclick="refreshHotelCiudades()">🔄 Actualizar lista de ciudades</button>
+        </div>
+        <div class="hint" style="margin-top:0.3rem">El pasajero solo puede elegir un hotel por ciudad. Si el paquete tiene una sola ciudad, va a ver todas las opciones como una única lista para elegir.</div>
       </div>
 
       <!-- Itinerario día a día -->
@@ -658,11 +672,6 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
           <div class="includes-editor" id="excursiones-list"></div>
           <button class="btn btn-ghost btn-sm" style="margin-top:0.4rem" onclick="addIncLine('excursiones-list')">+ Agregar excursión</button>
         </div>
-        <div class="field"><label>Resumen por ciudad (formato: Ciudad|Detalle)</label>
-          <div class="includes-editor" id="resumen-list"></div>
-          <button class="btn btn-ghost btn-sm" style="margin-top:0.4rem" onclick="addIncLine('resumen-list')">+ Agregar ciudad</button>
-          <div class="hint">Ej: Roma|5 noches · Hotel Colosseo 4★</div>
-        </div>
       </div>
 
     </div>
@@ -687,8 +696,8 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
         <div class="field"><label>País / Destino</label><input type="text" id="grup-dest" placeholder="Ej: España"></div>
       </div>
       <div class="field-row">
-        <div class="field"><label>Fecha de salida</label><input type="text" id="grup-fecha" placeholder="Ej: 15 de agosto 2025"></div>
-        <div class="field"><label>Fecha de regreso</label><input type="text" id="grup-fecha-regreso" placeholder="Ej: 29 de agosto 2025"></div>
+        <div class="field"><label>Fecha de salida</label><input type="date" id="grup-fecha"></div>
+        <div class="field"><label>Fecha de regreso</label><input type="date" id="grup-fecha-regreso"></div>
       </div>
       <div class="field-row">
         <div class="field"><label>Duración</label><input type="text" id="grup-dur" placeholder="Ej: 14 noches"></div>
@@ -809,7 +818,7 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
       <div class="field"><label>Título</label><input type="text" id="blog-titulo" placeholder="Ej: 5 destinos para conocer en 2026"></div>
       <div class="field-row">
         <div class="field"><label>Slug (URL, sin espacios)</label><input type="text" id="blog-slug" placeholder="ej-5-destinos-2026"></div>
-        <div class="field"><label>Fecha</label><input type="text" id="blog-fecha" placeholder="18 de julio de 2026"></div>
+        <div class="field"><label>Fecha</label><input type="date" id="blog-fecha"></div>
       </div>
       <div class="field"><label>URL imagen de portada</label><input type="url" id="blog-cover" placeholder="https://images.unsplash.com/..."></div>
       <div class="field"><label>Extracto (resumen corto para la tarjeta)</label><textarea id="blog-excerpt" rows="2" placeholder="Una frase breve que resuma la nota"></textarea></div>
@@ -1125,12 +1134,37 @@ function getVuelos() {
   });
 }
 
+function getResumenCiudades() {
+  const list = document.getElementById('resumen-list');
+  if (!list) return [];
+  return Array.from(list.children).map(row => {
+    const input = row.querySelector('input');
+    return input ? input.value.split('|')[0].trim() : '';
+  }).filter(Boolean);
+}
+
+function ciudadSelectOptions(selected) {
+  const ciudades = getResumenCiudades();
+  if (selected && !ciudades.includes(selected)) ciudades.unshift(selected);
+  if (!ciudades.length) return '<option value="">— Cargá ciudades en "Ciudades del viaje" —</option>';
+  return '<option value="">Sin ciudad (paquete de una sola ciudad)</option>' +
+    ciudades.map(c => `<option value="${c}" ${c===selected?'selected':''}>${c}</option>`).join('');
+}
+
+function refreshHotelCiudades() {
+  document.querySelectorAll('#hoteles-list .hotel-ciudad-select').forEach(sel => {
+    const current = sel.value;
+    sel.innerHTML = ciudadSelectOptions(current);
+  });
+}
+
 function addHotelRow(h) {
   const c = document.getElementById('hoteles-list');
   const row = document.createElement('div');
   row.style.cssText = 'background:white;border:1px solid #E5E7EB;border-radius:8px;padding:0.75rem;display:flex;flex-direction:column;gap:0.5rem';
   row.innerHTML = `
-    <div style="display:grid;grid-template-columns:1fr 1fr 0.5fr auto;gap:0.4rem;align-items:end">
+    <div style="display:grid;grid-template-columns:0.8fr 1fr 1fr 0.5fr auto;gap:0.4rem;align-items:end">
+      <div class="field" style="margin:0"><label>Ciudad</label><select class="hotel-ciudad-select" style="width:100%;padding:0.45rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem">${ciudadSelectOptions(h?h.ciudad||'':'')}</select></div>
       <div class="field" style="margin:0"><label>Nombre hotel</label><input style="width:100%;padding:0.45rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${h?h.nombre:''}" placeholder="Ej: Hotel Colosseo 4★"></div>
       <div class="field" style="margin:0"><label>Detalle (noches · tipo)</label><input style="width:100%;padding:0.45rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${h?h.detail:''}" placeholder="7 noches · All Inclusive"></div>
       <div class="field" style="margin:0"><label>Precio</label><input type="number" style="width:100%;padding:0.45rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${h?h.precio:''}" placeholder="1490"></div>
@@ -1145,10 +1179,12 @@ function addHotelRow(h) {
 
 function getHoteles() {
   return Array.from(document.getElementById('hoteles-list').children).map(row => {
+    const ciudad = (row.querySelector('select')?.value || '').trim();
     const inputs = row.querySelectorAll('input');
     const nombre = inputs[0].value;
     const stars = (nombre.match(/★+/)||[''])[0].length;
     return {
+      ciudad: ciudad,
       nombre: nombre,
       detail: inputs[1].value,
       precio: parseFloat(inputs[2].value)||0,
@@ -1259,6 +1295,8 @@ function editPaq(i) {
   document.getElementById('vuelos-list').innerHTML = '';
   document.getElementById('itinerario-list').innerHTML = '';
   (p.vuelos||[]).forEach(v => addVueloRow(v));
+  // Resumen por ciudad (debe cargarse antes que Hoteles para que el desplegable de ciudad tenga las opciones)
+  setIncLines('resumen-list', p.resumen||[]);
   // Hoteles
   document.getElementById('hoteles-list').innerHTML = '';
   (p.hoteles||[]).forEach(h => addHotelRow(h));
@@ -1272,7 +1310,6 @@ function editPaq(i) {
   setIncLines('inc-si-list', p.incSi||[]);
   setIncLines('inc-no-list', p.incNo||[]);
   setIncLines('excursiones-list', p.excursiones||[]);
-  setIncLines('resumen-list', p.resumen||[]);
   openModal('modal-paq');
 }
 
@@ -1295,8 +1332,8 @@ function savePaq() {
     traslado: document.getElementById('paq-traslado').value === 'si',
     destacado: document.getElementById('paq-destacado').checked,
     feat: document.getElementById('paq-feat').checked,
-    fechaSalida: document.getElementById('paq-fecha-salida').value,
-    fechaRegreso: document.getElementById('paq-fecha-regreso').value,
+    fechaSalida: document.getElementById('paq-fecha-salida').value || (idx !== '' ? DATA.paquetes[idx].fechaSalida : ''),
+    fechaRegreso: document.getElementById('paq-fecha-regreso').value || (idx !== '' ? DATA.paquetes[idx].fechaRegreso : ''),
     lugarSalida: document.getElementById('paq-lugar-salida').value,
     vuelos: getVuelos(),
     hoteles: getHoteles(),
@@ -1368,8 +1405,8 @@ function saveGrup() {
     grupal: true,
     titulo: document.getElementById('grup-titulo').value,
     dest: document.getElementById('grup-dest').value,
-    fecha: document.getElementById('grup-fecha').value,
-    fechaRegreso: fr ? fr.value : '',
+    fecha: document.getElementById('grup-fecha').value || (idx !== '' ? DATA.grupales[idx].fecha : ''),
+    fechaRegreso: (fr && fr.value) || (idx !== '' ? DATA.grupales[idx].fechaRegreso : ''),
     lugarSalida: ls ? ls.value : 'Rosario (ROS)',
     dur: document.getElementById('grup-dur').value,
     precio: parseFloat(document.getElementById('grup-precio').value)||0,
@@ -1533,7 +1570,7 @@ function saveBlogPost() {
   const obj = {
     id: idx !== '' ? DATA.blog[idx].id : 'post_'+Date.now(),
     titulo, slug,
-    fecha: document.getElementById('blog-fecha').value,
+    fecha: document.getElementById('blog-fecha').value || (idx !== '' ? DATA.blog[idx].fecha : ''),
     cover: document.getElementById('blog-cover').value,
     excerpt: document.getElementById('blog-excerpt').value,
     contenido: document.getElementById('blog-contenido').value
