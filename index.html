@@ -2640,21 +2640,23 @@ async function loadFromAdmin() {
   if (grupGrid && (stored.grupales||[]).length) grupGrid.innerHTML = stored.grupales.map(renderGrupCard).join('');
   const destGrid = document.getElementById('destinos-grid');
   if (destGrid) {
-    const destacados = [
-      ...(stored.paquetes||[]).filter(p => p.destacado),
-      ...(stored.grupales||[]).filter(g => g.destacado)
+    const cards = [
+      ...(stored.destinos||[]).map(d => ({ type:'destino', id:d.id, pais:d.pais, nombre:d.nombre, precio:d.precio, tag:d.tag, img:d.img, feat: d.feat==='si' })),
+      ...(stored.paquetes||[]).filter(p => p.destacado).map(p => ({ type:'paquete', id:p.id, pais:p.dest, nombre:p.titulo, precio:p.precio, tag:p.badge, img:p.img, moneda:p.moneda, feat: !!p.feat })),
+      ...(stored.grupales||[]).filter(g => g.destacado).map(g => ({ type:'grupal', id:g.id, pais:g.dest, nombre:g.titulo, precio:g.precio, tag:g.badge, img:g.img, moneda:g.moneda, feat: !!g.feat }))
     ];
-    if (destacados.length) {
-      destGrid.innerHTML = destacados.map(p => {
-        const mon = (p.moneda||'USD') === 'ARS' ? '$ ' : 'USD ';
-        return `<div class="d-card${p.feat?' feat':''}" onclick="showDetalle('${escapeHtml(p.id)}')" style="cursor:pointer">
-          <img src="${escapeHtml(p.img||'')}" alt="${escapeHtml(p.titulo||'')}" loading="lazy">
+    if (cards.length) {
+      destGrid.innerHTML = cards.map(c => {
+        const mon = (c.moneda||'USD') === 'ARS' ? '$ ' : 'USD ';
+        const click = c.type === 'destino' ? "showPage('paquetes')" : `showDetalle('${escapeHtml(c.id)}')`;
+        return `<div class="d-card${c.feat?' feat':''}" onclick="${click}" style="cursor:pointer">
+          <img src="${escapeHtml(c.img||'')}" alt="${escapeHtml(c.nombre||'')}" loading="lazy">
           <div class="d-overlay">
-            <p class="d-country">${escapeHtml(p.dest||'')}</p>
-            <h3 class="d-name">${escapeHtml(p.titulo||'')}</h3>
-            <p class="d-price">Desde <strong>${mon}${(p.precio||0).toLocaleString('es-AR')}</strong></p>
+            <p class="d-country">${escapeHtml(c.pais||'')}</p>
+            <h3 class="d-name">${escapeHtml(c.nombre||'')}</h3>
+            <p class="d-price">Desde <strong>${mon}${(c.precio||0).toLocaleString('es-AR')}</strong></p>
           </div>
-          ${p.badge ? `<span class="d-tag">${escapeHtml(p.badge)}</span>` : ''}
+          ${c.tag ? `<span class="d-tag">${escapeHtml(c.tag)}</span>` : ''}
         </div>`;
       }).join('');
     }
