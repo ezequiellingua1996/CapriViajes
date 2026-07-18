@@ -657,7 +657,13 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
         <a href="#" onclick="showPage('paquetes');filterPaq('internacional');return false">Internacional</a>
       </div>
     </li>
-    <li><a href="#" onclick="showPage('grupales');return false" id="nav-grupales">Grupales</a></li>
+    <li class="has-sub">
+      <a href="#" onclick="showPage('grupales');return false" id="nav-grupales">Grupales <span class="nav-arrow">▾</span></a>
+      <div class="submenu">
+        <a href="#" onclick="showPage('grupales');setGrupTipo('nacional');return false">Nacional</a>
+        <a href="#" onclick="showPage('grupales');setGrupTipo('internacional');return false">Internacional</a>
+      </div>
+    </li>
     <!-- Blog oculto temporalmente — reactivar sacando este comentario
     <li><a href="#" onclick="showPage('blog');return false" id="nav-blog">Blog</a></li>
     -->
@@ -679,6 +685,8 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
   <a href="#" class="m-sub" onclick="showPage('paquetes');filterPaq('nacional');closeMenu();return false">↳ Nacional</a>
   <a href="#" class="m-sub" onclick="showPage('paquetes');filterPaq('internacional');closeMenu();return false">↳ Internacional</a>
   <a href="#" onclick="showPage('grupales');closeMenu();return false">Grupales</a>
+  <a href="#" class="m-sub" onclick="showPage('grupales');setGrupTipo('nacional');closeMenu();return false">↳ Nacional</a>
+  <a href="#" class="m-sub" onclick="showPage('grupales');setGrupTipo('internacional');closeMenu();return false">↳ Internacional</a>
   <!-- Blog oculto temporalmente — reactivar sacando este comentario
   <a href="#" onclick="showPage('blog');closeMenu();return false">Blog</a>
   -->
@@ -1215,7 +1223,7 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
       </div>
     </div>
   </div>
-  <div class="filtros" style="gap:0.75rem;align-items:center">
+  <div class="filtros" style="gap:0.75rem;align-items:center;border-bottom:none">
     <input type="text" id="grup-search" placeholder="Buscar destino..." oninput="searchGrup()" style="padding:0.5rem 1rem;border:1.5px solid #DDD;border-radius:50px;font-size:0.85rem;min-width:200px;outline:none;font-family:inherit">
     <select id="grup-salida-filter" onchange="filterGrupAdvanced()" style="padding:0.5rem 1rem;border:1.5px solid #DDD;border-radius:50px;font-size:0.82rem;background:#fff;cursor:pointer;font-family:inherit">
       <option value="">Salida desde: Todos</option>
@@ -1223,11 +1231,12 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
       <option value="Buenos Aires">Buenos Aires</option>
       <option value="Córdoba">Córdoba</option>
     </select>
-    <select id="grup-tipo-filter" onchange="filterGrupAdvanced()" style="padding:0.5rem 1rem;border:1.5px solid #DDD;border-radius:50px;font-size:0.82rem;background:#fff;cursor:pointer;font-family:inherit">
-      <option value="">Tipo: Todos</option>
-      <option value="nacional">Nacional</option>
-      <option value="internacional">Internacional</option>
-    </select>
+    <input type="hidden" id="grup-tipo-filter" value="">
+  </div>
+  <div class="filtros" id="grup-filtros" style="border-top:none;border-bottom:1px solid #EEE">
+    <button class="filtro-btn active" onclick="setGrupTipo('',this)">Todos</button>
+    <button class="filtro-btn" onclick="setGrupTipo('nacional',this)">Argentina</button>
+    <button class="filtro-btn" onclick="setGrupTipo('internacional',this)">Internacional</button>
   </div>
   <div class="paquetes-section" style="padding:1.5rem 5% 3rem">
     <div class="paq-grid" id="grup-grid">
@@ -2559,7 +2568,7 @@ function renderGrupCard(g) {
     'Guía incluido',
     inc.some(i=>i.toLowerCase().includes('seguro')||i.toLowerCase().includes('asistencia')) ? 'Asistencia' : ''
   ].filter(Boolean).map(t=>`<span class="paq-tag">${escapeHtml(t)}</span>`).join('') + cupos;
-  return `<div class="paq-card">
+  return `<div class="paq-card" data-cat="${escapeHtml(g.cat||'')}">
     <div class="paq-img"><img src="${escapeHtml(g.img||'')}" alt="${escapeHtml(g.titulo||'')}" loading="lazy">
     <div class="paq-badges">${badge?`<span class="paq-badge">${escapeHtml(badge)}</span>`:''}</div></div>
     <div class="paq-body">
@@ -2644,6 +2653,23 @@ function searchGrup() {
   const q = (document.getElementById('grup-search')?.value||'').toLowerCase();
   filterGrupAdvanced(q);
 }
+
+function setGrupTipo(cat, btn) {
+  document.querySelectorAll('#grup-filtros .filtro-btn').forEach(b => b.classList.remove('active'));
+  if (btn) {
+    btn.classList.add('active');
+  } else {
+    document.querySelectorAll('#grup-filtros .filtro-btn').forEach(b => {
+      const t = b.textContent.trim();
+      if (cat === '' && t === 'Todos') b.classList.add('active');
+      else if (cat === 'nacional' && t === 'Argentina') b.classList.add('active');
+      else if (cat === 'internacional' && t === 'Internacional') b.classList.add('active');
+    });
+  }
+  const hidden = document.getElementById('grup-tipo-filter');
+  if (hidden) hidden.value = cat;
+  filterGrupAdvanced();
+}
 function filterGrupAdvanced(q) {
   if (q === undefined) q = (document.getElementById('grup-search')?.value||'').toLowerCase();
   const salida = (document.getElementById('grup-salida-filter')?.value||'').toLowerCase();
@@ -2655,7 +2681,7 @@ function filterGrupAdvanced(q) {
     const salidaTxt = (salidaEl?.textContent||'').toLowerCase();
     const matchQ = !q || txt.includes(q);
     const matchSalida = !salida || salidaTxt.includes(salida);
-    const matchTipo = !tipo || cat.includes(tipo);
+    const matchTipo = !tipo || cat === tipo;
     card.style.display = (matchQ && matchSalida && matchTipo) ? '' : 'none';
   });
 }

@@ -731,6 +731,12 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
       </div>
       <div class="field-row">
         <div class="field"><label>Cupos (Ej: 18/20)</label><input type="text" id="grup-cupos" placeholder="18/20 cupos"></div>
+        <div class="field"><label>Categoría</label>
+          <select id="grup-cat">
+            <option value="internacional">Internacional</option>
+            <option value="nacional">Nacional</option>
+          </select>
+        </div>
       </div>
       <div class="field-row">
         <div class="field"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="grup-destacado" style="width:16px;height:16px"> Mostrar como destino en inicio</label></div>
@@ -1405,6 +1411,7 @@ function openNewGrup() {
   document.getElementById('modal-grup-title').textContent = 'Nuevo grupal';
   ['grup-titulo','grup-dest','grup-fecha','grup-fecha-regreso','grup-dur','grup-precio','grup-cupos','grup-desc','grup-img','grup-lugar-salida'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';}); 
   const gm=document.getElementById('grup-moneda'); if(gm) gm.value='USD';
+  const gc=document.getElementById('grup-cat'); if(gc) gc.value='internacional';
   if(document.getElementById('grup-lugar-salida'))document.getElementById('grup-lugar-salida').value='Rosario (ROS)';
   const gd=document.getElementById('grup-destacado'); if(gd) gd.checked=false;
   const gf=document.getElementById('grup-feat'); if(gf) gf.checked=false;
@@ -1427,6 +1434,7 @@ function editGrup(i) {
   document.getElementById('grup-precio').value = g.precio||'';
   const gme=document.getElementById('grup-moneda'); if(gme) gme.value=g.moneda||'USD';
   document.getElementById('grup-cupos').value = g.cupos||'';
+  const gce=document.getElementById('grup-cat'); if(gce) gce.value = g.cat||'internacional';
   document.getElementById('grup-desc').value = g.desc||'';
   document.getElementById('grup-img').value = g.img||'';
   const ls = document.getElementById('grup-lugar-salida'); if(ls) ls.value = g.lugarSalida||'Rosario (ROS)';
@@ -1454,6 +1462,7 @@ function saveGrup() {
     dur: document.getElementById('grup-dur').value,
     precio: parseFloat(document.getElementById('grup-precio').value)||0,
     moneda: (document.getElementById('grup-moneda')?.value)||'USD',
+    cat: (document.getElementById('grup-cat')?.value)||'internacional',
     cupos: document.getElementById('grup-cupos').value,
     desc: document.getElementById('grup-desc').value,
     img: document.getElementById('grup-img').value,
