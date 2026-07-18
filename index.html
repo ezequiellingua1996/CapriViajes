@@ -2601,7 +2601,7 @@ function renderGrupCard(g) {
     'Guía incluido',
     inc.some(i=>i.toLowerCase().includes('seguro')||i.toLowerCase().includes('asistencia')) ? 'Asistencia' : ''
   ].filter(Boolean).map(t=>`<span class="paq-tag">${escapeHtml(t)}</span>`).join('') + cupos;
-  return `<div class="paq-card" data-cat="${escapeHtml(g.cat||'')}">
+  return `<div class="paq-card" data-cat="${escapeHtml(g.cat||'internacional')}">
     <div class="paq-img"><img src="${escapeHtml(g.img||'')}" alt="${escapeHtml(g.titulo||'')}" loading="lazy">
     <div class="paq-badges">${badge?`<span class="paq-badge">${escapeHtml(badge)}</span>`:''}</div></div>
     <div class="paq-body">
