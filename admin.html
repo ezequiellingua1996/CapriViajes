@@ -86,6 +86,8 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
 .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--ocean)}
 .field textarea{resize:vertical;min-height:90px}
 .field .hint{font-size:0.72rem;color:var(--gray);margin-top:0.3rem}
+.img-preview{display:block;width:64px;height:64px;object-fit:cover;border-radius:8px;margin-top:0.5rem;background:#EEE repeating-conic-gradient(#E5E7EB 0% 25%,#EEE 0% 50%) 50%/16px 16px;border:1px solid var(--border)}
+.img-preview:not([src]),.img-preview[src=""]{opacity:0;border:none}
 
 /* Buttons */
 .btn{display:inline-flex;align-items:center;gap:5px;padding:0.5rem 1rem;border-radius:6px;font-size:0.8rem;font-weight:600;cursor:pointer;border:none;transition:all 0.2s}
@@ -587,7 +589,7 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
           <div class="field"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="paq-destacado" style="width:16px;height:16px"> Mostrar como destino en inicio</label></div>
           <div class="field"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="paq-feat" style="width:16px;height:16px"> Card grande (destacado visual)</label></div>
         </div>
-        <div class="field"><label>URL imagen principal</label><input type="url" id="paq-img" placeholder="https://images.unsplash.com/..."></div>
+        <div class="field"><label>URL imagen principal</label><input type="url" id="paq-img" placeholder="https://images.unsplash.com/..." oninput="this.nextElementSibling.src=this.value"><img class="img-preview" id="paq-img-preview" onerror="this.removeAttribute('src')"></div>
         <div class="field"><label>Descripción corta (visible en tarjeta)</label><textarea id="paq-desc-corta" placeholder="Resumen para la tarjeta..." style="min-height:60px"></textarea></div>
         <div class="field"><label>Descripción completa (en detalle)</label><textarea id="paq-desc-full" placeholder="Descripción detallada del paquete..." style="min-height:80px"></textarea></div>
       </div>
@@ -743,7 +745,7 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
         <div class="field"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="grup-feat" style="width:16px;height:16px"> Card grande (destacado visual)</label></div>
       </div>
       <div class="field"><label>Descripción</label><textarea id="grup-desc" placeholder="Descripción del viaje grupal..." style="min-height:80px"></textarea></div>
-      <div class="field"><label>URL imagen</label><input type="url" id="grup-img" placeholder="https://images.unsplash.com/..."></div>
+      <div class="field"><label>URL imagen</label><input type="url" id="grup-img" placeholder="https://images.unsplash.com/..." oninput="this.nextElementSibling.src=this.value"><img class="img-preview" id="grup-img-preview" onerror="this.removeAttribute('src')"></div>
       <div class="field"><label>¿Qué incluye? (uno por línea)</label>
         <div class="includes-editor" id="grup-inc-list"></div>
         <button class="btn btn-ghost btn-sm" style="margin-top:0.4rem" onclick="addIncLine('grup-inc-list')">+ Agregar línea</button>
@@ -790,7 +792,7 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
             <option value="3">★★★ (3)</option>
           </select>
         </div>
-        <div class="field"><label>URL foto (opcional)</label><input type="url" id="test-foto" placeholder="https://..."></div>
+        <div class="field"><label>URL foto (opcional)</label><input type="url" id="test-foto" placeholder="https://..." oninput="this.nextElementSibling.src=this.value"><img class="img-preview" id="test-foto-preview" onerror="this.removeAttribute('src')"></div>
       </div>
     </div>
     <div class="modal-footer">
@@ -817,7 +819,7 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
         <div class="field"><label>Precio desde (USD)</label><input type="number" id="dest-precio" placeholder="1890"></div>
         <div class="field"><label>Tag especial (opcional)</label><input type="text" id="dest-tag" placeholder="Ej: Más buscado, Oferta"></div>
       </div>
-      <div class="field"><label>URL imagen</label><input type="url" id="dest-img" placeholder="https://images.unsplash.com/..."></div>
+      <div class="field"><label>URL imagen</label><input type="url" id="dest-img" placeholder="https://images.unsplash.com/..." oninput="this.nextElementSibling.src=this.value"><img class="img-preview" id="dest-img-preview" onerror="this.removeAttribute('src')"></div>
       <div class="field"><label>¿Es el destacado grande? (featured)</label>
         <select id="dest-feat"><option value="no">No</option><option value="si">Sí (ocupa el doble de espacio)</option></select>
       </div>
@@ -843,7 +845,7 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
         <div class="field"><label>Slug (URL, sin espacios)</label><input type="text" id="blog-slug" placeholder="ej-5-destinos-2026"></div>
         <div class="field"><label>Fecha</label><input type="date" id="blog-fecha"></div>
       </div>
-      <div class="field"><label>URL imagen de portada</label><input type="url" id="blog-cover" placeholder="https://images.unsplash.com/..."></div>
+      <div class="field"><label>URL imagen de portada</label><input type="url" id="blog-cover" placeholder="https://images.unsplash.com/..." oninput="this.nextElementSibling.src=this.value"><img class="img-preview" id="blog-cover-preview" onerror="this.removeAttribute('src')"></div>
       <div class="field"><label>Extracto (resumen corto para la tarjeta)</label><textarea id="blog-excerpt" rows="2" placeholder="Una frase breve que resuma la nota"></textarea></div>
       <div class="field"><label>Contenido</label><textarea id="blog-contenido" rows="10" placeholder="Escribí el contenido de la nota. Podés usar HTML simple como <p>, <h2>, <img>."></textarea></div>
     </div>
@@ -864,7 +866,7 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
     <div class="modal-body">
       <input type="hidden" id="asist-edit-id">
       <div class="field"><label>Nombre</label><input type="text" id="asist-nombre" placeholder="Ej: Asiscard"></div>
-      <div class="field"><label>URL logo</label><input type="url" id="asist-logo" placeholder="https://..."></div>
+      <div class="field"><label>URL logo</label><input type="url" id="asist-logo" placeholder="https://..." oninput="this.nextElementSibling.src=this.value"><img class="img-preview" id="asist-logo-preview" onerror="this.removeAttribute('src')"></div>
       <div class="field"><label>Descripción</label><textarea id="asist-descripcion" rows="3" placeholder="Cobertura médica internacional, asistencia 24hs..."></textarea></div>
       <div class="field-row">
         <div class="field"><label>Teléfono de emergencia (opcional)</label><input type="text" id="asist-telefono" placeholder="+54 9 11 1234-5678"></div>
@@ -1055,10 +1057,21 @@ function renderPaq() {
       </div>
       <div class="item-card-actions">
         <button class="btn btn-ghost btn-sm" onclick="editPaq(${i})">✏️ Editar</button>
+        <button class="btn btn-ghost btn-sm" onclick="duplicatePaq(${i})">📋 Duplicar</button>
         <button class="btn btn-danger btn-sm" onclick="deletePaq(${i})">🗑</button>
       </div>
     </div>`).join('');
   document.getElementById('paq-count').textContent = DATA.paquetes.length;
+}
+
+function duplicatePaq(i) {
+  const copy = JSON.parse(JSON.stringify(DATA.paquetes[i]));
+  copy.id = 'paq_' + Date.now();
+  copy.titulo = (copy.titulo || '') + ' (copia)';
+  DATA.paquetes.push(copy);
+  saveData(); renderPaq(); updateStats();
+  showToast('Paquete duplicado ✓ — editá los datos y guardá', 'success');
+  editPaq(DATA.paquetes.length - 1);
 }
 
 function renderGrup() {
@@ -1072,10 +1085,21 @@ function renderGrup() {
       </div>
       <div class="item-card-actions">
         <button class="btn btn-ghost btn-sm" onclick="editGrup(${i})">✏️ Editar</button>
+        <button class="btn btn-ghost btn-sm" onclick="duplicateGrup(${i})">📋 Duplicar</button>
         <button class="btn btn-danger btn-sm" onclick="deleteGrup(${i})">🗑</button>
       </div>
     </div>`).join('');
   document.getElementById('grup-count').textContent = DATA.grupales.length;
+}
+
+function duplicateGrup(i) {
+  const copy = JSON.parse(JSON.stringify(DATA.grupales[i]));
+  copy.id = 'grup_' + Date.now();
+  copy.titulo = (copy.titulo || '') + ' (copia)';
+  DATA.grupales.push(copy);
+  saveData(); renderGrup(); updateStats();
+  showToast('Grupal duplicado ✓ — editá los datos y guardá', 'success');
+  editGrup(DATA.grupales.length - 1);
 }
 
 function renderTest() {
@@ -1299,6 +1323,7 @@ function openNewPaq() {
   document.getElementById('paq-edit-id').value = '';
   document.getElementById('modal-paq-title').textContent = 'Nuevo paquete';
   ['paq-titulo','paq-dest','paq-dur','paq-precio','paq-img','paq-badge','paq-desc-corta','paq-desc-full','paq-fecha-salida','paq-fecha-regreso'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('paq-img-preview').removeAttribute('src');
   document.getElementById('paq-cat').value = 'internacional europa';
   document.getElementById('paq-moneda').value = 'USD';
   document.getElementById('paq-estrellas').value = '4★';
@@ -1332,6 +1357,7 @@ function editPaq(i) {
   document.getElementById('paq-desc-corta').value = p.descCorta||'';
   document.getElementById('paq-desc-full').value = p.descFull||'';
   document.getElementById('paq-img').value = p.img||'';
+  document.getElementById('paq-img-preview').src = p.img||'';
   document.getElementById('paq-badge').value = p.badge||'';
   document.getElementById('paq-vuelo').value = p.vuelo||'si';
   document.getElementById('paq-traslado').value = p.traslado ? 'si' : 'no';
@@ -1409,7 +1435,8 @@ function deletePaq(i) {
 function openNewGrup() {
   document.getElementById('grup-edit-id').value = '';
   document.getElementById('modal-grup-title').textContent = 'Nuevo grupal';
-  ['grup-titulo','grup-dest','grup-fecha','grup-fecha-regreso','grup-dur','grup-precio','grup-cupos','grup-desc','grup-img','grup-lugar-salida'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';}); 
+  ['grup-titulo','grup-dest','grup-fecha','grup-fecha-regreso','grup-dur','grup-precio','grup-cupos','grup-desc','grup-img','grup-lugar-salida'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('grup-img-preview').removeAttribute('src');
   const gm=document.getElementById('grup-moneda'); if(gm) gm.value='USD';
   const gc=document.getElementById('grup-cat'); if(gc) gc.value='internacional';
   if(document.getElementById('grup-lugar-salida'))document.getElementById('grup-lugar-salida').value='Rosario (ROS)';
@@ -1437,6 +1464,7 @@ function editGrup(i) {
   const gce=document.getElementById('grup-cat'); if(gce) gce.value = g.cat||'internacional';
   document.getElementById('grup-desc').value = g.desc||'';
   document.getElementById('grup-img').value = g.img||'';
+  document.getElementById('grup-img-preview').src = g.img||'';
   const ls = document.getElementById('grup-lugar-salida'); if(ls) ls.value = g.lugarSalida||'Rosario (ROS)';
   setIncLines('grup-inc-list', g.inc||[]);
   const gitl=document.getElementById('grup-itin-list'); if(gitl){gitl.innerHTML='';(g.itinerario||[]).forEach(d=>addItinRow('grup-itin-list',d));}
@@ -1490,6 +1518,7 @@ function openNewTest() {
   document.getElementById('test-edit-id').value = '';
   document.getElementById('modal-test-title').textContent = 'Nuevo testimonio';
   ['test-nombre','test-viaje','test-texto','test-foto'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('test-foto-preview').removeAttribute('src');
   document.getElementById('test-estrellas').value = '5';
   openModal('modal-test');
 }
@@ -1503,6 +1532,7 @@ function editTest(i) {
   document.getElementById('test-texto').value = t.texto;
   document.getElementById('test-estrellas').value = t.estrellas;
   document.getElementById('test-foto').value = t.foto||'';
+  document.getElementById('test-foto-preview').src = t.foto||'';
   openModal('modal-test');
 }
 
@@ -1533,6 +1563,7 @@ function openNewDest() {
   document.getElementById('dest-edit-id').value = '';
   document.getElementById('modal-dest-title').textContent = 'Nuevo destino';
   ['dest-pais','dest-nombre','dest-precio','dest-tag','dest-img'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('dest-img-preview').removeAttribute('src');
   document.getElementById('dest-feat').value = 'no';
   openModal('modal-dest');
 }
@@ -1546,6 +1577,7 @@ function editDest(i) {
   document.getElementById('dest-precio').value = d.precio;
   document.getElementById('dest-tag').value = d.tag||'';
   document.getElementById('dest-img').value = d.img;
+  document.getElementById('dest-img-preview').src = d.img||'';
   document.getElementById('dest-feat').value = d.feat;
   openModal('modal-dest');
 }
@@ -1598,6 +1630,7 @@ function openNewBlog() {
   document.getElementById('blog-edit-id').value = '';
   document.getElementById('modal-blog-title').textContent = 'Nueva entrada';
   ['blog-titulo','blog-slug','blog-fecha','blog-cover','blog-excerpt','blog-contenido'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('blog-cover-preview').removeAttribute('src');
   openModal('modal-blog');
 }
 
@@ -1609,6 +1642,7 @@ function editBlogPost(i) {
   document.getElementById('blog-slug').value = b.slug||'';
   document.getElementById('blog-fecha').value = b.fecha||'';
   document.getElementById('blog-cover').value = b.cover||'';
+  document.getElementById('blog-cover-preview').src = b.cover||'';
   document.getElementById('blog-excerpt').value = b.excerpt||'';
   document.getElementById('blog-contenido').value = b.contenido||'';
   openModal('modal-blog');
@@ -1659,6 +1693,7 @@ function openNewAsistencia() {
   document.getElementById('asist-edit-id').value = '';
   document.getElementById('modal-asistencia-title').textContent = 'Nueva empresa';
   ['asist-nombre','asist-logo','asist-descripcion','asist-telefono','asist-web'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('asist-logo-preview').removeAttribute('src');
   openModal('modal-asistencia');
 }
 
@@ -1668,6 +1703,7 @@ function editAsistencia(i) {
   document.getElementById('modal-asistencia-title').textContent = 'Editar empresa';
   document.getElementById('asist-nombre').value = a.nombre||'';
   document.getElementById('asist-logo').value = a.logo||'';
+  document.getElementById('asist-logo-preview').src = a.logo||'';
   document.getElementById('asist-descripcion').value = a.descripcion||'';
   document.getElementById('asist-telefono').value = a.telefono||'';
   document.getElementById('asist-web').value = a.web||'';
