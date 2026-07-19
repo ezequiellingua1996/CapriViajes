@@ -229,6 +229,10 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           <span>Grupales</span>
         </div>
+        <div class="nav-item" onclick="showPanel('quince')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.5 6.5L21 9l-5 5 1.5 7L12 17.5 6.5 21 8 14 3 9l6.5-.5z"/></svg>
+          <span>Quinceañeras</span>
+        </div>
         <div class="nav-item" onclick="showPanel('testimonios')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           <span>Testimonios</span>
@@ -236,6 +240,10 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
         <div class="nav-item" onclick="showPanel('destinos')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
           <span>Destinos inicio</span>
+        </div>
+        <div class="nav-item" onclick="showPanel('servicios')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2 5h5l-4 4 1.5 6-4.5-3-4.5 3L9 11 5 7h5z"/></svg>
+          <span>Servicios (home)</span>
         </div>
         <div class="nav-item" onclick="showPanel('blog')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
@@ -360,6 +368,19 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
           </div>
         </div>
 
+        <!-- FIESTAS DE 15 -->
+        <div class="panel" id="panel-quince">
+          <div class="card">
+            <div class="card-header">
+              <h3>Quinceañeras (<span id="quince-count">0</span>)</h3>
+              <button class="btn btn-primary" onclick="openNewQuince()">+ Agregar paquete de 15</button>
+            </div>
+            <div class="card-body">
+              <div class="item-list" id="quince-list"></div>
+            </div>
+          </div>
+        </div>
+
         <!-- TESTIMONIOS -->
         <div class="panel" id="panel-testimonios">
           <div class="card">
@@ -382,6 +403,19 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
             </div>
             <div class="card-body">
               <div class="item-list" id="dest-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SERVICIOS (HOME) -->
+        <div class="panel" id="panel-servicios">
+          <div class="card">
+            <div class="card-header"><h3>¿Por qué contratar con nosotros? (home)</h3></div>
+            <div class="card-body">
+              <p style="font-size:0.8rem;color:var(--gray);margin-bottom:1rem">Estos son los 3 (o más) ítems que se muestran en esa sección del inicio. El ícono puede ser cualquier emoji.</p>
+              <div id="servicios-list" style="display:flex;flex-direction:column;gap:1rem"></div>
+              <button class="btn btn-primary" style="margin-top:1rem" onclick="addServicio()">+ Agregar ítem</button>
+              <button class="btn btn-success" style="margin-top:1rem;margin-left:0.5rem" onclick="saveServicios()">Guardar servicios</button>
             </div>
           </div>
         </div>
@@ -772,6 +806,71 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
   </div>
 </div>
 
+<!-- ===== MODAL FIESTAS DE 15 ===== -->
+<div class="modal-overlay" id="modal-quince">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-quince-title">Nuevo paquete de 15</h3>
+      <button class="modal-close" onclick="closeModal('modal-quince')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="quince-edit-id">
+      <div class="field-row">
+        <div class="field"><label>Título</label><input type="text" id="quince-titulo" placeholder="Ej: Cancún para tus 15"></div>
+        <div class="field"><label>País / Destino</label><input type="text" id="quince-dest" placeholder="Ej: México"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Fecha de salida</label><input type="date" id="quince-fecha"></div>
+        <div class="field"><label>Fecha de regreso</label><input type="date" id="quince-fecha-regreso"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Duración</label><input type="text" id="quince-dur" placeholder="Ej: 7 noches"></div>
+        <div class="field"><label>Lugar de salida</label><input type="text" id="quince-lugar-salida" placeholder="Rosario (ROS)" value="Rosario (ROS)"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Precio base</label><input type="number" id="quince-precio" placeholder="1200"></div>
+        <div class="field"><label>Moneda</label>
+          <select id="quince-moneda">
+            <option value="USD">USD — Dólares</option>
+            <option value="ARS">$ — Pesos argentinos</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Cupos (Ej: 18/20)</label><input type="text" id="quince-cupos" placeholder="18/20 cupos"></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="quince-destacado" style="width:16px;height:16px"> Mostrar como destino en inicio</label></div>
+        <div class="field"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="quince-feat" style="width:16px;height:16px"> Card grande (destacado visual)</label></div>
+      </div>
+      <div class="field"><label>Descripción</label><textarea id="quince-desc" placeholder="Descripción del viaje de 15..." style="min-height:80px"></textarea></div>
+      <div class="field"><label>URL imagen</label><input type="url" id="quince-img" placeholder="https://images.unsplash.com/..." oninput="this.nextElementSibling.src=this.value"><img class="img-preview" id="quince-img-preview" onerror="this.removeAttribute('src')"></div>
+      <div class="field"><label>¿Qué incluye? (uno por línea)</label>
+        <div class="includes-editor" id="quince-inc-list"></div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:0.4rem" onclick="addIncLine('quince-inc-list')">+ Agregar línea</button>
+      </div>
+      <div class="field"><label>¿Qué NO incluye? (uno por línea)</label>
+        <div class="includes-editor" id="quince-no-list"></div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:0.4rem" onclick="addIncLine('quince-no-list')">+ Agregar línea</button>
+      </div>
+      <div class="field"><label>Excursiones / Experiencias incluidas (uno por línea)</label>
+        <div class="includes-editor" id="quince-exc-list"></div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:0.4rem" onclick="addIncLine('quince-exc-list')">+ Agregar excursión</button>
+      </div>
+      <div class="field">
+        <label>Itinerario día a día</label>
+        <p style="font-size:0.75rem;color:var(--gray);margin-bottom:0.5rem">Se muestra en la página de detalle del paquete.</p>
+        <div id="quince-itin-list" style="display:flex;flex-direction:column;gap:0.75rem"></div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:0.5rem" onclick="addItinRow('quince-itin-list')">+ Agregar día</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-quince')">Cancelar</button>
+      <button class="btn btn-success" onclick="saveQuince()">Guardar paquete de 15</button>
+    </div>
+  </div>
+</div>
+
 <!-- ===== MODAL TESTIMONIO ===== -->
 <div class="modal-overlay" id="modal-test">
   <div class="modal" style="max-width:480px">
@@ -951,6 +1050,12 @@ async function loadCloudData() {
   if (data && data.value && Object.keys(data.value).length) DATA = data.value;
   if (!DATA.blog) DATA.blog = [];
   if (!DATA.asistencias) DATA.asistencias = [];
+  if (!DATA.quince) DATA.quince = [];
+  if (!DATA.servicios) DATA.servicios = [
+    {icono:'🤝',titulo:'Acompañamiento humano real',texto:'Antes, durante y después del viaje.'},
+    {icono:'✈️',titulo:'Gestión de cambios',texto:'Con aerolíneas y proveedores. Siempre vas a tener respuesta de nuestro lado.'},
+    {icono:'🏠',titulo:'Seguimiento post-viaje',texto:'Para cerrar la experiencia y acompañarte en lo que necesites de regreso a casa.'}
+  ];
 }
 
 async function loadCloudSettings() {
@@ -991,7 +1096,13 @@ let DATA = {
     {nombre:'Tomás Quiroga',rol:'Atención al viajero',foto:'https://i.pravatar.cc/400?img=25'}
   ],
   blog: [],
-  asistencias: []
+  asistencias: [],
+  quince: [],
+  servicios: [
+    {icono:'🤝',titulo:'Acompañamiento humano real',texto:'Antes, durante y después del viaje.'},
+    {icono:'✈️',titulo:'Gestión de cambios',texto:'Con aerolíneas y proveedores. Siempre vas a tener respuesta de nuestro lado.'},
+    {icono:'🏠',titulo:'Seguimiento post-viaje',texto:'Para cerrar la experiencia y acompañarte en lo que necesites de regreso a casa.'}
+  ]
 };
 
 function saveData() {
@@ -1013,16 +1124,17 @@ function showPanel(id, triggerEl) {
       n.classList.add('active');
     }
   });
-  const titles = {dashboard:'Dashboard',paquetes:'Paquetes',grupales:'Grupales',testimonios:'Testimonios',destinos:'Destinos inicio',blog:'Blog',asistencia:'Asistencia al viajero',estadisticas:'Estadísticas',contacto:'Datos de contacto',quienes:'Quiénes somos',seguridad:'Seguridad'};
+  const titles = {dashboard:'Dashboard',paquetes:'Paquetes',grupales:'Grupales',quince:'Quinceañeras',testimonios:'Testimonios',destinos:'Destinos inicio',servicios:'Servicios (home)',blog:'Blog',asistencia:'Asistencia al viajero',estadisticas:'Estadísticas',contacto:'Datos de contacto',quienes:'Quiénes somos',seguridad:'Seguridad'};
   document.getElementById('topbar-title').textContent = titles[id] || id;
   if (id === 'quienes') renderTeam();
+  if (id === 'servicios') renderServicios();
   if (id === 'estadisticas') loadStats();
   window.scrollTo(0,0);
 }
 
 // ===== RENDER =====
 function renderAll() {
-  renderPaq(); renderGrup(); renderTest(); renderDest(); renderBlog(); renderAsistencia();
+  renderPaq(); renderGrup(); renderTest(); renderDest(); renderBlog(); renderAsistencia(); renderQuince();
   updateStats();
   // Load currency settings
   if (SETTINGS.currency) {
@@ -1102,6 +1214,34 @@ function duplicateGrup(i) {
   editGrup(DATA.grupales.length - 1);
 }
 
+function renderQuince() {
+  const el = document.getElementById('quince-list');
+  el.innerHTML = (DATA.quince||[]).map((q,i) => `
+    <div class="item-card">
+      <img class="item-card-img" src="${q.img}" alt="${q.titulo}" onerror="this.style.background='#EEE'">
+      <div class="item-card-body">
+        <div class="item-card-title">${q.titulo}</div>
+        <div class="item-card-sub">${q.dest} · ${q.fecha} · <strong>${q.moneda||'USD'} ${q.precio.toLocaleString()}</strong> · ${q.cupos}</div>
+      </div>
+      <div class="item-card-actions">
+        <button class="btn btn-ghost btn-sm" onclick="editQuince(${i})">✏️ Editar</button>
+        <button class="btn btn-ghost btn-sm" onclick="duplicateQuince(${i})">📋 Duplicar</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteQuince(${i})">🗑</button>
+      </div>
+    </div>`).join('');
+  document.getElementById('quince-count').textContent = (DATA.quince||[]).length;
+}
+
+function duplicateQuince(i) {
+  const copy = JSON.parse(JSON.stringify(DATA.quince[i]));
+  copy.id = 'quince_' + Date.now();
+  copy.titulo = (copy.titulo || '') + ' (copia)';
+  DATA.quince.push(copy);
+  saveData(); renderQuince(); updateStats();
+  showToast('Paquete de 15 duplicado ✓ — editá los datos y guardá', 'success');
+  editQuince(DATA.quince.length - 1);
+}
+
 function renderTest() {
   const el = document.getElementById('test-list');
   el.innerHTML = DATA.testimonios.map((t,i) => `
@@ -1150,6 +1290,30 @@ function renderTeam() {
 function addTeamMember() {
   DATA.team.push({nombre:'',rol:'',foto:''});
   renderTeam();
+}
+
+// ===== SERVICIOS (HOME) =====
+function renderServicios() {
+  const el = document.getElementById('servicios-list');
+  if (!el) return;
+  el.innerHTML = (DATA.servicios||[]).map((s,i) => `
+    <div style="display:grid;grid-template-columns:0.6fr 1fr 2fr auto;gap:0.5rem;align-items:end;background:var(--light);padding:0.75rem;border-radius:6px">
+      <div class="field" style="margin:0"><label>Ícono (emoji)</label><input value="${s.icono||''}" oninput="DATA.servicios[${i}].icono=this.value" placeholder="🤝"></div>
+      <div class="field" style="margin:0"><label>Título</label><input value="${s.titulo||''}" oninput="DATA.servicios[${i}].titulo=this.value"></div>
+      <div class="field" style="margin:0"><label>Texto</label><input value="${s.texto||''}" oninput="DATA.servicios[${i}].texto=this.value"></div>
+      <button class="btn btn-danger btn-sm" onclick="DATA.servicios.splice(${i},1);renderServicios()">🗑</button>
+    </div>`).join('');
+}
+
+function addServicio() {
+  if (!DATA.servicios) DATA.servicios = [];
+  DATA.servicios.push({icono:'✨',titulo:'',texto:''});
+  renderServicios();
+}
+
+function saveServicios() {
+  saveData();
+  showToast('Servicios guardados ✓','success');
 }
 
 // ===== INCLUDE LINES EDITOR =====
@@ -1511,6 +1675,85 @@ function deleteGrup(i) {
   if (!confirm('¿Eliminar este grupal?')) return;
   DATA.grupales.splice(i,1); saveData(); renderGrup(); updateStats();
   showToast('Grupal eliminado','success');
+}
+
+// ===== FIESTAS DE 15 CRUD =====
+function openNewQuince() {
+  document.getElementById('quince-edit-id').value = '';
+  document.getElementById('modal-quince-title').textContent = 'Nuevo paquete de 15';
+  ['quince-titulo','quince-dest','quince-fecha','quince-fecha-regreso','quince-dur','quince-precio','quince-cupos','quince-desc','quince-img','quince-lugar-salida'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('quince-img-preview').removeAttribute('src');
+  const qm=document.getElementById('quince-moneda'); if(qm) qm.value='USD';
+  if(document.getElementById('quince-lugar-salida'))document.getElementById('quince-lugar-salida').value='Rosario (ROS)';
+  const qd=document.getElementById('quince-destacado'); if(qd) qd.checked=false;
+  const qf=document.getElementById('quince-feat'); if(qf) qf.checked=false;
+  setIncLines('quince-inc-list',[]);
+  setIncLines('quince-no-list',[]);
+  setIncLines('quince-exc-list',[]);
+  const qi=document.getElementById('quince-itin-list'); if(qi) qi.innerHTML='';
+  openModal('modal-quince');
+}
+
+function editQuince(i) {
+  const q = DATA.quince[i];
+  document.getElementById('quince-edit-id').value = i;
+  document.getElementById('modal-quince-title').textContent = 'Editar paquete de 15';
+  document.getElementById('quince-titulo').value = q.titulo||'';
+  document.getElementById('quince-dest').value = q.dest||'';
+  document.getElementById('quince-fecha').value = q.fecha||'';
+  const fr = document.getElementById('quince-fecha-regreso'); if(fr) fr.value = q.fechaRegreso||'';
+  document.getElementById('quince-dur').value = q.dur||'';
+  document.getElementById('quince-precio').value = q.precio||'';
+  const qme=document.getElementById('quince-moneda'); if(qme) qme.value=q.moneda||'USD';
+  document.getElementById('quince-cupos').value = q.cupos||'';
+  document.getElementById('quince-desc').value = q.desc||'';
+  document.getElementById('quince-img').value = q.img||'';
+  document.getElementById('quince-img-preview').src = q.img||'';
+  const ls = document.getElementById('quince-lugar-salida'); if(ls) ls.value = q.lugarSalida||'Rosario (ROS)';
+  setIncLines('quince-inc-list', q.inc||[]);
+  const qitl=document.getElementById('quince-itin-list'); if(qitl){qitl.innerHTML='';(q.itinerario||[]).forEach(d=>addItinRow('quince-itin-list',d));}
+  setIncLines('quince-no-list', q.incNo||[]);
+  setIncLines('quince-exc-list', q.excursiones||[]);
+  const qde=document.getElementById('quince-destacado'); if(qde) qde.checked=!!q.destacado;
+  const qfe=document.getElementById('quince-feat'); if(qfe) qfe.checked=!!q.feat;
+  openModal('modal-quince');
+}
+
+function saveQuince() {
+  const idx = document.getElementById('quince-edit-id').value;
+  const fr = document.getElementById('quince-fecha-regreso');
+  const ls = document.getElementById('quince-lugar-salida');
+  const obj = {
+    id: idx !== '' ? DATA.quince[idx].id : 'quince_'+Date.now(),
+    grupal: true,
+    titulo: document.getElementById('quince-titulo').value,
+    dest: document.getElementById('quince-dest').value,
+    fecha: document.getElementById('quince-fecha').value || (idx !== '' ? DATA.quince[idx].fecha : ''),
+    fechaRegreso: (fr && fr.value) || (idx !== '' ? DATA.quince[idx].fechaRegreso : ''),
+    lugarSalida: ls ? ls.value : 'Rosario (ROS)',
+    dur: document.getElementById('quince-dur').value,
+    precio: parseFloat(document.getElementById('quince-precio').value)||0,
+    moneda: (document.getElementById('quince-moneda')?.value)||'USD',
+    cupos: document.getElementById('quince-cupos').value,
+    desc: document.getElementById('quince-desc').value,
+    img: document.getElementById('quince-img').value,
+    destacado: document.getElementById('quince-destacado')?.checked || false,
+    feat: document.getElementById('quince-feat')?.checked || false,
+    inc: getIncLines('quince-inc-list'),
+    incNo: getIncLines('quince-no-list'),
+    excursiones: getIncLines('quince-exc-list'),
+    itinerario: getItinerario('quince-itin-list')
+  };
+  if (!obj.titulo) { showToast('El título es obligatorio','error'); return; }
+  if (idx !== '') DATA.quince[idx] = obj; else DATA.quince.push(obj);
+  saveData(); renderQuince(); updateStats(); closeModal('modal-quince');
+  showToast('Paquete de 15 guardado ✓','success');
+}
+
+function deleteQuince(i) {
+  if (!confirm('¿Eliminar este paquete de 15?')) return;
+  DATA.quince.splice(i,1); saveData(); renderQuince(); updateStats();
+  showToast('Paquete de 15 eliminado','success');
 }
 
 // ===== TESTIMONIOS CRUD =====
