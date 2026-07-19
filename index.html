@@ -2607,7 +2607,7 @@ function adminPaqToDetalle(p, isGrupal) {
   const si = p.incSi || p.inc || [];
   return {
     title: p.titulo, sub: `${p.dur||''} · ${joinDest(p.dest)}`,
-    fechaSalida: p.fechaSalida||'', fechaRegreso: p.fechaRegreso||'',
+    fechaSalida: p.fechaSalida||p.fecha||'', fechaRegreso: p.fechaRegreso||'',
     lugarSalida: p.lugarSalida||'Rosario (ROS)',
     precioBase: p.precio||0, moneda: p.moneda||'USD',
     traslado: p.traslado !== false,
