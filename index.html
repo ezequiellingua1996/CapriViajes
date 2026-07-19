@@ -2292,7 +2292,7 @@ function showDetalle(id) {
       <div class="vuelo-itin-card">
         <div class="vuelo-itin-header">
           <span class="vuelo-itin-dir ${v.dir==="IDA"?"ida":"vuelta"}">${v.dir}</span>
-          <span class="vuelo-itin-airline">${v.aero}</span>
+          <span class="vuelo-itin-airline">${v.aero}${v.fecha ? ' · ' + formatFechaLarga(v.fecha) : ''}</span>
         </div>
         <div class="vuelo-itin-route">
           <span class="vuelo-city">${v.orig}</span>

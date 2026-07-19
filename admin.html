@@ -1379,13 +1379,14 @@ function setIncLines(listId, arr) {
 function addVueloRow(v, listId) {
   const c = document.getElementById(listId || 'vuelos-list');
   const row = document.createElement('div');
-  row.style.cssText = 'background:white;border:1px solid #E5E7EB;border-radius:8px;padding:0.75rem;display:grid;grid-template-columns:0.6fr 1fr 1.2fr 0.7fr 0.7fr 1fr auto;gap:0.4rem;align-items:end';
+  row.style.cssText = 'background:white;border:1px solid #E5E7EB;border-radius:8px;padding:0.75rem;display:grid;grid-template-columns:0.55fr 0.8fr 0.9fr 1.1fr 0.6fr 0.6fr 0.9fr auto;gap:0.4rem;align-items:end';
   row.innerHTML = `
     <div class="field" style="margin:0"><label>Dir.</label>
       <select style="width:100%;padding:0.5rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem">
         <option${v&&v.dir==='IDA'?' selected':''}>IDA</option>
         <option${v&&v.dir==='VUELTA'?' selected':''}>VUELTA</option>
       </select></div>
+    <div class="field" style="margin:0"><label>Fecha</label><input type="date" style="width:100%;padding:0.5rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${v?v.fecha||'':''}"></div>
     <div class="field" style="margin:0"><label>Aerolínea</label><input style="width:100%;padding:0.5rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${v?v.aero:''}" placeholder="Ej: LATAM"></div>
     <div class="field" style="margin:0"><label>Ruta (orig→escala→dest)</label><input style="width:100%;padding:0.5rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${v?v.orig+'→'+(v.escala&&v.escala!=='-'?v.escala+'→':'')+v.dest:''}" placeholder="ROS→EZE→MAD"></div>
     <div class="field" style="margin:0"><label>Salida</label><input style="width:100%;padding:0.5rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${v?v.salida:''}" placeholder="23:00"></div>
@@ -1398,16 +1399,17 @@ function addVueloRow(v, listId) {
 function getVuelos(listId) {
   return Array.from(document.getElementById(listId || 'vuelos-list').children).map(row => {
     const inputs = row.querySelectorAll('select, input');
-    const ruta = (inputs[2].value||'').split('→');
+    const ruta = (inputs[3].value||'').split('→');
     return {
       dir: inputs[0].value,
-      aero: inputs[1].value,
+      fecha: inputs[1].value,
+      aero: inputs[2].value,
       orig: ruta[0]||'',
       escala: ruta.length===3 ? ruta[1] : '-',
       dest: ruta[ruta.length-1]||'',
-      salida: inputs[3].value,
-      llegada: inputs[4].value,
-      equipaje: inputs[5].value
+      salida: inputs[4].value,
+      llegada: inputs[5].value,
+      equipaje: inputs[6].value
     };
   });
 }
