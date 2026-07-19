@@ -743,6 +743,53 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
     </div>
   </section>
 
+  <section id="inicio-destinos">
+    <div class="section-header">
+      <div>
+        <p class="section-label">Explorar</p>
+        <h2 class="section-title">Destinos que enamoran</h2>
+        <p class="section-subtitle">Los rincones del mundo más buscados por nuestros viajeros.</p>
+      </div>
+      <a href="#" class="ver-todos" onclick="showPage('paquetes');return false">Ver todos los destinos →</a>
+    </div>
+    <div class="destinos-grid" id="destinos-grid">
+      <div class="d-card feat" onclick="showDetalle('santorini')" style="cursor:pointer">
+        <img src="https://images.unsplash.com/photo-1533105079780-92b9be482077?w=800&q=80" alt="Santorini">
+        <div class="d-overlay"><p class="d-country">Grecia</p><h3 class="d-name">Santorini</h3><p class="d-price">Desde <strong>USD 1.890</strong> por persona</p></div>
+        <span class="d-tag">Más buscado</span>
+      </div>
+      <div class="d-card" onclick="showDetalle('japon')" style="cursor:pointer">
+        <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80" alt="Tokio">
+        <div class="d-overlay"><p class="d-country">Japón</p><h3 class="d-name">Tokio</h3><p class="d-price">Desde <strong>USD 2.350</strong></p></div>
+      </div>
+      <div class="d-card" onclick="showPage('paquetes')" style="cursor:pointer">
+        <img src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=600&q=80" alt="París">
+        <div class="d-overlay"><p class="d-country">Francia</p><h3 class="d-name">París</h3><p class="d-price">Desde <strong>USD 1.650</strong></p></div>
+        <span class="d-tag">Oferta</span>
+      </div>
+      <div class="d-card" onclick="showDetalle('caribe')" style="cursor:pointer">
+        <img src="https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=600&q=80" alt="Cancún">
+        <div class="d-overlay"><p class="d-country">México</p><h3 class="d-name">Cancún</h3><p class="d-price">Desde <strong>USD 980</strong></p></div>
+      </div>
+      <div class="d-card" onclick="showDetalle('peru')" style="cursor:pointer">
+        <img src="https://images.unsplash.com/photo-1531761535209-83234b757d8c?w=600&q=80" alt="Machu Picchu">
+        <div class="d-overlay"><p class="d-country">Perú</p><h3 class="d-name">Machu Picchu</h3><p class="d-price">Desde <strong>USD 750</strong></p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="inicio-why">
+    <p class="section-label">Por qué elegirnos</p>
+    <h2 class="section-title">Viajás acompañado<br>en cada paso</h2>
+    <p class="section-subtitle">Atención personalizada, precios claros y experiencia real en cada destino.</p>
+    <div class="ben-grid">
+      <div class="ben"><div class="ben-icon">🧭</div><h4>Asesoramiento personalizado</h4><p>Armamos el viaje según tus gustos, tiempos y presupuesto, sin paquetes genéricos.</p></div>
+      <div class="ben"><div class="ben-icon">💸</div><h4>Mejor precio garantizado</h4><p>Si encontrás el mismo paquete más barato en 48 hs, igualamos el precio sin preguntas.</p></div>
+      <div class="ben"><div class="ben-icon">📞</div><h4>Asistencia 24/7</h4><p>Estamos disponibles antes, durante y después de tu viaje para cualquier imprevisto.</p></div>
+      <div class="ben"><div class="ben-icon">🛡️</div><h4>Seguro de viaje incluido</h4><p>Todos nuestros paquetes incluyen asistencia médica internacional.</p></div>
+    </div>
+  </section>
+
   <div class="counters">
     <div class="counter-item"><div class="counter-val">15+</div><div class="counter-label">Años de experiencia</div></div>
     <div class="counter-item"><div class="counter-val">8.000+</div><div class="counter-label">Viajeros felices</div></div>
@@ -803,53 +850,6 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
         </p>
       </div>
 
-    </div>
-  </section>
-
-  <section id="inicio-destinos">
-    <div class="section-header">
-      <div>
-        <p class="section-label">Explorar</p>
-        <h2 class="section-title">Destinos que enamoran</h2>
-        <p class="section-subtitle">Los rincones del mundo más buscados por nuestros viajeros.</p>
-      </div>
-      <a href="#" class="ver-todos" onclick="showPage('paquetes');return false">Ver todos los destinos →</a>
-    </div>
-    <div class="destinos-grid" id="destinos-grid">
-      <div class="d-card feat" onclick="showDetalle('santorini')" style="cursor:pointer">
-        <img src="https://images.unsplash.com/photo-1533105079780-92b9be482077?w=800&q=80" alt="Santorini">
-        <div class="d-overlay"><p class="d-country">Grecia</p><h3 class="d-name">Santorini</h3><p class="d-price">Desde <strong>USD 1.890</strong> por persona</p></div>
-        <span class="d-tag">Más buscado</span>
-      </div>
-      <div class="d-card" onclick="showDetalle('japon')" style="cursor:pointer">
-        <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80" alt="Tokio">
-        <div class="d-overlay"><p class="d-country">Japón</p><h3 class="d-name">Tokio</h3><p class="d-price">Desde <strong>USD 2.350</strong></p></div>
-      </div>
-      <div class="d-card" onclick="showPage('paquetes')" style="cursor:pointer">
-        <img src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=600&q=80" alt="París">
-        <div class="d-overlay"><p class="d-country">Francia</p><h3 class="d-name">París</h3><p class="d-price">Desde <strong>USD 1.650</strong></p></div>
-        <span class="d-tag">Oferta</span>
-      </div>
-      <div class="d-card" onclick="showDetalle('caribe')" style="cursor:pointer">
-        <img src="https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=600&q=80" alt="Cancún">
-        <div class="d-overlay"><p class="d-country">México</p><h3 class="d-name">Cancún</h3><p class="d-price">Desde <strong>USD 980</strong></p></div>
-      </div>
-      <div class="d-card" onclick="showDetalle('peru')" style="cursor:pointer">
-        <img src="https://images.unsplash.com/photo-1531761535209-83234b757d8c?w=600&q=80" alt="Machu Picchu">
-        <div class="d-overlay"><p class="d-country">Perú</p><h3 class="d-name">Machu Picchu</h3><p class="d-price">Desde <strong>USD 750</strong></p></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="inicio-why">
-    <p class="section-label">Por qué elegirnos</p>
-    <h2 class="section-title">Viajás acompañado<br>en cada paso</h2>
-    <p class="section-subtitle">Atención personalizada, precios claros y experiencia real en cada destino.</p>
-    <div class="ben-grid">
-      <div class="ben"><div class="ben-icon">🧭</div><h4>Asesoramiento personalizado</h4><p>Armamos el viaje según tus gustos, tiempos y presupuesto, sin paquetes genéricos.</p></div>
-      <div class="ben"><div class="ben-icon">💸</div><h4>Mejor precio garantizado</h4><p>Si encontrás el mismo paquete más barato en 48 hs, igualamos el precio sin preguntas.</p></div>
-      <div class="ben"><div class="ben-icon">📞</div><h4>Asistencia 24/7</h4><p>Estamos disponibles antes, durante y después de tu viaje para cualquier imprevisto.</p></div>
-      <div class="ben"><div class="ben-icon">🛡️</div><h4>Seguro de viaje incluido</h4><p>Todos nuestros paquetes incluyen asistencia médica internacional.</p></div>
     </div>
   </section>
 
