@@ -744,9 +744,10 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
     </div>
     <div class="modal-body">
       <input type="hidden" id="grup-edit-id">
-      <div class="field-row">
-        <div class="field"><label>Título</label><input type="text" id="grup-titulo" placeholder="Ej: Madrid, Barcelona & Sevilla"></div>
-        <div class="field"><label>País / Destino</label><input type="text" id="grup-dest" placeholder="Ej: España"></div>
+      <div class="field"><label>Título</label><input type="text" id="grup-titulo" placeholder="Ej: Madrid, Barcelona & Sevilla"></div>
+      <div class="field"><label>Países / Destinos (podés agregar varios)</label>
+        <div class="includes-editor" id="grup-dest-list"></div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:0.4rem" onclick="addIncLine('grup-dest-list')">+ Agregar país</button>
       </div>
       <div class="field-row">
         <div class="field"><label>Fecha de salida</label><input type="date" id="grup-fecha"></div>
@@ -1193,7 +1194,7 @@ function renderGrup() {
       <img class="item-card-img" src="${g.img}" alt="${g.titulo}" onerror="this.style.background='#EEE'">
       <div class="item-card-body">
         <div class="item-card-title">${g.titulo}</div>
-        <div class="item-card-sub">${g.dest} · ${g.fecha} · <strong>${g.moneda||'USD'} ${g.precio.toLocaleString()}</strong> · ${g.cupos}</div>
+        <div class="item-card-sub">${Array.isArray(g.dest)?g.dest.join(' · '):(g.dest||'')} · ${g.fecha} · <strong>${g.moneda||'USD'} ${g.precio.toLocaleString()}</strong> · ${g.cupos}</div>
       </div>
       <div class="item-card-actions">
         <button class="btn btn-ghost btn-sm" onclick="editGrup(${i})">✏️ Editar</button>
@@ -1599,13 +1600,14 @@ function deletePaq(i) {
 function openNewGrup() {
   document.getElementById('grup-edit-id').value = '';
   document.getElementById('modal-grup-title').textContent = 'Nuevo grupal';
-  ['grup-titulo','grup-dest','grup-fecha','grup-fecha-regreso','grup-dur','grup-precio','grup-cupos','grup-desc','grup-img','grup-lugar-salida'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['grup-titulo','grup-fecha','grup-fecha-regreso','grup-dur','grup-precio','grup-cupos','grup-desc','grup-img','grup-lugar-salida'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('grup-img-preview').removeAttribute('src');
   const gm=document.getElementById('grup-moneda'); if(gm) gm.value='USD';
   const gc=document.getElementById('grup-cat'); if(gc) gc.value='internacional';
   if(document.getElementById('grup-lugar-salida'))document.getElementById('grup-lugar-salida').value='Rosario (ROS)';
   const gd=document.getElementById('grup-destacado'); if(gd) gd.checked=false;
   const gf=document.getElementById('grup-feat'); if(gf) gf.checked=false;
+  setIncLines('grup-dest-list',[]);
   setIncLines('grup-inc-list',[]);
   setIncLines('grup-no-list',[]);
   setIncLines('grup-exc-list',[]);
@@ -1618,7 +1620,7 @@ function editGrup(i) {
   document.getElementById('grup-edit-id').value = i;
   document.getElementById('modal-grup-title').textContent = 'Editar grupal';
   document.getElementById('grup-titulo').value = g.titulo||'';
-  document.getElementById('grup-dest').value = g.dest||'';
+  setIncLines('grup-dest-list', Array.isArray(g.dest) ? g.dest : (g.dest ? [g.dest] : []));
   document.getElementById('grup-fecha').value = g.fecha||'';
   const fr = document.getElementById('grup-fecha-regreso'); if(fr) fr.value = g.fechaRegreso||'';
   document.getElementById('grup-dur').value = g.dur||'';
@@ -1647,7 +1649,7 @@ function saveGrup() {
     id: idx !== '' ? DATA.grupales[idx].id : 'grup_'+Date.now(),
     grupal: true,
     titulo: document.getElementById('grup-titulo').value,
-    dest: document.getElementById('grup-dest').value,
+    dest: getIncLines('grup-dest-list'),
     fecha: document.getElementById('grup-fecha').value || (idx !== '' ? DATA.grupales[idx].fecha : ''),
     fechaRegreso: (fr && fr.value) || (idx !== '' ? DATA.grupales[idx].fechaRegreso : ''),
     lugarSalida: ls ? ls.value : 'Rosario (ROS)',

@@ -2597,12 +2597,16 @@ function adminResumenToHtml(arr) {
   }).join('');
 }
 
+function joinDest(d) {
+  return Array.isArray(d) ? d.join(' · ') : (d || '');
+}
+
 function adminPaqToDetalle(p, isGrupal) {
   const mon = (p.moneda||'USD') === 'ARS' ? '$ ' : 'USD ';
   const badges = [p.dur, p.badge, p.vuelo==='si'?'Vuelo incluido':null].filter(Boolean);
   const si = p.incSi || p.inc || [];
   return {
-    title: p.titulo, sub: `${p.dur||''} · ${p.dest||''}`,
+    title: p.titulo, sub: `${p.dur||''} · ${joinDest(p.dest)}`,
     fechaSalida: p.fechaSalida||'', fechaRegreso: p.fechaRegreso||'',
     lugarSalida: p.lugarSalida||'Rosario (ROS)',
     precioBase: p.precio||0, moneda: p.moneda||'USD',
@@ -2694,7 +2698,7 @@ function renderGrupCard(g) {
     <div class="paq-badges">${badge?`<span class="paq-badge">${escapeHtml(badge)}</span>`:''}</div></div>
     <div class="paq-body">
       ${salida?`<p class="paq-salida">${salida}</p>`:''}
-      <p class="paq-dest">${escapeHtml(g.dest||'')}</p>
+      <p class="paq-dest">${escapeHtml(joinDest(g.dest))}</p>
       <h3>${escapeHtml(g.titulo||'')}</h3>
       <div class="paq-meta">${tags}</div>
     </div>
@@ -2747,7 +2751,7 @@ async function loadFromAdmin() {
     const cards = [
       ...(stored.destinos||[]).map(d => ({ type:'destino', id:d.id, pais:d.pais, nombre:d.nombre, precio:d.precio, tag:d.tag, img:d.img, feat: d.feat==='si' })),
       ...(stored.paquetes||[]).filter(p => p.destacado).map(p => ({ type:'paquete', id:p.id, pais:p.dest, nombre:p.titulo, precio:p.precio, tag:p.badge, img:p.img, moneda:p.moneda, feat: !!p.feat })),
-      ...(stored.grupales||[]).filter(g => g.destacado).map(g => ({ type:'grupal', id:g.id, pais:g.dest, nombre:g.titulo, precio:g.precio, tag:g.badge, img:g.img, moneda:g.moneda, feat: !!g.feat }))
+      ...(stored.grupales||[]).filter(g => g.destacado).map(g => ({ type:'grupal', id:g.id, pais:joinDest(g.dest), nombre:g.titulo, precio:g.precio, tag:g.badge, img:g.img, moneda:g.moneda, feat: !!g.feat }))
     ];
     if (cards.length) {
       destGrid.innerHTML = cards.map(c => {
