@@ -766,6 +766,12 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
           </select>
         </div>
       </div>
+      <div class="field">
+        <div style="font-size:0.75rem;font-weight:600;color:var(--navy);margin-bottom:0.5rem">Pagos (opcional — si no se completa, se divide en 2 automáticamente)</div>
+        <div class="includes-editor" id="grup-pagos-list"></div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:0.4rem" onclick="addPagoLine(null,'grup-pagos-list')">+ Agregar pago</button>
+        <div class="hint" style="margin-top:0.4rem">Formato: Label del pago · Monto. Ej: "1er pago · 700"</div>
+      </div>
       <div class="field-row">
         <div class="field"><label>Cupos (Ej: 18/20)</label><input type="text" id="grup-cupos" placeholder="18/20 cupos"></div>
         <div class="field"><label>Categoría</label>
@@ -780,6 +786,40 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
         <div class="field"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="grup-feat" style="width:16px;height:16px"> Card grande (destacado visual)</label></div>
       </div>
       <div class="field"><label>Descripción</label><textarea id="grup-desc" placeholder="Descripción del viaje grupal..." style="min-height:80px"></textarea></div>
+
+      <!-- Vuelos -->
+      <div style="background:#F8FAFC;border-radius:8px;padding:1rem;margin-bottom:1rem">
+        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ocean);margin-bottom:0.75rem">✈️ Itinerario de vuelo</div>
+        <div id="grup-vuelos-list" style="display:flex;flex-direction:column;gap:0.75rem"></div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:0.5rem" onclick="addVueloRow(null,'grup-vuelos-list')">+ Agregar tramo</button>
+        <div class="hint" style="margin-top:0.3rem">Agregá ida y vuelta como tramos separados</div>
+        <div class="field" style="margin-top:0.75rem">
+          <label>Traslados in/out incluidos</label>
+          <select id="grup-traslado"><option value="si">Sí — incluidos en el paquete</option><option value="no">No</option></select>
+        </div>
+      </div>
+
+      <!-- Ciudades del viaje -->
+      <div style="background:#F8FAFC;border-radius:8px;padding:1rem;margin-bottom:1rem">
+        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ocean);margin-bottom:0.75rem">🏙️ Ciudades del viaje</div>
+        <p style="font-size:0.75rem;color:var(--gray);margin-bottom:0.75rem">Definí acá las ciudades del itinerario (formato: Ciudad|Detalle). Después, en "Opciones de hotel", vas a poder cargar los hoteles agrupados por cada una de estas ciudades.</p>
+        <div class="field" style="margin:0"><label>Resumen por ciudad</label>
+          <div class="includes-editor" id="grup-resumen-list"></div>
+          <button class="btn btn-ghost btn-sm" style="margin-top:0.4rem" onclick="addIncLine('grup-resumen-list')">+ Agregar ciudad</button>
+          <div class="hint">Ej: Roma|5 noches · Hotel Colosseo 4★</div>
+        </div>
+      </div>
+
+      <!-- Hoteles -->
+      <div style="background:#F8FAFC;border-radius:8px;padding:1rem;margin-bottom:1rem">
+        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ocean);margin-bottom:0.75rem">🏨 Opciones de hotel</div>
+        <div id="grup-hoteles-list" style="display:flex;flex-direction:column;gap:0.75rem"></div>
+        <div style="display:flex;gap:0.5rem;margin-top:0.5rem">
+          <button class="btn btn-ghost btn-sm" onclick="addHotelRow(null,'grup-hoteles-list','grup-resumen-list')">+ Agregar hotel</button>
+          <button class="btn btn-ghost btn-sm" onclick="refreshHotelCiudades('grup-hoteles-list','grup-resumen-list')">🔄 Actualizar lista de ciudades</button>
+        </div>
+        <div class="hint" style="margin-top:0.3rem">El pasajero solo puede elegir un hotel por ciudad. Si el grupal tiene una sola ciudad, va a ver todas las opciones como una única lista para elegir.</div>
+      </div>
       <div class="field"><label>URL imagen</label><input type="url" id="grup-img" placeholder="https://images.unsplash.com/..." oninput="this.nextElementSibling.src=this.value"><img class="img-preview" id="grup-img-preview" onerror="this.removeAttribute('src')"></div>
       <div class="field"><label>¿Qué incluye? (uno por línea)</label>
         <div class="includes-editor" id="grup-inc-list"></div>
@@ -1336,8 +1376,8 @@ function setIncLines(listId, arr) {
 }
 
 // ===== PAQUETES CRUD =====
-function addVueloRow(v) {
-  const c = document.getElementById('vuelos-list');
+function addVueloRow(v, listId) {
+  const c = document.getElementById(listId || 'vuelos-list');
   const row = document.createElement('div');
   row.style.cssText = 'background:white;border:1px solid #E5E7EB;border-radius:8px;padding:0.75rem;display:grid;grid-template-columns:0.6fr 1fr 1.2fr 0.7fr 0.7fr 1fr auto;gap:0.4rem;align-items:end';
   row.innerHTML = `
@@ -1355,8 +1395,8 @@ function addVueloRow(v) {
   c.appendChild(row);
 }
 
-function getVuelos() {
-  return Array.from(document.getElementById('vuelos-list').children).map(row => {
+function getVuelos(listId) {
+  return Array.from(document.getElementById(listId || 'vuelos-list').children).map(row => {
     const inputs = row.querySelectorAll('select, input');
     const ruta = (inputs[2].value||'').split('→');
     return {
@@ -1372,8 +1412,8 @@ function getVuelos() {
   });
 }
 
-function getResumenCiudades() {
-  const list = document.getElementById('resumen-list');
+function getResumenCiudades(listId) {
+  const list = document.getElementById(listId || 'resumen-list');
   if (!list) return [];
   return Array.from(list.children).map(row => {
     const input = row.querySelector('input');
@@ -1381,28 +1421,28 @@ function getResumenCiudades() {
   }).filter(Boolean);
 }
 
-function ciudadSelectOptions(selected) {
-  const ciudades = getResumenCiudades();
+function ciudadSelectOptions(selected, resumenListId) {
+  const ciudades = getResumenCiudades(resumenListId);
   if (selected && !ciudades.includes(selected)) ciudades.unshift(selected);
   if (!ciudades.length) return '<option value="">— Cargá ciudades en "Ciudades del viaje" —</option>';
   return '<option value="">Sin ciudad (paquete de una sola ciudad)</option>' +
     ciudades.map(c => `<option value="${c}" ${c===selected?'selected':''}>${c}</option>`).join('');
 }
 
-function refreshHotelCiudades() {
-  document.querySelectorAll('#hoteles-list .hotel-ciudad-select').forEach(sel => {
+function refreshHotelCiudades(listId, resumenListId) {
+  document.querySelectorAll('#' + (listId || 'hoteles-list') + ' .hotel-ciudad-select').forEach(sel => {
     const current = sel.value;
-    sel.innerHTML = ciudadSelectOptions(current);
+    sel.innerHTML = ciudadSelectOptions(current, resumenListId);
   });
 }
 
-function addHotelRow(h) {
-  const c = document.getElementById('hoteles-list');
+function addHotelRow(h, listId, resumenListId) {
+  const c = document.getElementById(listId || 'hoteles-list');
   const row = document.createElement('div');
   row.style.cssText = 'background:white;border:1px solid #E5E7EB;border-radius:8px;padding:0.75rem;display:flex;flex-direction:column;gap:0.5rem';
   row.innerHTML = `
     <div style="display:grid;grid-template-columns:0.8fr 1fr 1fr 0.5fr auto;gap:0.4rem;align-items:end">
-      <div class="field" style="margin:0"><label>Ciudad</label><select class="hotel-ciudad-select" style="width:100%;padding:0.45rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem">${ciudadSelectOptions(h?h.ciudad||'':'')}</select></div>
+      <div class="field" style="margin:0"><label>Ciudad</label><select class="hotel-ciudad-select" style="width:100%;padding:0.45rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem">${ciudadSelectOptions(h?h.ciudad||'':'', resumenListId)}</select></div>
       <div class="field" style="margin:0"><label>Nombre hotel</label><input style="width:100%;padding:0.45rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${h?h.nombre:''}" placeholder="Ej: Hotel Colosseo 4★"></div>
       <div class="field" style="margin:0"><label>Detalle (noches · tipo)</label><input style="width:100%;padding:0.45rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${h?h.detail:''}" placeholder="7 noches · All Inclusive"></div>
       <div class="field" style="margin:0"><label>Precio</label><input type="number" style="width:100%;padding:0.45rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${h?h.precio:''}" placeholder="1490"></div>
@@ -1415,8 +1455,8 @@ function addHotelRow(h) {
   c.appendChild(row);
 }
 
-function getHoteles() {
-  return Array.from(document.getElementById('hoteles-list').children).map(row => {
+function getHoteles(listId) {
+  return Array.from(document.getElementById(listId || 'hoteles-list').children).map(row => {
     const ciudad = (row.querySelector('select')?.value || '').trim();
     const inputs = row.querySelectorAll('input');
     const nombre = inputs[0].value;
@@ -1467,16 +1507,16 @@ function getItinerario(listId) {
   }).filter(d => d.title);
 }
 
-function addPagoLine(val) {
-  const c = document.getElementById('pagos-list');
+function addPagoLine(val, listId) {
+  const c = document.getElementById(listId || 'pagos-list');
   const row = document.createElement('div');
   row.className = 'include-row';
   row.innerHTML = `<input type="text" value="${val||''}" placeholder="Ej: 1er pago · 700" style="flex:1"><button class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">✕</button>`;
   c.appendChild(row);
 }
 
-function getPagos() {
-  return Array.from(document.getElementById('pagos-list').querySelectorAll('input'))
+function getPagos(listId) {
+  return Array.from(document.getElementById(listId || 'pagos-list').querySelectorAll('input'))
     .map(i => {
       const parts = i.value.split('·');
       if (parts.length >= 2) return { label: parts[0].trim(), monto: parseFloat(parts[1].trim())||0 };
@@ -1607,11 +1647,16 @@ function openNewGrup() {
   if(document.getElementById('grup-lugar-salida'))document.getElementById('grup-lugar-salida').value='Rosario (ROS)';
   const gd=document.getElementById('grup-destacado'); if(gd) gd.checked=false;
   const gf=document.getElementById('grup-feat'); if(gf) gf.checked=false;
+  const gtr=document.getElementById('grup-traslado'); if(gtr) gtr.value='si';
   setIncLines('grup-dest-list',[]);
   setIncLines('grup-inc-list',[]);
   setIncLines('grup-no-list',[]);
   setIncLines('grup-exc-list',[]);
+  setIncLines('grup-resumen-list',[]);
   const gi=document.getElementById('grup-itin-list'); if(gi) gi.innerHTML='';
+  const gv=document.getElementById('grup-vuelos-list'); if(gv) gv.innerHTML='';
+  const gh=document.getElementById('grup-hoteles-list'); if(gh) gh.innerHTML='';
+  const gp=document.getElementById('grup-pagos-list'); if(gp) gp.innerHTML='';
   openModal('modal-grup');
 }
 
@@ -1638,6 +1683,12 @@ function editGrup(i) {
   setIncLines('grup-exc-list', g.excursiones||[]);
   const gde=document.getElementById('grup-destacado'); if(gde) gde.checked=!!g.destacado;
   const gfe=document.getElementById('grup-feat'); if(gfe) gfe.checked=!!g.feat;
+  const gtr=document.getElementById('grup-traslado'); if(gtr) gtr.value = g.traslado===false ? 'no' : 'si';
+  const gvl=document.getElementById('grup-vuelos-list'); if(gvl){gvl.innerHTML='';(g.vuelos||[]).forEach(v=>addVueloRow(v,'grup-vuelos-list'));}
+  const gpl=document.getElementById('grup-pagos-list'); if(gpl){gpl.innerHTML='';(g.pagos||[]).forEach(pg=>addPagoLine(pg.label+' · '+pg.monto,'grup-pagos-list'));}
+  // Resumen por ciudad debe cargarse antes que Hoteles para que el desplegable de ciudad tenga las opciones
+  setIncLines('grup-resumen-list', g.resumen||[]);
+  const ghl=document.getElementById('grup-hoteles-list'); if(ghl){ghl.innerHTML='';(g.hoteles||[]).forEach(h=>addHotelRow(h,'grup-hoteles-list','grup-resumen-list'));}
   openModal('modal-grup');
 }
 
@@ -1662,10 +1713,15 @@ function saveGrup() {
     img: document.getElementById('grup-img').value,
     destacado: document.getElementById('grup-destacado')?.checked || false,
     feat: document.getElementById('grup-feat')?.checked || false,
+    traslado: (document.getElementById('grup-traslado')?.value || 'si') !== 'no',
     inc: getIncLines('grup-inc-list'),
     incNo: getIncLines('grup-no-list'),
     excursiones: getIncLines('grup-exc-list'),
-    itinerario: getItinerario('grup-itin-list')
+    itinerario: getItinerario('grup-itin-list'),
+    vuelos: getVuelos('grup-vuelos-list'),
+    pagos: getPagos('grup-pagos-list'),
+    resumen: getIncLines('grup-resumen-list'),
+    hoteles: getHoteles('grup-hoteles-list')
   };
   if (!obj.titulo) { showToast('El título es obligatorio','error'); return; }
   if (idx !== '') DATA.grupales[idx] = obj; else DATA.grupales.push(obj);

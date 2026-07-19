@@ -2329,9 +2329,9 @@ function showDetalle(id) {
     excWrap.style.display = "none";
   }
 
-  // Hotel selection — hide for grupales
+  // Hotel selection — se muestra si el paquete/grupal tiene hoteles cargados
   const hotelSection = document.getElementById("det-hoteles-section");
-  if (isGrupal) {
+  if (!p.hoteles || !p.hoteles.length) {
     hotelSection.style.display = "none";
   } else {
     hotelSection.style.display = "";
