@@ -179,6 +179,7 @@ section{padding:5rem 5%}
 .test-card p{font-size:0.87rem;color:#444;line-height:1.7;margin-bottom:1.2rem;padding-top:0.9rem}
 .test-autor{display:flex;align-items:center;gap:0.7rem}
 .test-avatar{width:38px;height:38px;border-radius:50%;object-fit:cover}
+.test-avatar-letter{width:38px;height:38px;border-radius:50%;background:var(--navy);color:var(--white);display:flex;align-items:center;justify-content:center;font-family:"Playfair Display",serif;font-weight:700;font-size:1rem;flex-shrink:0}
 .test-nombre{font-weight:600;font-size:0.85rem;color:var(--navy)}
 .test-viaje{font-size:0.75rem;color:var(--gray)}
 .estrellas{color:#F59E0B;font-size:0.82rem;margin-bottom:0.2rem}
@@ -866,9 +867,9 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
       <div><p class="section-label">Testimonios</p><h2 class="section-title">Lo que dicen nuestros viajeros</h2></div>
     </div>
     <div class="test-grid" id="test-grid">
-      <div class="test-card"><div class="estrellas">★★★★★</div><p>Organicé mi luna de miel con Capri Viajes y fue perfecto. Cada detalle estaba cuidado: hoteles, excursiones y hasta nos dieron un upgrade inesperado.</p><div class="test-autor"><img class="test-avatar" src="https://i.pravatar.cc/80?img=47" alt="Valentina R."><div><div class="test-nombre">Valentina R.</div><div class="test-viaje">Luna de miel en Santorini</div></div></div></div>
-      <div class="test-card"><div class="estrellas">★★★★★</div><p>Llevé a mi familia a Japón y gracias a Capri no tuvimos que preocuparnos por nada. Los chicos quedaron fascinados con Tokio.</p><div class="test-autor"><img class="test-avatar" src="https://i.pravatar.cc/80?img=12" alt="Martín G."><div><div class="test-nombre">Martín G.</div><div class="test-viaje">Viaje familiar a Japón</div></div></div></div>
-      <div class="test-card"><div class="estrellas">★★★★★</div><p>La atención es increíble. Me ayudaron a cambiar las fechas sin costo cuando tuve un problema de trabajo. Esa flexibilidad vale oro.</p><div class="test-autor"><img class="test-avatar" src="https://i.pravatar.cc/80?img=32" alt="Laura M."><div><div class="test-nombre">Laura M.</div><div class="test-viaje">Escape a París</div></div></div></div>
+      <div class="test-card"><div class="estrellas">★★★★★</div><p>Organicé mi luna de miel con Capri Viajes y fue perfecto. Cada detalle estaba cuidado: hoteles, excursiones y hasta nos dieron un upgrade inesperado.</p><div class="test-autor"><div class="test-avatar-letter">V</div><div><div class="test-nombre">Valentina R.</div><div class="test-viaje">Luna de miel en Santorini</div></div></div></div>
+      <div class="test-card"><div class="estrellas">★★★★★</div><p>Llevé a mi familia a Japón y gracias a Capri no tuvimos que preocuparnos por nada. Los chicos quedaron fascinados con Tokio.</p><div class="test-autor"><div class="test-avatar-letter">M</div><div><div class="test-nombre">Martín G.</div><div class="test-viaje">Viaje familiar a Japón</div></div></div></div>
+      <div class="test-card"><div class="estrellas">★★★★★</div><p>La atención es increíble. Me ayudaron a cambiar las fechas sin costo cuando tuve un problema de trabajo. Esa flexibilidad vale oro.</p><div class="test-autor"><div class="test-avatar-letter">L</div><div><div class="test-nombre">Laura M.</div><div class="test-viaje">Escape a París</div></div></div></div>
     </div>
   </section>
 
@@ -2403,10 +2404,10 @@ function showDetalle(id) {
       <div class="itin-day">
         <div class="itin-day-num">${d.day}</div>
         <div class="itin-day-content">
-          <div class="itin-day-city">${d.city}</div>
-          <div class="itin-day-title">${d.title}</div>
-          <p>${d.desc}</p>
-          ${d.img ? `<img class="itin-day-img" src="${d.img}" alt="${d.title}" loading="lazy">` : ""}
+          <div class="itin-day-city">${escapeHtml(d.city)}</div>
+          <div class="itin-day-title">${escapeHtml(d.title)}</div>
+          <p>${nl2br(d.desc)}</p>
+          ${d.img ? `<img class="itin-day-img" src="${escapeHtml(d.img)}" alt="${escapeHtml(d.title)}" loading="lazy">` : ""}
         </div>
       </div>`).join("");
   } else {
@@ -2503,7 +2504,7 @@ function renderAsistenciaGrid() {
     <div class="asistencia-card">
       <img class="asistencia-logo" src="${escapeHtml(a.logo||'')}" alt="${escapeHtml(a.nombre||'')}" onerror="this.style.background='#EEE'">
       <h3>${escapeHtml(a.nombre||'')}</h3>
-      <p class="asistencia-desc">${escapeHtml(a.descripcion||'')}</p>
+      <p class="asistencia-desc">${nl2br(a.descripcion||'')}</p>
       ${a.telefono ? `<a class="asistencia-contact" href="tel:${escapeHtml(a.telefono)}">📞 ${escapeHtml(a.telefono)}</a>` : ""}
       ${a.web ? `<a class="asistencia-contact" href="${escapeHtml(a.web)}" target="_blank" rel="noopener">🌐 Sitio web</a>` : ""}
       <a class="btn-wa-det" href="https://wa.me/${WA_NUMBER}?text=${waMsg}" target="_blank" rel="noopener" style="margin-top:0.75rem">💬 Consultar por WhatsApp</a>
@@ -2628,6 +2629,11 @@ function joinDest(d) {
   return Array.isArray(d) ? d.join(' · ') : (d || '');
 }
 
+// Convierte los saltos de línea escritos en el admin (textarea) en <br> reales
+function nl2br(s) {
+  return escapeHtml(s||'').replace(/\n/g, '<br>');
+}
+
 function adminPaqToDetalle(p, isGrupal) {
   const mon = (p.moneda||'USD') === 'ARS' ? '$ ' : 'USD ';
   const badges = [p.dur, p.badge, p.vuelo==='si'?'Vuelo incluido':null].filter(Boolean);
@@ -2641,7 +2647,7 @@ function adminPaqToDetalle(p, isGrupal) {
     excursiones: p.excursiones||[],
     img: p.img||'', badges: badges,
     precio: `<sup>${mon}</sup>${(p.precio||0).toLocaleString('es-AR')}`,
-    descripcion: `<p>${escapeHtml(p.descFull||p.descCorta||p.desc||'')}</p>`,
+    descripcion: `<p>${nl2br(p.descFull||p.descCorta||p.desc||'')}</p>`,
     resumen: adminResumenToHtml(p.resumen),
     itinerario: p.itinerario||[],
     incluye: { si: si, no: p.incNo||[] },
@@ -2841,9 +2847,9 @@ async function loadFromAdmin() {
     testGrid.innerHTML = stored.testimonios.map(t => `
       <div class="test-card">
         <div class="estrellas">${'★'.repeat(Math.min(5,t.estrellas||5))}</div>
-        <p>${escapeHtml(t.texto||'')}</p>
+        <p>${nl2br(t.texto||'')}</p>
         <div class="test-autor">
-          <img class="test-avatar" src="${escapeHtml(t.foto||'https://i.pravatar.cc/80?img=1')}" alt="${escapeHtml(t.nombre||'')}">
+          <div class="test-avatar-letter">${escapeHtml((t.nombre||'?').trim().charAt(0).toUpperCase())}</div>
           <div><div class="test-nombre">${escapeHtml(t.nombre||'')}</div>
           <div class="test-viaje">${escapeHtml(t.viaje||'')}</div></div>
         </div>

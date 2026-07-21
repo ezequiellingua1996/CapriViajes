@@ -924,16 +924,14 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
       <div class="field"><label>Nombre del cliente</label><input type="text" id="test-nombre" placeholder="Ej: Valentina R."></div>
       <div class="field"><label>Viaje realizado</label><input type="text" id="test-viaje" placeholder="Ej: Luna de miel en Santorini"></div>
       <div class="field"><label>Testimonio</label><textarea id="test-texto" placeholder="Escribí el comentario del cliente..." style="min-height:100px"></textarea></div>
-      <div class="field-row">
-        <div class="field"><label>Estrellas</label>
-          <select id="test-estrellas">
-            <option value="5">★★★★★ (5)</option>
-            <option value="4">★★★★ (4)</option>
-            <option value="3">★★★ (3)</option>
-          </select>
-        </div>
-        <div class="field"><label>URL foto (opcional)</label><input type="url" id="test-foto" placeholder="https://..." oninput="this.nextElementSibling.src=this.value"><img class="img-preview" id="test-foto-preview" onerror="this.removeAttribute('src')"></div>
+      <div class="field"><label>Estrellas</label>
+        <select id="test-estrellas">
+          <option value="5">★★★★★ (5)</option>
+          <option value="4">★★★★ (4)</option>
+          <option value="3">★★★ (3)</option>
+        </select>
       </div>
+      <p style="font-size:0.75rem;color:var(--gray)">La imagen del testimonio se muestra automáticamente como un círculo con la primera letra del nombre.</p>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('modal-test')">Cancelar</button>
@@ -1337,7 +1335,7 @@ function renderTest() {
   const el = document.getElementById('test-list');
   el.innerHTML = DATA.testimonios.map((t,i) => `
     <div class="item-card">
-      <img class="item-card-img" src="${t.foto || 'https://i.pravatar.cc/80?img=1'}" alt="${t.nombre}" style="border-radius:50%;width:50px;height:50px" onerror="this.style.background='#EEE'">
+      <div style="border-radius:50%;width:50px;height:50px;background:var(--navy);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem;flex-shrink:0">${(t.nombre||'?').trim().charAt(0).toUpperCase()}</div>
       <div class="item-card-body">
         <div class="item-card-title">${t.nombre}</div>
         <div class="item-card-sub">${t.viaje} · ${'★'.repeat(t.estrellas)}</div>
@@ -1870,8 +1868,7 @@ function deleteQuince(i) {
 function openNewTest() {
   document.getElementById('test-edit-id').value = '';
   document.getElementById('modal-test-title').textContent = 'Nuevo testimonio';
-  ['test-nombre','test-viaje','test-texto','test-foto'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('test-foto-preview').removeAttribute('src');
+  ['test-nombre','test-viaje','test-texto'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('test-estrellas').value = '5';
   openModal('modal-test');
 }
@@ -1884,8 +1881,6 @@ function editTest(i) {
   document.getElementById('test-viaje').value = t.viaje;
   document.getElementById('test-texto').value = t.texto;
   document.getElementById('test-estrellas').value = t.estrellas;
-  document.getElementById('test-foto').value = t.foto||'';
-  document.getElementById('test-foto-preview').src = t.foto||'';
   openModal('modal-test');
 }
 
@@ -1896,8 +1891,7 @@ function saveTest() {
     nombre: document.getElementById('test-nombre').value,
     viaje: document.getElementById('test-viaje').value,
     texto: document.getElementById('test-texto').value,
-    estrellas: parseInt(document.getElementById('test-estrellas').value),
-    foto: document.getElementById('test-foto').value
+    estrellas: parseInt(document.getElementById('test-estrellas').value)
   };
   if (!obj.nombre || !obj.texto) { showToast('Completá nombre y testimonio','error'); return; }
   if (idx !== '') DATA.testimonios[idx] = obj; else DATA.testimonios.push(obj);
