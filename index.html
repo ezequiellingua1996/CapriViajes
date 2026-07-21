@@ -1160,7 +1160,7 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
     <div class="det-main">
 
       <!-- Descripcion -->
-      <div class="det-section">
+      <div class="det-section" id="det-descripcion-section">
         <h2>Descripción del paquete</h2>
         <div id="det-descripcion"></div>
       </div>
@@ -1183,6 +1183,17 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
         </div>
       </div>
 
+      <!-- Habitaciones dobles a compartir -->
+      <div class="det-section" id="det-hab-compartir-section" style="display:none">
+        <div class="traslado-card" style="background:#FFF7ED;border-color:#FBBF24">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#92400E" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <div>
+            <p style="font-weight:600;color:#92400E;margin-bottom:0.2rem">Habitaciones dobles a compartir</p>
+            <p style="font-size:0.78rem;color:#92400E">Este viaje ofrece la opción de compartir habitación doble con otro pasajero.</p>
+          </div>
+        </div>
+      </div>
+
       <!-- Incluye / No incluye — new layout -->
       <div class="det-section" id="det-incluye-section">
         <div class="inc-grid" id="det-incluye"></div>
@@ -1190,6 +1201,13 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
         <div id="det-excursiones-wrap" style="display:none">
           <div class="excursiones-box" id="det-excursiones"></div>
         </div>
+      </div>
+
+      <!-- Selección de fecha de salida — solo si hay más de una fecha cargada -->
+      <div class="det-section" id="det-fechas-section" style="display:none">
+        <h2>Elegí tu fecha de salida</h2>
+        <p style="font-size:0.82rem;color:var(--gray);margin-bottom:1rem">El precio varía según la fecha que elijas.</p>
+        <div class="hotel-selection" id="det-fechas-opciones"></div>
       </div>
 
       <!-- Selección de hotel — hidden for grupales -->
@@ -2056,7 +2074,7 @@ function formatPrice(val, moneda) {
 }
 
 function renderDetallePrecio(p) {
-  const basePrice = p._selectedHotelPrice || p.precioBase;
+  const basePrice = (p.hoteles && p.hoteles.length) ? (p._selectedHotelPrice || p.precioBase) : (p._selectedFechaPrice || p.precioBase);
   const moneda = p.moneda || "USD";
   // Update currency label in sidebar
   const lblEl = document.getElementById("det-currency-label");
@@ -2066,7 +2084,7 @@ function renderDetallePrecio(p) {
   if (cuotasEl) {
     if (p.pagos && p.pagos.length) {
       cuotasEl.innerHTML = p.pagos.map(pg =>
-        `<div style="margin-bottom:0.5rem"><div style="font-size:0.65rem;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.08em">${pg.label}</div><div style="font-size:1.55rem;font-weight:800;color:white;line-height:1.1">${formatPrice(pg.monto)}</div></div><div style="border-top:1px solid rgba(255,255,255,0.15);margin:0.4rem 0"></div>`
+        `<div style="margin-bottom:0.5rem"><div style="font-size:0.65rem;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.08em">${pg.label}</div><div style="font-size:1.55rem;font-weight:800;color:white;line-height:1.1">${formatPrice(pg.monto, moneda)}</div></div><div style="border-top:1px solid rgba(255,255,255,0.15);margin:0.4rem 0"></div>`
       ).join("") + "";
     } else {
       const p1 = Math.round(basePrice * 0.45);
@@ -2078,7 +2096,7 @@ function renderDetallePrecio(p) {
     }
   }
   const sticky = document.getElementById("det-sticky-precio");
-  if (sticky) sticky.innerHTML = formatPrice(basePrice);
+  if (sticky) sticky.innerHTML = formatPrice(basePrice, moneda);
 }
 
 const paquetes = {
@@ -2297,25 +2315,35 @@ function showDetalle(id) {
   const origin = document.querySelector(".page.active")?.id || "paquetes";
   document.getElementById("det-back-btn").onclick = () => { showPage(origin); return false; };
 
-  document.getElementById("det-info-strip").innerHTML = `
-    <div class="det-info-item">
+  const infoItems = [];
+  if (p.fechaSalida) infoItems.push(`<div class="det-info-item">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      <div><span class="det-info-label">Salida</span><span class="det-info-val">${formatFechaLarga(p.fechaSalida)||"A consultar"}</span></div>
-    </div>
-    <div class="det-info-item">
+      <div><span class="det-info-label">Salida</span><span class="det-info-val" id="det-info-salida-val">${formatFechaLarga(p.fechaSalida)}</span></div>
+    </div>`);
+  if (p.fechaRegreso) infoItems.push(`<div class="det-info-item">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      <div><span class="det-info-label">Regreso</span><span class="det-info-val">${formatFechaLarga(p.fechaRegreso)||"A consultar"}</span></div>
-    </div>
-    <div class="det-info-item">
+      <div><span class="det-info-label">Regreso</span><span class="det-info-val" id="det-info-regreso-val">${formatFechaLarga(p.fechaRegreso)}</span></div>
+    </div>`);
+  if (p.lugarSalida) infoItems.push(`<div class="det-info-item">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-      <div><span class="det-info-label">Salida desde</span><span class="det-info-val">${p.lugarSalida||"A consultar"}</span></div>
-    </div>
-    ${p.sub ? `<div class="det-info-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><div><span class="det-info-label">Duración</span><span class="det-info-val">${p.sub.split("·")[0].trim()}</span></div></div>` : ""}
-  `;
+      <div><span class="det-info-label">Salida desde</span><span class="det-info-val">${p.lugarSalida}</span></div>
+    </div>`);
+  if (p.sub && p.sub.split("·")[0].trim()) infoItems.push(`<div class="det-info-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><div><span class="det-info-label">Duración</span><span class="det-info-val">${p.sub.split("·")[0].trim()}</span></div></div>`);
+  const infoStrip = document.getElementById("det-info-strip");
+  infoStrip.innerHTML = infoItems.join("");
+  infoStrip.style.display = infoItems.length ? "" : "none";
 
-  document.getElementById("det-descripcion").innerHTML = p.descripcion;
+  const descSection = document.getElementById("det-descripcion-section");
+  if (p.descripcion) {
+    descSection.style.display = "";
+    document.getElementById("det-descripcion").innerHTML = p.descripcion;
+  } else {
+    descSection.style.display = "none";
+  }
 
+  const vuelosSection = document.getElementById("det-vuelos-section");
   if (p.vuelos && p.vuelos.length && p.vuelos[0].dir) {
+    vuelosSection.style.display = "";
     document.getElementById("det-vuelos").innerHTML = p.vuelos.map(v => `
       <div class="vuelo-itin-card">
         <div class="vuelo-itin-header">
@@ -2333,28 +2361,60 @@ function showDetalle(id) {
         <div class="vuelo-time"><span>${v.salida}</span><span>${v.llegada}</span></div>
         ${v.equipaje ? `<div class="vuelo-baggage"><div class="vuelo-baggage-icon">🎒</div><span>${v.equipaje}</span></div>` : ""}
       </div>`).join("");
+  } else {
+    vuelosSection.style.display = "none";
   }
 
   document.getElementById("det-traslado-section").style.display = p.traslado ? "" : "none";
+  document.getElementById("det-hab-compartir-section").style.display = p.habCompartir ? "" : "none";
 
   // Incluye / No incluye
+  const incSection = document.getElementById("det-incluye-section");
+  const hasSi = p.incluye.si && p.incluye.si.length > 0;
+  const hasNo = p.incluye.no && p.incluye.no.length > 0;
   document.getElementById("det-incluye").innerHTML = `
-    <div class="inc-box yes">
+    ${hasSi ? `<div class="inc-box yes">
       <h4>¿Qué incluye?</h4>
       ${p.incluye.si.map(i=>`<div class="inc-item"><span>✓</span><span>${i}</span></div>`).join("")}
-    </div>
-    <div class="inc-box no">
+    </div>` : ""}
+    ${hasNo ? `<div class="inc-box no">
       <h4>No incluye</h4>
       ${p.incluye.no.map(i=>`<div class="inc-item"><span>•</span><span>${i}</span></div>`).join("")}
-    </div>`;
+    </div>` : ""}`;
 
   // Excursiones
   const excWrap = document.getElementById("det-excursiones-wrap");
-  if (p.excursiones && p.excursiones.length > 0) {
+  const hasExc = p.excursiones && p.excursiones.length > 0;
+  if (hasExc) {
     excWrap.style.display = "";
     document.getElementById("det-excursiones").innerHTML = `<h4>🌟 Experiencias incluidas</h4>${p.excursiones.map(e=>`<div class="excursion-item"><span>✦</span><span>${e}</span></div>`).join("")}`;
   } else {
     excWrap.style.display = "none";
+  }
+  incSection.style.display = (hasSi || hasNo || hasExc) ? "" : "none";
+
+  // Fechas de salida — selector solo si hay más de una fecha cargada
+  const fechasSection = document.getElementById("det-fechas-section");
+  p._selectedFechaIdx = 0;
+  p._selectedFechaPrice = (p.fechas && p.fechas[0] && p.fechas[0].precio) || p.precioBase || 0;
+  if (!p.fechas || p.fechas.length < 2) {
+    fechasSection.style.display = "none";
+  } else {
+    fechasSection.style.display = "";
+    document.getElementById("det-fechas-opciones").innerHTML = p.fechas.map((f,i) => `
+      <div class="hotel-option ${i===0?"selected":""}" onclick="selectFecha(this,${i})">
+        <div class="hotel-option-body">
+          <div class="hotel-option-name">${formatFechaLarga(f.fecha)||"A consultar"}</div>
+          ${f.fechaRegreso ? `<div class="hotel-option-detail">Regreso: ${formatFechaLarga(f.fechaRegreso)}</div>` : ""}
+        </div>
+        <div class="hotel-option-price">
+          <div class="hotel-price-desde">Precio</div>
+          <div class="hotel-price-val">${formatPrice(f.precio||0, p.moneda||'USD')}</div>
+        </div>
+        <div class="hotel-selected-icon">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+      </div>`).join("");
   }
 
   // Hotel selection — se muestra si el paquete/grupal tiene hoteles cargados
@@ -2377,7 +2437,6 @@ function showDetalle(id) {
         <div class="hotel-option ${i===0?"selected":""}" data-group="${gi}" data-ciudad="${escapeHtml(ciudad)}" onclick="selectHotel(this,${h.precio},${gi})">
           <img class="hotel-option-img" src="${h.img}" alt="${h.nombre}" onerror="this.style.background='#EEE'">
           <div class="hotel-option-body">
-            <div class="hotel-stars">${"★".repeat(h.estrellas)}</div>
             <div class="hotel-option-name">${h.nombre}</div>
             <div class="hotel-option-detail">${h.detail}</div>
             <div class="hotel-tags">${(h.tags||[]).map(t=>`<span class="hotel-tag-small">${t}</span>`).join("")}</div>
@@ -2425,13 +2484,47 @@ function showDetalle(id) {
   document.getElementById("det-resumen-sidebar").innerHTML = p.resumen;
   renderDetallePrecio(p);
 
-  const waMsg = encodeURIComponent("Hola! Quiero consultar sobre " + p.title + " (salida " + (formatFechaLarga(p.fechaSalida)||"") + ")");
+  const waMsg = encodeURIComponent("Hola! Quiero consultar sobre " + p.title + " (salida " + (detalleFechaTxt(p)||"") + ")");
   document.getElementById("det-wa-link").href = "https://wa.me/" + WA_NUMBER + "?text=" + waMsg;
   document.getElementById("det-wa-link").onclick = () => logEvent('whatsapp_click', id, p.title);
   const stickyWa = document.getElementById("det-sticky-wa");
   if (stickyWa) { stickyWa.href = "https://wa.me/" + WA_NUMBER + "?text=" + waMsg; stickyWa.onclick = () => logEvent('whatsapp_click', id, p.title); }
 
   showPage("detalle");
+}
+
+function detalleFechaTxt(p) {
+  const f = (p.fechas && p.fechas[p._selectedFechaIdx||0]) || { fecha: p.fechaSalida };
+  return formatFechaLarga(f.fecha) || "";
+}
+
+function selectFecha(el, idx) {
+  document.querySelectorAll('#det-fechas-opciones .hotel-option').forEach(h => h.classList.remove("selected"));
+  el.classList.add("selected");
+  if (!window._currentDetalle) return;
+  const p = window._currentDetalle;
+  const f = p.fechas[idx];
+  if (!f) return;
+  p._selectedFechaIdx = idx;
+  p._selectedFechaPrice = f.precio || 0;
+
+  const salidaVal = document.getElementById("det-info-salida-val");
+  if (salidaVal) salidaVal.textContent = formatFechaLarga(f.fecha) || "A consultar";
+  const regresoVal = document.getElementById("det-info-regreso-val");
+  if (regresoVal) regresoVal.textContent = formatFechaLarga(f.fechaRegreso) || "A consultar";
+  const fechasEl = document.getElementById("det-fechas-sidebar");
+  if (fechasEl) {
+    fechasEl.innerHTML = (f.fecha||f.fechaRegreso) ? `
+      <div class="resumen-row"><span>Salida</span><span>${formatFechaLarga(f.fecha)||"—"}</span></div>
+      <div class="resumen-row"><span>Regreso</span><span>${formatFechaLarga(f.fechaRegreso)||"—"}</span></div>` : "";
+  }
+
+  renderDetallePrecio(p);
+  const waMsg = encodeURIComponent("Hola! Quiero consultar sobre " + p.title + " (salida " + (detalleFechaTxt(p)||"") + ")");
+  const waEl = document.getElementById("det-wa-link");
+  if (waEl) waEl.href = "https://wa.me/" + WA_NUMBER + "?text=" + waMsg;
+  const stickyWa = document.getElementById("det-sticky-wa");
+  if (stickyWa) stickyWa.href = "https://wa.me/" + WA_NUMBER + "?text=" + waMsg;
 }
 
 function selectHotel(el, price, groupIndex) {
@@ -2456,7 +2549,7 @@ function selectHotel(el, price, groupIndex) {
   });
   p._selectedHotelPrice = total;
   renderDetallePrecio(p);
-  const waMsg = encodeURIComponent(`Hola! Quiero consultar sobre ${p.title} (salida ${formatFechaLarga(p.fechaSalida)||""}) — Hotel: ${seleccionados.join(' | ')}`);
+  const waMsg = encodeURIComponent(`Hola! Quiero consultar sobre ${p.title} (salida ${detalleFechaTxt(p)||""}) — Hotel: ${seleccionados.join(' | ')}`);
   const waEl = document.getElementById("det-wa-link");
   if (waEl) waEl.href = `https://wa.me/${WA_NUMBER}?text=${waMsg}`;
   const stickyWa = document.getElementById("det-sticky-wa");
@@ -2647,12 +2740,13 @@ function adminPaqToDetalle(p, isGrupal) {
     excursiones: p.excursiones||[],
     img: p.img||'', badges: badges,
     precio: `<sup>${mon}</sup>${(p.precio||0).toLocaleString('es-AR')}`,
-    descripcion: `<p>${nl2br(p.descFull||p.descCorta||p.desc||'')}</p>`,
+    descripcion: (p.descFull||p.descCorta||p.desc) ? `<p>${nl2br(p.descFull||p.descCorta||p.desc)}</p>` : '',
     resumen: adminResumenToHtml(p.resumen),
     itinerario: p.itinerario||[],
     incluye: { si: si, no: p.incNo||[] },
     vuelos: p.vuelos||[], hoteles: p.hoteles||[], pagos: p.pagos||[],
-    grupal: !!isGrupal
+    grupal: !!isGrupal, habCompartir: !!p.habCompartir,
+    fechas: (p.fechas && p.fechas.length) ? p.fechas : [{ fecha: p.fechaSalida||p.fecha||'', fechaRegreso: p.fechaRegreso||'', precio: p.precio||0 }]
   };
 }
 

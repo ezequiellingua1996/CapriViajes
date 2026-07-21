@@ -604,11 +604,8 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
         <div class="field-row">
           <div class="field"><label>Categoría</label>
             <select id="paq-cat">
-              <option value="nacional">Argentina (Nacional)</option>
-              <option value="internacional europa">Internacional · Europa</option>
-              <option value="internacional caribe">Internacional · Caribe</option>
-              <option value="internacional asia">Internacional · Asia</option>
-              <option value="internacional latam">Internacional · América Latina</option>
+              <option value="nacional">Nacional</option>
+              <option value="internacional">Internacional</option>
             </select>
           </div>
           <div class="field"><label>Duración</label><input type="text" id="paq-dur" placeholder="Ej: 7 noches"></div>
@@ -623,6 +620,7 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
           <div class="field"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="paq-destacado" style="width:16px;height:16px"> Mostrar como destino en inicio</label></div>
           <div class="field"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="paq-feat" style="width:16px;height:16px"> Card grande (destacado visual)</label></div>
         </div>
+        <div class="field" style="background:#FEF3C7;border:1px solid #FCD34D;border-radius:6px;padding:0.75rem 1rem"><label>🔒 Operador mayorista (solo interno, no se muestra en la web)</label><input type="text" id="paq-operador" placeholder="Ej: Ola, Isento, Interlagos..."></div>
         <div class="field"><label>URL imagen principal</label><input type="url" id="paq-img" placeholder="https://images.unsplash.com/..." oninput="this.nextElementSibling.src=this.value"><img class="img-preview" id="paq-img-preview" onerror="this.removeAttribute('src')"></div>
         <div class="field"><label>Descripción corta (visible en tarjeta)</label><textarea id="paq-desc-corta" placeholder="Resumen para la tarjeta..." style="min-height:60px"></textarea></div>
         <div class="field"><label>Descripción completa (en detalle)</label><textarea id="paq-desc-full" placeholder="Descripción detallada del paquete..." style="min-height:80px"></textarea></div>
@@ -666,6 +664,14 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
         <div class="includes-editor" id="pagos-list"></div>
         <button class="btn btn-ghost btn-sm" style="margin-top:0.4rem" onclick="addPagoLine()">+ Agregar pago</button>
         <div class="hint" style="margin-top:0.4rem">Formato: Label del pago · Monto. Ej: "1er pago · 700"</div>
+      </div>
+
+      <!-- Otras fechas de salida -->
+      <div style="background:#F8FAFC;border-radius:8px;padding:1rem;margin-bottom:1rem">
+        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ocean);margin-bottom:0.75rem">🗓️ Otras fechas de salida (opcional)</div>
+        <div class="hint" style="margin-bottom:0.5rem">La fecha y el precio de arriba son la primera opción. Si este paquete sale en más fechas con precios distintos, agregalas acá.</div>
+        <div id="paq-fechas-list" style="display:flex;flex-direction:column;gap:0.5rem"></div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:0.5rem" onclick="addFechaRow(null,'paq-fechas-list')">+ Agregar otra fecha</button>
       </div>
 
       <!-- Vuelos -->
@@ -772,6 +778,12 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
         <button class="btn btn-ghost btn-sm" style="margin-top:0.4rem" onclick="addPagoLine(null,'grup-pagos-list')">+ Agregar pago</button>
         <div class="hint" style="margin-top:0.4rem">Formato: Label del pago · Monto. Ej: "1er pago · 700"</div>
       </div>
+      <div class="field">
+        <div style="font-size:0.75rem;font-weight:600;color:var(--navy);margin-bottom:0.5rem">🗓️ Otras fechas de salida (opcional)</div>
+        <div class="hint" style="margin-bottom:0.5rem">La fecha y el precio de arriba son la primera opción. Si este grupal sale en más fechas con precios distintos, agregalas acá.</div>
+        <div id="grup-fechas-list" style="display:flex;flex-direction:column;gap:0.5rem"></div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:0.5rem" onclick="addFechaRow(null,'grup-fechas-list')">+ Agregar otra fecha</button>
+      </div>
       <div class="field-row">
         <div class="field"><label>Cupos (Ej: 18/20)</label><input type="text" id="grup-cupos" placeholder="18/20 cupos"></div>
         <div class="field"><label>Categoría</label>
@@ -785,6 +797,8 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
         <div class="field"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="grup-destacado" style="width:16px;height:16px"> Mostrar como destino en inicio</label></div>
         <div class="field"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="grup-feat" style="width:16px;height:16px"> Card grande (destacado visual)</label></div>
       </div>
+      <div class="field"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="grup-hab-compartir" style="width:16px;height:16px"> Tiene habitaciones dobles a compartir</label></div>
+      <div class="field" style="background:#FEF3C7;border:1px solid #FCD34D;border-radius:6px;padding:0.75rem 1rem"><label>🔒 Operador mayorista (solo interno, no se muestra en la web)</label><input type="text" id="grup-operador" placeholder="Ej: Ola, Isento, Interlagos..."></div>
       <div class="field"><label>Descripción</label><textarea id="grup-desc" placeholder="Descripción del viaje grupal..." style="min-height:80px"></textarea></div>
 
       <!-- Vuelos -->
@@ -877,6 +891,12 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
           </select>
         </div>
       </div>
+      <div class="field">
+        <div style="font-size:0.75rem;font-weight:600;color:var(--navy);margin-bottom:0.5rem">🗓️ Otras fechas de salida (opcional)</div>
+        <div class="hint" style="margin-bottom:0.5rem">La fecha y el precio de arriba son la primera opción. Si esta fiesta de 15 sale en más fechas con precios distintos, agregalas acá.</div>
+        <div id="quince-fechas-list" style="display:flex;flex-direction:column;gap:0.5rem"></div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:0.5rem" onclick="addFechaRow(null,'quince-fechas-list')">+ Agregar otra fecha</button>
+      </div>
       <div class="field-row">
         <div class="field"><label>Cupos (Ej: 18/20)</label><input type="text" id="quince-cupos" placeholder="18/20 cupos"></div>
       </div>
@@ -884,6 +904,7 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
         <div class="field"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="quince-destacado" style="width:16px;height:16px"> Mostrar como destino en inicio</label></div>
         <div class="field"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="quince-feat" style="width:16px;height:16px"> Card grande (destacado visual)</label></div>
       </div>
+      <div class="field" style="background:#FEF3C7;border:1px solid #FCD34D;border-radius:6px;padding:0.75rem 1rem"><label>🔒 Operador mayorista (solo interno, no se muestra en la web)</label><input type="text" id="quince-operador" placeholder="Ej: Ola, Isento, Interlagos..."></div>
       <div class="field"><label>Descripción</label><textarea id="quince-desc" placeholder="Descripción del viaje de 15..." style="min-height:80px"></textarea></div>
       <div class="field"><label>URL imagen</label><input type="url" id="quince-img" placeholder="https://images.unsplash.com/..." oninput="this.nextElementSibling.src=this.value"><img class="img-preview" id="quince-img-preview" onerror="this.removeAttribute('src')"></div>
       <div class="field"><label>¿Qué incluye? (uno por línea)</label>
@@ -1510,14 +1531,12 @@ function getHoteles(listId) {
     const ciudad = (row.querySelector('select')?.value || '').trim();
     const inputs = row.querySelectorAll('input');
     const nombre = inputs[0].value;
-    const stars = (nombre.match(/★+/)||[''])[0].length;
     return {
       ciudad: ciudad,
       nombre: nombre,
       detail: inputs[1].value,
       precio: parseFloat(inputs[2].value)||0,
       img: inputs[3].value,
-      estrellas: stars || 4,
       tags: inputs[4].value.split(',').map(t=>t.trim()).filter(Boolean)
     };
   });
@@ -1574,12 +1593,31 @@ function getPagos(listId) {
     }).filter(Boolean);
 }
 
+function addFechaRow(f, listId) {
+  const c = document.getElementById(listId || 'fechas-list');
+  const row = document.createElement('div');
+  row.style.cssText = 'background:white;border:1px solid #E5E7EB;border-radius:8px;padding:0.6rem;display:grid;grid-template-columns:1fr 1fr 0.8fr auto;gap:0.4rem;align-items:end';
+  row.innerHTML = `
+    <div class="field" style="margin:0"><label>Fecha salida</label><input type="date" style="width:100%;padding:0.45rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${f?f.fecha||'':''}"></div>
+    <div class="field" style="margin:0"><label>Fecha regreso</label><input type="date" style="width:100%;padding:0.45rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${f?f.fechaRegreso||'':''}"></div>
+    <div class="field" style="margin:0"><label>Precio</label><input type="number" style="width:100%;padding:0.45rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${f?f.precio:''}" placeholder="1490"></div>
+    <button class="btn btn-danger btn-sm" onclick="this.parentElement.remove()" style="margin-bottom:2px">✕</button>`;
+  c.appendChild(row);
+}
+
+function getFechasExtra(listId) {
+  return Array.from(document.getElementById(listId || 'fechas-list').children).map(row => {
+    const inputs = row.querySelectorAll('input');
+    return { fecha: inputs[0].value, fechaRegreso: inputs[1].value, precio: parseFloat(inputs[2].value)||0 };
+  }).filter(f => f.fecha);
+}
+
 function openNewPaq() {
   document.getElementById('paq-edit-id').value = '';
   document.getElementById('modal-paq-title').textContent = 'Nuevo paquete';
-  ['paq-titulo','paq-dest','paq-dur','paq-precio','paq-img','paq-badge','paq-desc-corta','paq-desc-full','paq-fecha-salida','paq-fecha-regreso'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['paq-titulo','paq-dest','paq-dur','paq-precio','paq-img','paq-badge','paq-desc-corta','paq-desc-full','paq-fecha-salida','paq-fecha-regreso','paq-operador'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('paq-img-preview').removeAttribute('src');
-  document.getElementById('paq-cat').value = 'internacional europa';
+  document.getElementById('paq-cat').value = 'internacional';
   document.getElementById('paq-moneda').value = 'USD';
   document.getElementById('paq-estrellas').value = '4★';
   document.getElementById('paq-vuelo').value = 'si';
@@ -1591,6 +1629,7 @@ function openNewPaq() {
   document.getElementById('itinerario-list').innerHTML = '';
   document.getElementById('hoteles-list').innerHTML = '';
   document.getElementById('pagos-list').innerHTML = '';
+  document.getElementById('paq-fechas-list').innerHTML = '';
   setIncLines('inc-si-list',[]);
   setIncLines('inc-no-list',[]);
   setIncLines('excursiones-list',[]);
@@ -1604,7 +1643,7 @@ function editPaq(i) {
   document.getElementById('modal-paq-title').textContent = 'Editar paquete';
   document.getElementById('paq-titulo').value = p.titulo||'';
   document.getElementById('paq-dest').value = p.dest||'';
-  document.getElementById('paq-cat').value = p.cat||'internacional europa';
+  document.getElementById('paq-cat').value = (p.cat||'internacional').split(' ')[0];
   document.getElementById('paq-dur').value = p.dur||'';
   document.getElementById('paq-precio').value = p.precio||'';
   document.getElementById('paq-estrellas').value = p.estrellas||'4★';
@@ -1614,6 +1653,7 @@ function editPaq(i) {
   document.getElementById('paq-img').value = p.img||'';
   document.getElementById('paq-img-preview').src = p.img||'';
   document.getElementById('paq-badge').value = p.badge||'';
+  document.getElementById('paq-operador').value = p.operador||'';
   document.getElementById('paq-vuelo').value = p.vuelo||'si';
   document.getElementById('paq-traslado').value = p.traslado ? 'si' : 'no';
   document.getElementById('paq-destacado').checked = !!p.destacado;
@@ -1633,6 +1673,9 @@ function editPaq(i) {
   // Pagos
   document.getElementById('pagos-list').innerHTML = '';
   (p.pagos||[]).forEach(pg => addPagoLine(pg.label + ' · ' + pg.monto));
+  // Otras fechas de salida (la primera fecha ya está en los campos principales)
+  document.getElementById('paq-fechas-list').innerHTML = '';
+  (p.fechas||[]).slice(1).forEach(f => addFechaRow(f, 'paq-fechas-list'));
   // Includes
   // Itinerario
   document.getElementById('itinerario-list').innerHTML = '';
@@ -1657,6 +1700,7 @@ function savePaq() {
     descFull: document.getElementById('paq-desc-full').value,
     img: document.getElementById('paq-img').value,
     badge: document.getElementById('paq-badge').value,
+    operador: document.getElementById('paq-operador').value,
     vuelo: document.getElementById('paq-vuelo').value,
     moneda: document.getElementById('paq-moneda').value,
     traslado: document.getElementById('paq-traslado').value === 'si',
@@ -1674,6 +1718,10 @@ function savePaq() {
     excursiones: getIncLines('excursiones-list'),
     resumen: getIncLines('resumen-list')
   };
+  obj.fechas = [
+    { fecha: obj.fechaSalida, fechaRegreso: obj.fechaRegreso, precio: obj.precio },
+    ...getFechasExtra('paq-fechas-list')
+  ];
   if (!obj.titulo) { showToast('El título es obligatorio','error'); return; }
   if (idx !== '') DATA.paquetes[idx] = obj; else DATA.paquetes.push(obj);
   saveData(); renderPaq(); updateStats(); closeModal('modal-paq');
@@ -1690,13 +1738,14 @@ function deletePaq(i) {
 function openNewGrup() {
   document.getElementById('grup-edit-id').value = '';
   document.getElementById('modal-grup-title').textContent = 'Nuevo grupal';
-  ['grup-titulo','grup-fecha','grup-fecha-regreso','grup-dur','grup-precio','grup-cupos','grup-desc','grup-img','grup-lugar-salida'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['grup-titulo','grup-fecha','grup-fecha-regreso','grup-dur','grup-precio','grup-cupos','grup-desc','grup-img','grup-lugar-salida','grup-operador'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('grup-img-preview').removeAttribute('src');
   const gm=document.getElementById('grup-moneda'); if(gm) gm.value='USD';
   const gc=document.getElementById('grup-cat'); if(gc) gc.value='internacional';
   if(document.getElementById('grup-lugar-salida'))document.getElementById('grup-lugar-salida').value='Rosario (ROS)';
   const gd=document.getElementById('grup-destacado'); if(gd) gd.checked=false;
   const gf=document.getElementById('grup-feat'); if(gf) gf.checked=false;
+  const ghc=document.getElementById('grup-hab-compartir'); if(ghc) ghc.checked=false;
   const gtr=document.getElementById('grup-traslado'); if(gtr) gtr.value='si';
   setIncLines('grup-dest-list',[]);
   setIncLines('grup-inc-list',[]);
@@ -1707,6 +1756,7 @@ function openNewGrup() {
   const gv=document.getElementById('grup-vuelos-list'); if(gv) gv.innerHTML='';
   const gh=document.getElementById('grup-hoteles-list'); if(gh) gh.innerHTML='';
   const gp=document.getElementById('grup-pagos-list'); if(gp) gp.innerHTML='';
+  const gfl=document.getElementById('grup-fechas-list'); if(gfl) gfl.innerHTML='';
   openModal('modal-grup');
 }
 
@@ -1733,9 +1783,12 @@ function editGrup(i) {
   setIncLines('grup-exc-list', g.excursiones||[]);
   const gde=document.getElementById('grup-destacado'); if(gde) gde.checked=!!g.destacado;
   const gfe=document.getElementById('grup-feat'); if(gfe) gfe.checked=!!g.feat;
+  const ghce=document.getElementById('grup-hab-compartir'); if(ghce) ghce.checked=!!g.habCompartir;
+  document.getElementById('grup-operador').value = g.operador||'';
   const gtr=document.getElementById('grup-traslado'); if(gtr) gtr.value = g.traslado===false ? 'no' : 'si';
   const gvl=document.getElementById('grup-vuelos-list'); if(gvl){gvl.innerHTML='';(g.vuelos||[]).forEach(v=>addVueloRow(v,'grup-vuelos-list'));}
   const gpl=document.getElementById('grup-pagos-list'); if(gpl){gpl.innerHTML='';(g.pagos||[]).forEach(pg=>addPagoLine(pg.label+' · '+pg.monto,'grup-pagos-list'));}
+  const gfl=document.getElementById('grup-fechas-list'); if(gfl){gfl.innerHTML='';(g.fechas||[]).slice(1).forEach(f=>addFechaRow(f,'grup-fechas-list'));}
   // Resumen por ciudad debe cargarse antes que Hoteles para que el desplegable de ciudad tenga las opciones
   setIncLines('grup-resumen-list', g.resumen||[]);
   const ghl=document.getElementById('grup-hoteles-list'); if(ghl){ghl.innerHTML='';(g.hoteles||[]).forEach(h=>addHotelRow(h,'grup-hoteles-list','grup-resumen-list'));}
@@ -1763,6 +1816,8 @@ function saveGrup() {
     img: document.getElementById('grup-img').value,
     destacado: document.getElementById('grup-destacado')?.checked || false,
     feat: document.getElementById('grup-feat')?.checked || false,
+    habCompartir: document.getElementById('grup-hab-compartir')?.checked || false,
+    operador: document.getElementById('grup-operador').value,
     traslado: (document.getElementById('grup-traslado')?.value || 'si') !== 'no',
     inc: getIncLines('grup-inc-list'),
     incNo: getIncLines('grup-no-list'),
@@ -1773,6 +1828,10 @@ function saveGrup() {
     resumen: getIncLines('grup-resumen-list'),
     hoteles: getHoteles('grup-hoteles-list')
   };
+  obj.fechas = [
+    { fecha: obj.fecha, fechaRegreso: obj.fechaRegreso, precio: obj.precio },
+    ...getFechasExtra('grup-fechas-list')
+  ];
   if (!obj.titulo) { showToast('El título es obligatorio','error'); return; }
   if (idx !== '') DATA.grupales[idx] = obj; else DATA.grupales.push(obj);
   saveData(); renderGrup(); updateStats(); closeModal('modal-grup');
@@ -1789,7 +1848,7 @@ function deleteGrup(i) {
 function openNewQuince() {
   document.getElementById('quince-edit-id').value = '';
   document.getElementById('modal-quince-title').textContent = 'Nuevo paquete de 15';
-  ['quince-titulo','quince-dest','quince-fecha','quince-fecha-regreso','quince-dur','quince-precio','quince-cupos','quince-desc','quince-img','quince-lugar-salida'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['quince-titulo','quince-dest','quince-fecha','quince-fecha-regreso','quince-dur','quince-precio','quince-cupos','quince-desc','quince-img','quince-lugar-salida','quince-operador'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('quince-img-preview').removeAttribute('src');
   const qm=document.getElementById('quince-moneda'); if(qm) qm.value='USD';
   if(document.getElementById('quince-lugar-salida'))document.getElementById('quince-lugar-salida').value='Rosario (ROS)';
@@ -1799,6 +1858,7 @@ function openNewQuince() {
   setIncLines('quince-no-list',[]);
   setIncLines('quince-exc-list',[]);
   const qi=document.getElementById('quince-itin-list'); if(qi) qi.innerHTML='';
+  const qfl=document.getElementById('quince-fechas-list'); if(qfl) qfl.innerHTML='';
   openModal('modal-quince');
 }
 
@@ -1815,6 +1875,7 @@ function editQuince(i) {
   const qme=document.getElementById('quince-moneda'); if(qme) qme.value=q.moneda||'USD';
   document.getElementById('quince-cupos').value = q.cupos||'';
   document.getElementById('quince-desc').value = q.desc||'';
+  document.getElementById('quince-operador').value = q.operador||'';
   document.getElementById('quince-img').value = q.img||'';
   document.getElementById('quince-img-preview').src = q.img||'';
   const ls = document.getElementById('quince-lugar-salida'); if(ls) ls.value = q.lugarSalida||'Rosario (ROS)';
@@ -1824,6 +1885,7 @@ function editQuince(i) {
   setIncLines('quince-exc-list', q.excursiones||[]);
   const qde=document.getElementById('quince-destacado'); if(qde) qde.checked=!!q.destacado;
   const qfe=document.getElementById('quince-feat'); if(qfe) qfe.checked=!!q.feat;
+  const qfl=document.getElementById('quince-fechas-list'); if(qfl){qfl.innerHTML='';(q.fechas||[]).slice(1).forEach(f=>addFechaRow(f,'quince-fechas-list'));}
   openModal('modal-quince');
 }
 
@@ -1844,6 +1906,7 @@ function saveQuince() {
     moneda: (document.getElementById('quince-moneda')?.value)||'USD',
     cupos: document.getElementById('quince-cupos').value,
     desc: document.getElementById('quince-desc').value,
+    operador: document.getElementById('quince-operador').value,
     img: document.getElementById('quince-img').value,
     destacado: document.getElementById('quince-destacado')?.checked || false,
     feat: document.getElementById('quince-feat')?.checked || false,
@@ -1852,6 +1915,10 @@ function saveQuince() {
     excursiones: getIncLines('quince-exc-list'),
     itinerario: getItinerario('quince-itin-list')
   };
+  obj.fechas = [
+    { fecha: obj.fecha, fechaRegreso: obj.fechaRegreso, precio: obj.precio },
+    ...getFechasExtra('quince-fechas-list')
+  ];
   if (!obj.titulo) { showToast('El título es obligatorio','error'); return; }
   if (idx !== '') DATA.quince[idx] = obj; else DATA.quince.push(obj);
   saveData(); renderQuince(); updateStats(); closeModal('modal-quince');
