@@ -799,10 +799,10 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
   </section>
 
   <div class="counters">
-    <div class="counter-item"><div class="counter-val">15+</div><div class="counter-label">Años de experiencia</div></div>
-    <div class="counter-item"><div class="counter-val">8.000+</div><div class="counter-label">Viajeros felices</div></div>
-    <div class="counter-item"><div class="counter-val">60+</div><div class="counter-label">Destinos</div></div>
-    <div class="counter-item"><div class="counter-val">4.9★</div><div class="counter-label">Calificación</div></div>
+    <div class="counter-item"><div class="counter-val" id="counter-val-1">15+</div><div class="counter-label" id="counter-label-1">Años de experiencia</div></div>
+    <div class="counter-item"><div class="counter-val" id="counter-val-2">8.000+</div><div class="counter-label" id="counter-label-2">Viajeros felices</div></div>
+    <div class="counter-item"><div class="counter-val" id="counter-val-3">60+</div><div class="counter-label" id="counter-label-3">Destinos</div></div>
+    <div class="counter-item"><div class="counter-val" id="counter-val-4">4.9★</div><div class="counter-label" id="counter-label-4">Calificación</div></div>
   </div>
 
   <section id="inicio-services" style="background:var(--navy);padding:4rem 5%">
@@ -878,7 +878,7 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
       <h2>¡Seguinos en nuestro canal de WhatsApp!</h2>
       <p>Recibí ofertas exclusivas, salidas grupales y novedades antes que nadie, directo en tu celular.</p>
     </div>
-    <a href="https://whatsapp.com/channel/0029VbCbjrD23n3awpz6H82x" target="_blank" class="wa-btn">
+    <a href="https://whatsapp.com/channel/0029VbCbjrD23n3awpz6H82x" target="_blank" class="wa-btn cd-wa-channel">
       <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
       Unirme al canal
     </a>
@@ -895,7 +895,7 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
             <line x1="146" y1="40" x2="200" y2="40" stroke="rgba(255,255,255,0.25)" stroke-width="0.5"/>
           </svg>
         </a>
-        <p>Agencia de viajes con atención personalizada en Rosario, Santa Fe. RNAV Legajo 20607.</p>
+        <p>Agencia de viajes con atención personalizada en Rosario, Santa Fe. RNAV Legajo <span class="cd-legajo">20607</span>.</p>
         <div class="foot-social">
           <a href="https://www.facebook.com/profile.php?id=61580629453017" target="_blank" class="foot-soc" aria-label="Facebook">
             <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
@@ -929,16 +929,16 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
       <div class="footer-col">
         <h5>Contacto</h5>
         <ul>
-          <li><a href="tel:+5493412279027">+54 9 3412 279027</a></li>
-          <li><a href="mailto:capri.agenciadeviajes@gmail.com">capri.agenciadeviajes@gmail.com</a></li>
-          <li><a href="#">Paraguay 339 3° G, Rosario</a></li>
-          <li><a href="#">Lun–Vie 9:00–18:00 hs</a></li>
+          <li><a href="tel:+5493412279027" class="cd-phone">+54 9 3412 279027</a></li>
+          <li><a href="mailto:capri.agenciadeviajes@gmail.com" class="cd-email">capri.agenciadeviajes@gmail.com</a></li>
+          <li><a href="#" class="cd-address-oneline">Paraguay 339 3° G, Rosario</a></li>
+          <li><a href="#" class="cd-hours-oneline">Lun–Vie 9:00–18:00 hs</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
       <span>© 2025 Capri Viajes. Todos los derechos reservados.</span>
-      <span>RNAV Legajo 20607 · Reg. Ministerio de Turismo</span>
+      <span>RNAV Legajo <span class="cd-legajo">20607</span> · Reg. Ministerio de Turismo</span>
     </div>
   </footer>
 </div>
@@ -1088,7 +1088,7 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
             <line x1="146" y1="40" x2="200" y2="40" stroke="rgba(255,255,255,0.25)" stroke-width="0.5"/>
           </svg>
         </a>
-        <p>Agencia de viajes con atención personalizada en Rosario, Santa Fe. RNAV Legajo 20607.</p>
+        <p>Agencia de viajes con atención personalizada en Rosario, Santa Fe. RNAV Legajo <span class="cd-legajo">20607</span>.</p>
         <div class="foot-social">
           <a href="https://www.facebook.com/profile.php?id=61580629453017" target="_blank" class="foot-soc" aria-label="Facebook">
             <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
@@ -1122,16 +1122,16 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
       <div class="footer-col">
         <h5>Contacto</h5>
         <ul>
-          <li><a href="tel:+5493412279027">+54 9 3412 279027</a></li>
-          <li><a href="mailto:capri.agenciadeviajes@gmail.com">capri.agenciadeviajes@gmail.com</a></li>
-          <li><a href="#">Paraguay 339 3° G, Rosario</a></li>
-          <li><a href="#">Lun–Vie 9:00–18:00 hs</a></li>
+          <li><a href="tel:+5493412279027" class="cd-phone">+54 9 3412 279027</a></li>
+          <li><a href="mailto:capri.agenciadeviajes@gmail.com" class="cd-email">capri.agenciadeviajes@gmail.com</a></li>
+          <li><a href="#" class="cd-address-oneline">Paraguay 339 3° G, Rosario</a></li>
+          <li><a href="#" class="cd-hours-oneline">Lun–Vie 9:00–18:00 hs</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
       <span>© 2025 Capri Viajes. Todos los derechos reservados.</span>
-      <span>RNAV Legajo 20607 · Reg. Ministerio de Turismo</span>
+      <span>RNAV Legajo <span class="cd-legajo">20607</span> · Reg. Ministerio de Turismo</span>
     </div>
   </footer>
 </div>
@@ -1217,7 +1217,7 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
             <div class="monto" id="det-precio-display" style="color:white;font-size:2rem"></div>
           </div>
           <a href="#" id="det-wa-link" target="_blank" class="btn-consultar" style="background:white;color:#6B1F3A;font-weight:700">Quiero este viaje</a>
-          <a href="https://wa.me/5493412279027" target="_blank" class="btn-wa-det">
+          <a href="https://wa.me/5493412279027" target="_blank" class="btn-wa-det cd-wa-generic">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
             Chatear por WhatsApp
           </a>
@@ -1340,7 +1340,7 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
             <line x1="146" y1="40" x2="200" y2="40" stroke="rgba(255,255,255,0.25)" stroke-width="0.5"/>
           </svg>
         </a>
-        <p>Agencia de viajes con atención personalizada en Rosario, Santa Fe. RNAV Legajo 20607.</p>
+        <p>Agencia de viajes con atención personalizada en Rosario, Santa Fe. RNAV Legajo <span class="cd-legajo">20607</span>.</p>
         <div class="foot-social">
           <a href="https://www.facebook.com/profile.php?id=61580629453017" target="_blank" class="foot-soc" aria-label="Facebook">
             <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
@@ -1374,16 +1374,16 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
       <div class="footer-col">
         <h5>Contacto</h5>
         <ul>
-          <li><a href="tel:+5493412279027">+54 9 3412 279027</a></li>
-          <li><a href="mailto:capri.agenciadeviajes@gmail.com">capri.agenciadeviajes@gmail.com</a></li>
-          <li><a href="#">Paraguay 339 3° G, Rosario</a></li>
-          <li><a href="#">Lun–Vie 9:00–18:00 hs</a></li>
+          <li><a href="tel:+5493412279027" class="cd-phone">+54 9 3412 279027</a></li>
+          <li><a href="mailto:capri.agenciadeviajes@gmail.com" class="cd-email">capri.agenciadeviajes@gmail.com</a></li>
+          <li><a href="#" class="cd-address-oneline">Paraguay 339 3° G, Rosario</a></li>
+          <li><a href="#" class="cd-hours-oneline">Lun–Vie 9:00–18:00 hs</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
       <span>© 2025 Capri Viajes. Todos los derechos reservados.</span>
-      <span>RNAV Legajo 20607 · Reg. Ministerio de Turismo</span>
+      <span>RNAV Legajo <span class="cd-legajo">20607</span> · Reg. Ministerio de Turismo</span>
     </div>
   </footer>
 </div>
@@ -1407,7 +1407,7 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
             <line x1="146" y1="40" x2="200" y2="40" stroke="rgba(255,255,255,0.25)" stroke-width="0.5"/>
           </svg>
         </a>
-        <p>Agencia de viajes con atención personalizada en Rosario, Santa Fe. RNAV Legajo 20607.</p>
+        <p>Agencia de viajes con atención personalizada en Rosario, Santa Fe. RNAV Legajo <span class="cd-legajo">20607</span>.</p>
         <div class="foot-social">
           <a href="https://www.facebook.com/profile.php?id=61580629453017" target="_blank" class="foot-soc" aria-label="Facebook">
             <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
@@ -1441,16 +1441,16 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
       <div class="footer-col">
         <h5>Contacto</h5>
         <ul>
-          <li><a href="tel:+5493412279027">+54 9 3412 279027</a></li>
-          <li><a href="mailto:capri.agenciadeviajes@gmail.com">capri.agenciadeviajes@gmail.com</a></li>
-          <li><a href="#">Paraguay 339 3° G, Rosario</a></li>
-          <li><a href="#">Lun–Vie 9:00–18:00 hs</a></li>
+          <li><a href="tel:+5493412279027" class="cd-phone">+54 9 3412 279027</a></li>
+          <li><a href="mailto:capri.agenciadeviajes@gmail.com" class="cd-email">capri.agenciadeviajes@gmail.com</a></li>
+          <li><a href="#" class="cd-address-oneline">Paraguay 339 3° G, Rosario</a></li>
+          <li><a href="#" class="cd-hours-oneline">Lun–Vie 9:00–18:00 hs</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
       <span>© 2025 Capri Viajes. Todos los derechos reservados.</span>
-      <span>RNAV Legajo 20607 · Reg. Ministerio de Turismo</span>
+      <span>RNAV Legajo <span class="cd-legajo">20607</span> · Reg. Ministerio de Turismo</span>
     </div>
   </footer>
 </div>
@@ -1487,7 +1487,7 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
             <line x1="146" y1="40" x2="200" y2="40" stroke="rgba(255,255,255,0.25)" stroke-width="0.5"/>
           </svg>
         </a>
-        <p>Agencia de viajes con atención personalizada en Rosario, Santa Fe. RNAV Legajo 20607.</p>
+        <p>Agencia de viajes con atención personalizada en Rosario, Santa Fe. RNAV Legajo <span class="cd-legajo">20607</span>.</p>
         <div class="foot-social">
           <a href="https://www.facebook.com/profile.php?id=61580629453017" target="_blank" class="foot-soc" aria-label="Facebook">
             <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
@@ -1521,16 +1521,16 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
       <div class="footer-col">
         <h5>Contacto</h5>
         <ul>
-          <li><a href="tel:+5493412279027">+54 9 3412 279027</a></li>
-          <li><a href="mailto:capri.agenciadeviajes@gmail.com">capri.agenciadeviajes@gmail.com</a></li>
-          <li><a href="#">Paraguay 339 3° G, Rosario</a></li>
-          <li><a href="#">Lun–Vie 9:00–18:00 hs</a></li>
+          <li><a href="tel:+5493412279027" class="cd-phone">+54 9 3412 279027</a></li>
+          <li><a href="mailto:capri.agenciadeviajes@gmail.com" class="cd-email">capri.agenciadeviajes@gmail.com</a></li>
+          <li><a href="#" class="cd-address-oneline">Paraguay 339 3° G, Rosario</a></li>
+          <li><a href="#" class="cd-hours-oneline">Lun–Vie 9:00–18:00 hs</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
       <span>© 2025 Capri Viajes. Todos los derechos reservados.</span>
-      <span>RNAV Legajo 20607 · Reg. Ministerio de Turismo</span>
+      <span>RNAV Legajo <span class="cd-legajo">20607</span> · Reg. Ministerio de Turismo</span>
     </div>
   </footer>
 </div>
@@ -1567,7 +1567,7 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
             <line x1="146" y1="40" x2="200" y2="40" stroke="rgba(255,255,255,0.25)" stroke-width="0.5"/>
           </svg>
         </a>
-        <p>Agencia de viajes con atención personalizada en Rosario, Santa Fe. RNAV Legajo 20607.</p>
+        <p>Agencia de viajes con atención personalizada en Rosario, Santa Fe. RNAV Legajo <span class="cd-legajo">20607</span>.</p>
         <div class="foot-social">
           <a href="https://www.facebook.com/profile.php?id=61580629453017" target="_blank" class="foot-soc" aria-label="Facebook">
             <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
@@ -1601,16 +1601,16 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
       <div class="footer-col">
         <h5>Contacto</h5>
         <ul>
-          <li><a href="tel:+5493412279027">+54 9 3412 279027</a></li>
-          <li><a href="mailto:capri.agenciadeviajes@gmail.com">capri.agenciadeviajes@gmail.com</a></li>
-          <li><a href="#">Paraguay 339 3° G, Rosario</a></li>
-          <li><a href="#">Lun–Vie 9:00–18:00 hs</a></li>
+          <li><a href="tel:+5493412279027" class="cd-phone">+54 9 3412 279027</a></li>
+          <li><a href="mailto:capri.agenciadeviajes@gmail.com" class="cd-email">capri.agenciadeviajes@gmail.com</a></li>
+          <li><a href="#" class="cd-address-oneline">Paraguay 339 3° G, Rosario</a></li>
+          <li><a href="#" class="cd-hours-oneline">Lun–Vie 9:00–18:00 hs</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
       <span>© 2025 Capri Viajes. Todos los derechos reservados.</span>
-      <span>RNAV Legajo 20607 · Reg. Ministerio de Turismo</span>
+      <span>RNAV Legajo <span class="cd-legajo">20607</span> · Reg. Ministerio de Turismo</span>
     </div>
   </footer>
 </div>
@@ -1618,30 +1618,30 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
 <!-- =================== QUIÉNES SOMOS =================== -->
 <div id="quienes" class="page">
   <div class="qs-hero-full">
-    <img src="https://images.unsplash.com/photo-1452421822248-d4c2b47f0c81?w=1400&q=80" alt="Capri Viajes">
+    <img id="qs-hero-img" src="https://images.unsplash.com/photo-1452421822248-d4c2b47f0c81?w=1400&q=80" alt="Capri Viajes">
     <div class="qs-hero-full-overlay">
       <span class="eyebrow">Nuestra historia</span>
-      <h1>Nacimos para que cada persona pueda ver el mundo</h1>
-      <p>Somos una agencia rosarina con pasión genuina por los viajes y un compromiso real con cada cliente.</p>
+      <h1 id="qs-hero-titulo">Nacimos para que cada persona pueda ver el mundo</h1>
+      <p id="qs-hero-sub">Somos una agencia rosarina con pasión genuina por los viajes y un compromiso real con cada cliente.</p>
     </div>
   </div>
 
   <div class="qs-mision">
-    <div class="qs-mision-img"><img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=700&q=80" alt="Equipo"></div>
+    <div class="qs-mision-img"><img id="qs-mis-img" src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=700&q=80" alt="Equipo"></div>
     <div class="qs-mision-text">
       <span class="eyebrow">Quiénes somos</span>
-      <h2>Una agencia que nació de la pasión por viajar</h2>
-      <p>Capri Viajes nació en Rosario con una convicción simple: el viaje perfecto es el que se diseña con cuidado, atención y pasión genuina.</p>
-      <p>Somos un equipo que ama viajar tanto como ayudar a otros a hacerlo. Conocemos los destinos porque los recorrimos, y eso hace toda la diferencia a la hora de asesorarte.</p>
+      <h2 id="qs-mis-titulo">Una agencia que nació de la pasión por viajar</h2>
+      <p id="qs-mis-p1">Capri Viajes nació en Rosario con una convicción simple: el viaje perfecto es el que se diseña con cuidado, atención y pasión genuina.</p>
+      <p id="qs-mis-p2">Somos un equipo que ama viajar tanto como ayudar a otros a hacerlo. Conocemos los destinos porque los recorrimos, y eso hace toda la diferencia a la hora de asesorarte.</p>
       <p>Desde paquetes internacionales hasta escapadas nacionales, en Capri Viajes encontrás una agencia comprometida con tu experiencia de principio a fin.</p>
     </div>
   </div>
 
   <div class="qs-stats-full">
-    <div><div class="qs-stat-val">15+</div><div class="qs-stat-label">Años de experiencia</div></div>
-    <div><div class="qs-stat-val">8.000+</div><div class="qs-stat-label">Viajeros felices</div></div>
-    <div><div class="qs-stat-val">60+</div><div class="qs-stat-label">Destinos disponibles</div></div>
-    <div><div class="qs-stat-val">4.9★</div><div class="qs-stat-label">Calificación promedio</div></div>
+    <div><div class="qs-stat-val" id="qs-stat-val-1">15+</div><div class="qs-stat-label" id="qs-stat-label-1">Años de experiencia</div></div>
+    <div><div class="qs-stat-val" id="qs-stat-val-2">8.000+</div><div class="qs-stat-label" id="qs-stat-label-2">Viajeros felices</div></div>
+    <div><div class="qs-stat-val" id="qs-stat-val-3">60+</div><div class="qs-stat-label" id="qs-stat-label-3">Destinos disponibles</div></div>
+    <div><div class="qs-stat-val" id="qs-stat-val-4">4.9★</div><div class="qs-stat-label" id="qs-stat-label-4">Calificación promedio</div></div>
   </div>
 
   <div class="qs-valores-full">
@@ -1658,7 +1658,7 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
   <div class="qs-team-full">
     <h2>El equipo detrás de tus viajes</h2>
     <p class="sub">Personas que aman lo que hacen</p>
-    <div class="team-grid-full">
+    <div class="team-grid-full" id="team-grid-full">
       <div class="team-card-full"><div class="team-photo"><img src="https://i.pravatar.cc/400?img=5" alt="Carolina"></div><div class="team-info"><h4>Carolina Martínez</h4><p>Directora &amp; Fundadora</p></div></div>
       <div class="team-card-full"><div class="team-photo"><img src="https://i.pravatar.cc/400?img=15" alt="Sebastián"></div><div class="team-info"><h4>Sebastián López</h4><p>Consultor de viajes</p></div></div>
       <div class="team-card-full"><div class="team-photo"><img src="https://i.pravatar.cc/400?img=44" alt="Lucía"></div><div class="team-info"><h4>Lucía Fernández</h4><p>Especialista Europa &amp; Asia</p></div></div>
@@ -1692,7 +1692,7 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
             <line x1="146" y1="40" x2="200" y2="40" stroke="rgba(255,255,255,0.25)" stroke-width="0.5"/>
           </svg>
         </a>
-        <p>Agencia de viajes con atención personalizada en Rosario, Santa Fe. RNAV Legajo 20607.</p>
+        <p>Agencia de viajes con atención personalizada en Rosario, Santa Fe. RNAV Legajo <span class="cd-legajo">20607</span>.</p>
         <div class="foot-social">
           <a href="https://www.facebook.com/profile.php?id=61580629453017" target="_blank" class="foot-soc" aria-label="Facebook">
             <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
@@ -1726,16 +1726,16 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
       <div class="footer-col">
         <h5>Contacto</h5>
         <ul>
-          <li><a href="tel:+5493412279027">+54 9 3412 279027</a></li>
-          <li><a href="mailto:capri.agenciadeviajes@gmail.com">capri.agenciadeviajes@gmail.com</a></li>
-          <li><a href="#">Paraguay 339 3° G, Rosario</a></li>
-          <li><a href="#">Lun–Vie 9:00–18:00 hs</a></li>
+          <li><a href="tel:+5493412279027" class="cd-phone">+54 9 3412 279027</a></li>
+          <li><a href="mailto:capri.agenciadeviajes@gmail.com" class="cd-email">capri.agenciadeviajes@gmail.com</a></li>
+          <li><a href="#" class="cd-address-oneline">Paraguay 339 3° G, Rosario</a></li>
+          <li><a href="#" class="cd-hours-oneline">Lun–Vie 9:00–18:00 hs</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
       <span>© 2025 Capri Viajes. Todos los derechos reservados.</span>
-      <span>RNAV Legajo 20607 · Reg. Ministerio de Turismo</span>
+      <span>RNAV Legajo <span class="cd-legajo">20607</span> · Reg. Ministerio de Turismo</span>
     </div>
   </footer>
 </div>
@@ -1764,7 +1764,7 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
           </div>
           <div>
             <div style="font-size:0.78rem;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.2rem">Dirección</div>
-            <div style="font-size:0.88rem;color:var(--gray);line-height:1.5">Paraguay 339 3° G<br>Rosario, Santa Fe</div>
+            <div style="font-size:0.88rem;color:var(--gray);line-height:1.5" class="cd-address-block">Paraguay 339 3° G<br>Rosario, Santa Fe</div>
           </div>
         </div>
         <div style="display:flex;align-items:flex-start;gap:0.9rem;padding:1rem 0;border-bottom:1px solid #F0EDE8">
@@ -1773,7 +1773,7 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
           </div>
           <div>
             <div style="font-size:0.78rem;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.2rem">Teléfono</div>
-            <a href="tel:+5493412279027" style="font-size:0.88rem;color:var(--ocean);text-decoration:none">+54 9 3412 279027</a>
+            <a href="tel:+5493412279027" class="cd-phone" style="font-size:0.88rem;color:var(--ocean);text-decoration:none">+54 9 3412 279027</a>
           </div>
         </div>
         <div style="display:flex;align-items:flex-start;gap:0.9rem;padding:1rem 0;border-bottom:1px solid #F0EDE8">
@@ -1782,7 +1782,7 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
           </div>
           <div>
             <div style="font-size:0.78rem;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.2rem">Correo Electrónico</div>
-            <a href="mailto:capri.agenciadeviajes@gmail.com" style="font-size:0.88rem;color:var(--ocean);text-decoration:none">capri.agenciadeviajes@gmail.com</a>
+            <a href="mailto:capri.agenciadeviajes@gmail.com" class="cd-email" style="font-size:0.88rem;color:var(--ocean);text-decoration:none">capri.agenciadeviajes@gmail.com</a>
           </div>
         </div>
         <div style="display:flex;align-items:flex-start;gap:0.9rem;padding:1rem 0">
@@ -1791,7 +1791,7 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
           </div>
           <div>
             <div style="font-size:0.78rem;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.2rem">Horarios de Atención</div>
-            <div style="font-size:0.88rem;color:var(--gray)">Lun a Vie: 9:00 a 18:00 hs<br>Con cita previa</div>
+            <div style="font-size:0.88rem;color:var(--gray)" class="cd-hours-block">Lun a Vie: 9:00 a 18:00 hs<br>Con cita previa</div>
           </div>
         </div>
       </div>
@@ -1815,7 +1815,7 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
           <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
           Chatear por WhatsApp
         </a>
-        <a href="https://whatsapp.com/channel/0029VbCbjrD23n3awpz6H82x" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:8px;background:#128C7E;color:white;border-radius:8px;padding:0.85rem 1rem;text-decoration:none;font-weight:600;font-size:0.9rem">
+        <a href="https://whatsapp.com/channel/0029VbCbjrD23n3awpz6H82x" class="cd-wa-channel" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:8px;background:#128C7E;color:white;border-radius:8px;padding:0.85rem 1rem;text-decoration:none;font-weight:600;font-size:0.9rem">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
           Unirme al canal de WhatsApp
         </a>
@@ -1863,7 +1863,7 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
             <line x1="146" y1="40" x2="200" y2="40" stroke="rgba(255,255,255,0.25)" stroke-width="0.5"/>
           </svg>
         </a>
-        <p>Agencia de viajes con atención personalizada en Rosario, Santa Fe. RNAV Legajo 20607.</p>
+        <p>Agencia de viajes con atención personalizada en Rosario, Santa Fe. RNAV Legajo <span class="cd-legajo">20607</span>.</p>
         <div class="foot-social">
           <a href="https://www.facebook.com/profile.php?id=61580629453017" target="_blank" class="foot-soc" aria-label="Facebook">
             <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
@@ -1897,16 +1897,16 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
       <div class="footer-col">
         <h5>Contacto</h5>
         <ul>
-          <li><a href="tel:+5493412279027">+54 9 3412 279027</a></li>
-          <li><a href="mailto:capri.agenciadeviajes@gmail.com">capri.agenciadeviajes@gmail.com</a></li>
-          <li><a href="#">Paraguay 339 3° G, Rosario</a></li>
-          <li><a href="#">Lun–Vie 9:00–18:00 hs</a></li>
+          <li><a href="tel:+5493412279027" class="cd-phone">+54 9 3412 279027</a></li>
+          <li><a href="mailto:capri.agenciadeviajes@gmail.com" class="cd-email">capri.agenciadeviajes@gmail.com</a></li>
+          <li><a href="#" class="cd-address-oneline">Paraguay 339 3° G, Rosario</a></li>
+          <li><a href="#" class="cd-hours-oneline">Lun–Vie 9:00–18:00 hs</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
       <span>© 2025 Capri Viajes. Todos los derechos reservados.</span>
-      <span>RNAV Legajo 20607 · Reg. Ministerio de Turismo</span>
+      <span>RNAV Legajo <span class="cd-legajo">20607</span> · Reg. Ministerio de Turismo</span>
     </div>
   </footer>
 </div>
@@ -1922,7 +1922,7 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
             <line x1="146" y1="40" x2="200" y2="40" stroke="rgba(255,255,255,0.25)" stroke-width="0.5"/>
           </svg>
         </a>
-        <p>Agencia de viajes con atención personalizada en Rosario, Santa Fe. RNAV Legajo 20607.</p>
+        <p>Agencia de viajes con atención personalizada en Rosario, Santa Fe. RNAV Legajo <span class="cd-legajo">20607</span>.</p>
         <div class="foot-social">
           <a href="https://www.facebook.com/profile.php?id=61580629453017" target="_blank" class="foot-soc" aria-label="Facebook">
             <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
@@ -1956,16 +1956,16 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
       <div class="footer-col">
         <h5>Contacto</h5>
         <ul>
-          <li><a href="tel:+5493412279027">+54 9 3412 279027</a></li>
-          <li><a href="mailto:capri.agenciadeviajes@gmail.com">capri.agenciadeviajes@gmail.com</a></li>
-          <li><a href="#">Paraguay 339 3° G, Rosario</a></li>
-          <li><a href="#">Lun–Vie 9:00–18:00 hs</a></li>
+          <li><a href="tel:+5493412279027" class="cd-phone">+54 9 3412 279027</a></li>
+          <li><a href="mailto:capri.agenciadeviajes@gmail.com" class="cd-email">capri.agenciadeviajes@gmail.com</a></li>
+          <li><a href="#" class="cd-address-oneline">Paraguay 339 3° G, Rosario</a></li>
+          <li><a href="#" class="cd-hours-oneline">Lun–Vie 9:00–18:00 hs</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
       <span>© 2025 Capri Viajes. Todos los derechos reservados.</span>
-      <span>RNAV Legajo 20607 · Reg. Ministerio de Turismo</span>
+      <span>RNAV Legajo <span class="cd-legajo">20607</span> · Reg. Ministerio de Turismo</span>
     </div>
   </footer>
 
@@ -1976,6 +1976,33 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
 // Currency state — se actualiza cuando llegan los datos desde Supabase (ver loadFromAdmin)
 let currentCurrency = "USD";
 const USD_TO_ARS = 1250;
+
+// Numero de WhatsApp — se actualiza con los datos de contacto reales del admin (ver applyContactSettings)
+let WA_NUMBER = "5493412279027";
+
+function applyContactSettings(s) {
+  if (!s) return;
+  if (s.wa) WA_NUMBER = s.wa;
+  const setText = (sel, val) => { if (!val) return; document.querySelectorAll(sel).forEach(el => el.textContent = val); };
+  const setHref = (sel, val) => { if (!val) return; document.querySelectorAll(sel).forEach(el => el.href = val); };
+  setText('.cd-phone', s.telefono);
+  setHref('.cd-phone', s.wa ? 'tel:+' + s.wa : null);
+  setText('.cd-email', s.email);
+  setHref('.cd-email', s.email ? 'mailto:' + s.email : null);
+  if (s.direccion || s.ciudad) {
+    document.querySelectorAll('.cd-address-oneline').forEach(el => el.textContent = [s.direccion, s.ciudad].filter(Boolean).join(', '));
+    document.querySelectorAll('.cd-address-block').forEach(el => el.innerHTML = [s.direccion, s.ciudad].filter(Boolean).join('<br>'));
+  }
+  setText('.cd-hours-oneline', s.horario);
+  if (s.horario) document.querySelectorAll('.cd-hours-block').forEach(el => el.textContent = s.horario);
+  setHref('a[aria-label="Facebook"]', s.fb);
+  setHref('a[aria-label="Instagram"]', s.ig);
+  if (s.wa) document.querySelectorAll('a[aria-label="WhatsApp"]').forEach(el => el.href = 'https://wa.me/' + s.wa);
+  setHref('.cd-wa-channel', s.wacanal);
+  if (s.wa) document.querySelectorAll('.cd-wa-generic').forEach(el => el.href = 'https://wa.me/' + s.wa);
+  if (s.wa) { const wf = document.getElementById('wa-float-btn'); if (wf) wf.href = 'https://wa.me/' + s.wa + '?text=Hola!%20Quiero%20hacer%20una%20consulta.'; }
+  setText('.cd-legajo', s.legajo);
+}
 
 // Carga los datos publicados desde el panel admin (Supabase)
 window.addEventListener('load', () => {
@@ -2398,10 +2425,10 @@ function showDetalle(id) {
   renderDetallePrecio(p);
 
   const waMsg = encodeURIComponent("Hola! Quiero consultar sobre " + p.title + " (salida " + (formatFechaLarga(p.fechaSalida)||"") + ")");
-  document.getElementById("det-wa-link").href = "https://wa.me/5493412279027?text=" + waMsg;
+  document.getElementById("det-wa-link").href = "https://wa.me/" + WA_NUMBER + "?text=" + waMsg;
   document.getElementById("det-wa-link").onclick = () => logEvent('whatsapp_click', id, p.title);
   const stickyWa = document.getElementById("det-sticky-wa");
-  if (stickyWa) { stickyWa.href = "https://wa.me/5493412279027?text=" + waMsg; stickyWa.onclick = () => logEvent('whatsapp_click', id, p.title); }
+  if (stickyWa) { stickyWa.href = "https://wa.me/" + WA_NUMBER + "?text=" + waMsg; stickyWa.onclick = () => logEvent('whatsapp_click', id, p.title); }
 
   showPage("detalle");
 }
@@ -2430,9 +2457,9 @@ function selectHotel(el, price, groupIndex) {
   renderDetallePrecio(p);
   const waMsg = encodeURIComponent(`Hola! Quiero consultar sobre ${p.title} (salida ${formatFechaLarga(p.fechaSalida)||""}) — Hotel: ${seleccionados.join(' | ')}`);
   const waEl = document.getElementById("det-wa-link");
-  if (waEl) waEl.href = `https://wa.me/5493412279027?text=${waMsg}`;
+  if (waEl) waEl.href = `https://wa.me/${WA_NUMBER}?text=${waMsg}`;
   const stickyWa = document.getElementById("det-sticky-wa");
-  if (stickyWa) stickyWa.href = `https://wa.me/5493412279027?text=${waMsg}`;
+  if (stickyWa) stickyWa.href = `https://wa.me/${WA_NUMBER}?text=${waMsg}`;
 }
 
 
@@ -2479,7 +2506,7 @@ function renderAsistenciaGrid() {
       <p class="asistencia-desc">${escapeHtml(a.descripcion||'')}</p>
       ${a.telefono ? `<a class="asistencia-contact" href="tel:${escapeHtml(a.telefono)}">📞 ${escapeHtml(a.telefono)}</a>` : ""}
       ${a.web ? `<a class="asistencia-contact" href="${escapeHtml(a.web)}" target="_blank" rel="noopener">🌐 Sitio web</a>` : ""}
-      <a class="btn-wa-det" href="https://wa.me/5493412279027?text=${waMsg}" target="_blank" rel="noopener" style="margin-top:0.75rem">💬 Consultar por WhatsApp</a>
+      <a class="btn-wa-det" href="https://wa.me/${WA_NUMBER}?text=${waMsg}" target="_blank" rel="noopener" style="margin-top:0.75rem">💬 Consultar por WhatsApp</a>
     </div>`;
   }).join('');
 }
@@ -2711,6 +2738,34 @@ function renderGrupCard(g) {
   </div>`;
 }
 
+function renderQuienesInfo(q) {
+  const setText = (id, val) => { const el = document.getElementById(id); if (el && val) el.textContent = val; };
+  const setSrc = (id, val) => { const el = document.getElementById(id); if (el && val) el.src = val; };
+  setSrc('qs-hero-img', q.heroImg);
+  setText('qs-hero-titulo', q.heroTitulo);
+  setText('qs-hero-sub', q.heroSub);
+  setSrc('qs-mis-img', q.misImg);
+  setText('qs-mis-titulo', q.misTitulo);
+  setText('qs-mis-p1', q.misP1);
+  setText('qs-mis-p2', q.misP2);
+  (q.stats||[]).forEach((s,i) => {
+    setText('qs-stat-val-' + (i+1), s.v);
+    setText('qs-stat-label-' + (i+1), s.l);
+    setText('counter-val-' + (i+1), s.v);
+    setText('counter-label-' + (i+1), s.l);
+  });
+}
+
+function renderTeamGrid(team) {
+  const grid = document.getElementById('team-grid-full');
+  if (!grid) return;
+  grid.innerHTML = team.map(m => `
+    <div class="team-card-full">
+      <div class="team-photo"><img src="${escapeHtml(m.foto||'')}" alt="${escapeHtml(m.nombre||'')}"></div>
+      <div class="team-info"><h4>${escapeHtml(m.nombre||'')}</h4><p>${escapeHtml(m.rol||'')}</p></div>
+    </div>`).join('');
+}
+
 function renderServiciosGrid(list) {
   const grid = document.getElementById('servicios-grid');
   if (!grid) return;
@@ -2729,11 +2784,22 @@ async function loadFromAdmin() {
     const { data, error } = await sb.from('site_data').select('value').eq('id','capri_data').maybeSingle();
     if (!error && data && data.value && Object.keys(data.value).length) stored = data.value;
   } catch(e) {}
+  // Datos de contacto / moneda — se cargan primero para que WA_NUMBER ya este actualizado
+  // antes de renderizar tarjetas (asistencia, etc.) que arman links de WhatsApp.
+  let settings = {};
+  try {
+    const { data, error } = await sb.from('site_data').select('value').eq('id','capri_settings').maybeSingle();
+    if (!error && data && data.value) settings = data.value;
+  } catch(e) {}
+  if (settings.currency && settings.currency !== currentCurrency) setCurrency(settings.currency);
+  applyContactSettings(settings);
   blogPosts = (stored && stored.blog) || [];
   renderBlogGrid();
   asistencias = (stored && stored.asistencias) || [];
   renderAsistenciaGrid();
   if (stored && stored.servicios && stored.servicios.length) renderServiciosGrid(stored.servicios);
+  if (stored && stored.quienes) renderQuienesInfo(stored.quienes);
+  if (stored && stored.team && stored.team.length) renderTeamGrid(stored.team);
   if (!stored) return;
   // Merge admin data into paquetes object (used by showDetalle)
   (stored.paquetes||[]).forEach(p => { paquetes[p.id] = adminPaqToDetalle(p, false); });
@@ -2751,7 +2817,8 @@ async function loadFromAdmin() {
     const cards = [
       ...(stored.destinos||[]).map(d => ({ type:'destino', id:d.id, pais:d.pais, nombre:d.nombre, precio:d.precio, tag:d.tag, img:d.img, feat: d.feat==='si' })),
       ...(stored.paquetes||[]).filter(p => p.destacado).map(p => ({ type:'paquete', id:p.id, pais:p.dest, nombre:p.titulo, precio:p.precio, tag:p.badge, img:p.img, moneda:p.moneda, feat: !!p.feat })),
-      ...(stored.grupales||[]).filter(g => g.destacado).map(g => ({ type:'grupal', id:g.id, pais:joinDest(g.dest), nombre:g.titulo, precio:g.precio, tag:g.badge, img:g.img, moneda:g.moneda, feat: !!g.feat }))
+      ...(stored.grupales||[]).filter(g => g.destacado).map(g => ({ type:'grupal', id:g.id, pais:joinDest(g.dest), nombre:g.titulo, precio:g.precio, tag:g.badge, img:g.img, moneda:g.moneda, feat: !!g.feat })),
+      ...(stored.quince||[]).filter(q => q.destacado).map(q => ({ type:'quince', id:q.id, pais:joinDest(q.dest), nombre:q.titulo, precio:q.precio, tag:q.badge, img:q.img, moneda:q.moneda, feat: !!q.feat }))
     ];
     if (cards.length) {
       destGrid.innerHTML = cards.map(c => {
@@ -2782,13 +2849,6 @@ async function loadFromAdmin() {
         </div>
       </div>`).join('');
   }
-  // Apply currency setting from admin
-  let settings = {};
-  try {
-    const { data, error } = await sb.from('site_data').select('value').eq('id','capri_settings').maybeSingle();
-    if (!error && data && data.value) settings = data.value;
-  } catch(e) {}
-  if (settings.currency && settings.currency !== currentCurrency) setCurrency(settings.currency);
   setTimeout(initCardPrices, 50);
 }
 

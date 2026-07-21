@@ -1083,7 +1083,16 @@ async function saveCredentials() {
 }
 
 // ===== DATA =====
-let SETTINGS = { currency: 'USD', usdToArs: 1250 };
+let SETTINGS = {
+  currency: 'USD', usdToArs: 1250,
+  direccion: 'Paraguay 339 3° G', ciudad: 'Rosario, Santa Fe',
+  telefono: '+54 9 3412 279027', wa: '5493412279027',
+  email: 'capri.agenciadeviajes@gmail.com', horario: 'Lun a Vie: 9:00 a 18:00 hs',
+  fb: 'https://www.facebook.com/profile.php?id=61580629453017',
+  ig: 'https://www.instagram.com/capriviajes.ok/',
+  wacanal: 'https://whatsapp.com/channel/0029VbCbjrD23n3awpz6H82x',
+  legajo: '20607'
+};
 
 async function loadCloudData() {
   const { data, error } = await sb.from('site_data').select('value').eq('id','capri_data').maybeSingle();
@@ -1097,6 +1106,21 @@ async function loadCloudData() {
     {icono:'✈️',titulo:'Gestión de cambios',texto:'Con aerolíneas y proveedores. Siempre vas a tener respuesta de nuestro lado.'},
     {icono:'🏠',titulo:'Seguimiento post-viaje',texto:'Para cerrar la experiencia y acompañarte en lo que necesites de regreso a casa.'}
   ];
+  if (!DATA.quienes) DATA.quienes = {
+    heroTitulo: 'Nacimos para que cada persona pueda ver el mundo',
+    heroSub: 'Somos una agencia rosarina con pasión genuina por los viajes y un compromiso real con cada cliente.',
+    heroImg: 'https://images.unsplash.com/photo-1452421822248-d4c2b47f0c81?w=1400&q=80',
+    misTitulo: 'Una agencia que nació de la pasión por viajar',
+    misImg: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=700&q=80',
+    misP1: 'Capri Viajes nació en Rosario con una convicción simple: el viaje perfecto es el que se diseña con cuidado, atención y pasión genuina.',
+    misP2: 'Somos un equipo que ama viajar tanto como ayudar a otros a hacerlo. Conocemos los destinos porque los recorrimos, y eso hace toda la diferencia.',
+    stats: [
+      {v:'15+', l:'Años de experiencia'},
+      {v:'8.000+', l:'Viajeros felices'},
+      {v:'60+', l:'Destinos disponibles'},
+      {v:'4.9★', l:'Calificación promedio'}
+    ]
+  };
 }
 
 async function loadCloudSettings() {
@@ -1143,7 +1167,22 @@ let DATA = {
     {icono:'🤝',titulo:'Acompañamiento humano real',texto:'Antes, durante y después del viaje.'},
     {icono:'✈️',titulo:'Gestión de cambios',texto:'Con aerolíneas y proveedores. Siempre vas a tener respuesta de nuestro lado.'},
     {icono:'🏠',titulo:'Seguimiento post-viaje',texto:'Para cerrar la experiencia y acompañarte en lo que necesites de regreso a casa.'}
-  ]
+  ],
+  quienes: {
+    heroTitulo: 'Nacimos para que cada persona pueda ver el mundo',
+    heroSub: 'Somos una agencia rosarina con pasión genuina por los viajes y un compromiso real con cada cliente.',
+    heroImg: 'https://images.unsplash.com/photo-1452421822248-d4c2b47f0c81?w=1400&q=80',
+    misTitulo: 'Una agencia que nació de la pasión por viajar',
+    misImg: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=700&q=80',
+    misP1: 'Capri Viajes nació en Rosario con una convicción simple: el viaje perfecto es el que se diseña con cuidado, atención y pasión genuina.',
+    misP2: 'Somos un equipo que ama viajar tanto como ayudar a otros a hacerlo. Conocemos los destinos porque los recorrimos, y eso hace toda la diferencia.',
+    stats: [
+      {v:'15+', l:'Años de experiencia'},
+      {v:'8.000+', l:'Viajeros felices'},
+      {v:'60+', l:'Destinos disponibles'},
+      {v:'4.9★', l:'Calificación promedio'}
+    ]
+  }
 };
 
 function saveData() {
@@ -1167,7 +1206,7 @@ function showPanel(id, triggerEl) {
   });
   const titles = {dashboard:'Dashboard',paquetes:'Paquetes',grupales:'Grupales',quince:'Quinceañeras',testimonios:'Testimonios',destinos:'Destinos inicio',servicios:'Servicios (home)',blog:'Blog',asistencia:'Asistencia al viajero',estadisticas:'Estadísticas',contacto:'Datos de contacto',quienes:'Quiénes somos',seguridad:'Seguridad'};
   document.getElementById('topbar-title').textContent = titles[id] || id;
-  if (id === 'quienes') renderTeam();
+  if (id === 'quienes') { renderTeam(); populateQuienesForm(); }
   if (id === 'servicios') renderServicios();
   if (id === 'estadisticas') loadStats();
   window.scrollTo(0,0);
@@ -1186,6 +1225,17 @@ function renderAll() {
     const inp = document.getElementById('c-usd-ars');
     if (inp) inp.value = SETTINGS.usdToArs;
   }
+  const setVal = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
+  setVal('c-direccion', SETTINGS.direccion);
+  setVal('c-ciudad', SETTINGS.ciudad);
+  setVal('c-telefono', SETTINGS.telefono);
+  setVal('c-wa', SETTINGS.wa);
+  setVal('c-email', SETTINGS.email);
+  setVal('c-horario', SETTINGS.horario);
+  setVal('c-fb', SETTINGS.fb);
+  setVal('c-ig', SETTINGS.ig);
+  setVal('c-wacanal', SETTINGS.wacanal);
+  setVal('c-legajo', SETTINGS.legajo);
 }
 
 function updateStats() {
@@ -2074,17 +2124,58 @@ async function loadStats() {
 
 // ===== CONTACTO =====
 function saveContacto() {
-  const currency = document.getElementById('c-currency').value;
-  const usdToArs = parseFloat(document.getElementById('c-usd-ars').value) || 1250;
-  SETTINGS = { currency, usdToArs };
+  const val = id => document.getElementById(id)?.value || '';
+  SETTINGS = {
+    currency: val('c-currency') || 'USD',
+    usdToArs: parseFloat(val('c-usd-ars')) || 1250,
+    direccion: val('c-direccion'),
+    ciudad: val('c-ciudad'),
+    telefono: val('c-telefono'),
+    wa: val('c-wa'),
+    email: val('c-email'),
+    horario: val('c-horario'),
+    fb: val('c-fb'),
+    ig: val('c-ig'),
+    wacanal: val('c-wacanal'),
+    legajo: val('c-legajo')
+  };
   sb.from('site_data').upsert({ id:'capri_settings', value: SETTINGS, updated_at: new Date().toISOString() }).then(({error}) => {
     if (error) { showToast('Error: ' + error.message, 'error'); return; }
-    showToast('Datos y configuración de moneda guardados ✓','success');
+    showToast('Datos de contacto guardados ✓','success');
   });
 }
 
 // ===== QUIENES SOMOS =====
+function populateQuienesForm() {
+  const q = DATA.quienes || {};
+  const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
+  setVal('q-hero-titulo', q.heroTitulo);
+  setVal('q-hero-sub', q.heroSub);
+  setVal('q-hero-img', q.heroImg);
+  setVal('q-mis-titulo', q.misTitulo);
+  setVal('q-mis-img', q.misImg);
+  setVal('q-mis-p1', q.misP1);
+  setVal('q-mis-p2', q.misP2);
+  const stats = q.stats || [];
+  for (let i = 0; i < 4; i++) {
+    setVal('q-s' + (i+1) + 'v', stats[i]?.v);
+    setVal('q-s' + (i+1) + 'l', stats[i]?.l);
+  }
+}
+
 function saveQuienes() {
+  const val = id => document.getElementById(id)?.value || '';
+  DATA.quienes = {
+    heroTitulo: val('q-hero-titulo'),
+    heroSub: val('q-hero-sub'),
+    heroImg: val('q-hero-img'),
+    misTitulo: val('q-mis-titulo'),
+    misImg: val('q-mis-img'),
+    misP1: val('q-mis-p1'),
+    misP2: val('q-mis-p2'),
+    stats: [1,2,3,4].map(i => ({ v: val('q-s'+i+'v'), l: val('q-s'+i+'l') }))
+  };
+  saveData();
   showToast('Datos guardados ✓','success');
 }
 
