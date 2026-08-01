@@ -2996,6 +2996,16 @@ function renderServiciosGrid(list) {
     </div>`).join('');
 }
 
+// Ordena paquetes/grupales/miniturismo cronologicamente por fecha de salida — sin fecha, al final
+function porFechaSalida(a, b) {
+  const fa = a.fechaSalida || a.fecha || '';
+  const fb = b.fechaSalida || b.fecha || '';
+  if (!fa && !fb) return 0;
+  if (!fa) return 1;
+  if (!fb) return -1;
+  return fa < fb ? -1 : fa > fb ? 1 : 0;
+}
+
 async function loadFromAdmin() {
   let stored = null;
   try {
@@ -3025,13 +3035,13 @@ async function loadFromAdmin() {
   (stored.paquetes||[]).forEach(p => { paquetes[p.id] = adminPaqToDetalle(p, false); });
   (stored.grupales||[]).forEach(g => { paquetes[g.id] = adminPaqToDetalle(g, true); });
   (stored.miniturismo||[]).forEach(m => { paquetes[m.id] = adminPaqToDetalle(m, false); });
-  // Render grids
+  // Render grids — ordenados cronologicamente por fecha de salida
   const paqGrid = document.getElementById('paq-grid');
-  if (paqGrid && (stored.paquetes||[]).length) paqGrid.innerHTML = stored.paquetes.map(renderPaqCard).join('');
+  if (paqGrid && (stored.paquetes||[]).length) paqGrid.innerHTML = [...stored.paquetes].sort(porFechaSalida).map(renderPaqCard).join('');
   const grupGrid = document.getElementById('grup-grid');
-  if (grupGrid && (stored.grupales||[]).length) grupGrid.innerHTML = stored.grupales.map(renderGrupCard).join('');
+  if (grupGrid && (stored.grupales||[]).length) grupGrid.innerHTML = [...stored.grupales].sort(porFechaSalida).map(renderGrupCard).join('');
   const miniGrid = document.getElementById('mini-grid');
-  if (miniGrid) miniGrid.innerHTML = (stored.miniturismo||[]).map(renderPaqCard).join('');
+  if (miniGrid) miniGrid.innerHTML = [...(stored.miniturismo||[])].sort(porFechaSalida).map(renderPaqCard).join('');
   const destGrid = document.getElementById('destinos-grid');
   if (destGrid) {
     const cards = [
