@@ -229,6 +229,10 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           <span>Grupales</span>
         </div>
+        <div class="nav-item" onclick="showPanel('miniturismo')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          <span>Miniturismo</span>
+        </div>
         <div class="nav-item" onclick="showPanel('quince')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.5 6.5L21 9l-5 5 1.5 7L12 17.5 6.5 21 8 14 3 9l6.5-.5z"/></svg>
           <span>Quinceañeras</span>
@@ -308,6 +312,7 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
             <div class="card-body" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem">
               <button class="btn btn-primary" style="justify-content:center;padding:1rem;flex-direction:column;gap:4px" onclick="showPanel('paquetes');openNewPaq()"><span style="font-size:1.2rem">📦</span>+ Nuevo paquete</button>
               <button class="btn btn-primary" style="justify-content:center;padding:1rem;flex-direction:column;gap:4px" onclick="showPanel('grupales');openNewGrup()"><span style="font-size:1.2rem">👥</span>+ Nuevo grupal</button>
+              <button class="btn btn-primary" style="justify-content:center;padding:1rem;flex-direction:column;gap:4px" onclick="showPanel('miniturismo');openNewMini()"><span style="font-size:1.2rem">📦</span>+ Nuevo miniturismo</button>
               <button class="btn btn-primary" style="justify-content:center;padding:1rem;flex-direction:column;gap:4px" onclick="showPanel('testimonios');openNewTest()"><span style="font-size:1.2rem">⭐</span>+ Nuevo testimonio</button>
               <button class="btn btn-ghost" style="justify-content:center;padding:1rem;flex-direction:column;gap:4px" onclick="showPanel('contacto')"><span style="font-size:1.2rem">📞</span>Contacto</button>
               <button class="btn btn-ghost" style="justify-content:center;padding:1rem;flex-direction:column;gap:4px" onclick="showPanel('quienes')"><span style="font-size:1.2rem">👤</span>Quiénes somos</button>
@@ -364,6 +369,19 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
             </div>
             <div class="card-body">
               <div class="item-list" id="grup-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MINITURISMO -->
+        <div class="panel" id="panel-miniturismo">
+          <div class="card">
+            <div class="card-header">
+              <h3>Miniturismo (<span id="mini-count">0</span>)</h3>
+              <button class="btn btn-primary" onclick="openNewMini()">+ Agregar miniturismo</button>
+            </div>
+            <div class="card-body">
+              <div class="item-list" id="mini-list"></div>
             </div>
           </div>
         </div>
@@ -737,6 +755,157 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('modal-paq')">Cancelar</button>
       <button class="btn btn-success" onclick="savePaq()">Guardar paquete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL MINITURISMO (mismas caracteristicas que Paquete) ===== -->
+<div class="modal-overlay" id="modal-mini">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-mini-title">Nuevo miniturismo</h3>
+      <button class="modal-close" onclick="closeModal('modal-mini')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="mini-edit-id">
+
+      <!-- Identificación -->
+      <div style="background:#F8FAFC;border-radius:8px;padding:1rem;margin-bottom:1rem">
+        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ocean);margin-bottom:0.75rem">📋 Información general</div>
+        <div class="field-row">
+          <div class="field"><label>Título</label><input type="text" id="mini-titulo" placeholder="Ej: Escapada a Victoria"></div>
+          <div class="field"><label>País / Destino</label><input type="text" id="mini-dest" placeholder="Ej: Argentina"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Duración</label><input type="text" id="mini-dur" placeholder="Ej: 2 noches"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Badge especial</label><input type="text" id="mini-badge" placeholder="Ej: Oferta, Escapada"></div>
+          <div class="field"><label>Vuelo incluido</label>
+            <select id="mini-vuelo"><option value="si">Sí</option><option value="no">No</option></select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="mini-destacado" style="width:16px;height:16px"> Mostrar como destino en inicio</label></div>
+          <div class="field"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="mini-feat" style="width:16px;height:16px"> Card grande (destacado visual)</label></div>
+        </div>
+        <div class="field" style="background:#FEF3C7;border:1px solid #FCD34D;border-radius:6px;padding:0.75rem 1rem"><label>🔒 Operador mayorista (solo interno, no se muestra en la web)</label><input type="text" id="mini-operador" placeholder="Ej: Ola, Isento, Interlagos..."></div>
+        <div class="field"><label>URL imagen principal</label><input type="url" id="mini-img" placeholder="https://images.unsplash.com/..." oninput="this.nextElementSibling.src=this.value"><img class="img-preview" id="mini-img-preview" onerror="this.removeAttribute('src')"></div>
+        <div class="field"><label>Descripción corta (visible en tarjeta)</label><textarea id="mini-desc-corta" placeholder="Resumen para la tarjeta..." style="min-height:60px"></textarea></div>
+        <div class="field"><label>Descripción completa (en detalle)</label><textarea id="mini-desc-full" placeholder="Descripción detallada del miniturismo..." style="min-height:80px"></textarea></div>
+      </div>
+
+      <!-- Fechas y salida -->
+      <div style="background:#F8FAFC;border-radius:8px;padding:1rem;margin-bottom:1rem">
+        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ocean);margin-bottom:0.75rem">📅 Fechas y lugar de salida</div>
+        <div class="field-row">
+          <div class="field"><label>Fecha de salida</label><input type="date" id="mini-fecha-salida"></div>
+          <div class="field"><label>Fecha de regreso</label><input type="date" id="mini-fecha-regreso"></div>
+        </div>
+        <div class="field"><label>Lugar de salida</label><input type="text" id="mini-lugar-salida" placeholder="Ej: Rosario (ROS)" value="Rosario (ROS)"></div>
+      </div>
+
+      <!-- Precio -->
+      <div style="background:#F8FAFC;border-radius:8px;padding:1rem;margin-bottom:1rem">
+        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ocean);margin-bottom:0.75rem">💰 Precio</div>
+        <div class="field-row">
+          <div class="field"><label>Precio base</label><input type="number" id="mini-precio" placeholder="250"><div class="hint">Precio mínimo del miniturismo</div></div>
+          <div class="field"><label>Moneda del miniturismo</label>
+            <select id="mini-moneda">
+              <option value="USD">USD — Dólares</option>
+              <option value="ARS">$ — Pesos argentinos</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Estrellas hotel base</label>
+            <select id="mini-estrellas">
+              <option value="3★">3 estrellas</option>
+              <option value="4★">4 estrellas</option>
+              <option value="5★">5 estrellas</option>
+            </select>
+          </div>
+          <div class="field"><label>Vuelo incluido</label>
+            <select id="mini-vuelo2"><option value="si">Sí</option><option value="no">No</option></select>
+          </div>
+        </div>
+        <div style="font-size:0.75rem;font-weight:600;color:var(--navy);margin-bottom:0.5rem">Pagos (opcional — si no se completa, se divide en 2 automáticamente)</div>
+        <div class="includes-editor" id="mini-pagos-list"></div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:0.4rem" onclick="addPagoLine(null,'mini-pagos-list')">+ Agregar pago</button>
+        <div class="hint" style="margin-top:0.4rem">Formato: Label del pago · Monto. Ej: "1er pago · 700"</div>
+      </div>
+
+      <!-- Otras fechas de salida -->
+      <div style="background:#F8FAFC;border-radius:8px;padding:1rem;margin-bottom:1rem">
+        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ocean);margin-bottom:0.75rem">🗓️ Otras fechas de salida (opcional)</div>
+        <div class="hint" style="margin-bottom:0.5rem">La fecha y el precio de arriba son la primera opción. Si este miniturismo sale en más fechas con precios distintos, agregalas acá.</div>
+        <div id="mini-fechas-list" style="display:flex;flex-direction:column;gap:0.5rem"></div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:0.5rem" onclick="addFechaRow(null,'mini-fechas-list')">+ Agregar otra fecha</button>
+      </div>
+
+      <!-- Vuelos -->
+      <div style="background:#F8FAFC;border-radius:8px;padding:1rem;margin-bottom:1rem">
+        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ocean);margin-bottom:0.75rem">✈️ Itinerario de vuelo</div>
+        <div id="mini-vuelos-list" style="display:flex;flex-direction:column;gap:0.75rem"></div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:0.5rem" onclick="addVueloRow(null,'mini-vuelos-list')">+ Agregar tramo</button>
+        <div class="hint" style="margin-top:0.3rem">Agregá ida y vuelta como tramos separados</div>
+        <div class="field" style="margin-top:0.75rem">
+          <label>Traslados in/out incluidos</label>
+          <select id="mini-traslado"><option value="si">Sí — incluidos en el paquete</option><option value="no">No</option></select>
+        </div>
+      </div>
+
+      <!-- Resumen por ciudad -->
+      <div style="background:#F8FAFC;border-radius:8px;padding:1rem;margin-bottom:1rem">
+        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ocean);margin-bottom:0.75rem">🏙️ Ciudades del viaje</div>
+        <p style="font-size:0.75rem;color:var(--gray);margin-bottom:0.75rem">Definí acá las ciudades del itinerario (formato: Ciudad|Detalle). Después, en "Opciones de hotel", vas a poder cargar los hoteles agrupados por cada una de estas ciudades.</p>
+        <div class="field" style="margin:0"><label>Resumen por ciudad</label>
+          <div class="includes-editor" id="mini-resumen-list"></div>
+          <button class="btn btn-ghost btn-sm" style="margin-top:0.4rem" onclick="addIncLine('mini-resumen-list')">+ Agregar ciudad</button>
+          <div class="hint">Ej: Roma|5 noches · Hotel Colosseo 4★</div>
+        </div>
+      </div>
+
+      <!-- Hoteles -->
+      <div style="background:#F8FAFC;border-radius:8px;padding:1rem;margin-bottom:1rem">
+        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ocean);margin-bottom:0.75rem">🏨 Opciones de hotel</div>
+        <div id="mini-hoteles-list" style="display:flex;flex-direction:column;gap:0.75rem"></div>
+        <div style="display:flex;gap:0.5rem;margin-top:0.5rem">
+          <button class="btn btn-ghost btn-sm" onclick="addHotelRow(null,'mini-hoteles-list','mini-resumen-list')">+ Agregar hotel</button>
+          <button class="btn btn-ghost btn-sm" onclick="refreshHotelCiudades('mini-hoteles-list','mini-resumen-list')">🔄 Actualizar lista de ciudades</button>
+        </div>
+        <div class="hint" style="margin-top:0.3rem">El pasajero solo puede elegir un hotel por ciudad. Si el miniturismo tiene una sola ciudad, va a ver todas las opciones como una única lista para elegir.</div>
+      </div>
+
+      <!-- Itinerario día a día -->
+      <div style="background:#F8FAFC;border-radius:8px;padding:1rem;margin-bottom:1rem">
+        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ocean);margin-bottom:0.5rem">📅 Itinerario día a día</div>
+        <p style="font-size:0.75rem;color:var(--gray);margin-bottom:0.75rem">Solo se muestra en paquetes <strong>grupales</strong>. Para paquetes individuales se ignora.</p>
+        <div id="mini-itinerario-list" style="display:flex;flex-direction:column;gap:0.75rem"></div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:0.5rem" onclick="addItinRow('mini-itinerario-list')">+ Agregar día</button>
+      </div>
+
+      <!-- Incluye / No incluye / Excursiones / Resumen -->
+      <div style="background:#F8FAFC;border-radius:8px;padding:1rem;margin-bottom:1rem">
+        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ocean);margin-bottom:0.75rem">📝 Contenido del detalle</div>
+        <div class="field"><label>¿Qué incluye? (uno por línea)</label>
+          <div class="includes-editor" id="mini-inc-si-list"></div>
+          <button class="btn btn-ghost btn-sm" style="margin-top:0.4rem" onclick="addIncLine('mini-inc-si-list')">+ Agregar línea</button>
+        </div>
+        <div class="field"><label>¿Qué NO incluye? (uno por línea)</label>
+          <div class="includes-editor" id="mini-inc-no-list"></div>
+          <button class="btn btn-ghost btn-sm" style="margin-top:0.4rem" onclick="addIncLine('mini-inc-no-list')">+ Agregar línea</button>
+        </div>
+        <div class="field"><label>Excursiones / Experiencias incluidas (uno por línea, dejar vacío si no hay)</label>
+          <div class="includes-editor" id="mini-excursiones-list"></div>
+          <button class="btn btn-ghost btn-sm" style="margin-top:0.4rem" onclick="addIncLine('mini-excursiones-list')">+ Agregar excursión</button>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-mini')">Cancelar</button>
+      <button class="btn btn-success" onclick="saveMini()">Guardar miniturismo</button>
     </div>
   </div>
 </div>
@@ -1120,6 +1289,7 @@ async function loadCloudData() {
   if (!DATA.blog) DATA.blog = [];
   if (!DATA.asistencias) DATA.asistencias = [];
   if (!DATA.quince) DATA.quince = [];
+  if (!DATA.miniturismo) DATA.miniturismo = [];
   if (!DATA.servicios) DATA.servicios = [
     {icono:'🤝',titulo:'Acompañamiento humano real',texto:'Antes, durante y después del viaje.'},
     {icono:'✈️',titulo:'Gestión de cambios',texto:'Con aerolíneas y proveedores. Siempre vas a tener respuesta de nuestro lado.'},
@@ -1182,6 +1352,7 @@ let DATA = {
   blog: [],
   asistencias: [],
   quince: [],
+  miniturismo: [],
   servicios: [
     {icono:'🤝',titulo:'Acompañamiento humano real',texto:'Antes, durante y después del viaje.'},
     {icono:'✈️',titulo:'Gestión de cambios',texto:'Con aerolíneas y proveedores. Siempre vas a tener respuesta de nuestro lado.'},
@@ -1223,7 +1394,7 @@ function showPanel(id, triggerEl) {
       n.classList.add('active');
     }
   });
-  const titles = {dashboard:'Dashboard',paquetes:'Paquetes',grupales:'Grupales',quince:'Quinceañeras',testimonios:'Testimonios',destinos:'Destinos inicio',servicios:'Servicios (home)',blog:'Blog',asistencia:'Asistencia al viajero',estadisticas:'Estadísticas',contacto:'Datos de contacto',quienes:'Quiénes somos',seguridad:'Seguridad'};
+  const titles = {dashboard:'Dashboard',paquetes:'Paquetes',grupales:'Grupales',miniturismo:'Miniturismo',quince:'Quinceañeras',testimonios:'Testimonios',destinos:'Destinos inicio',servicios:'Servicios (home)',blog:'Blog',asistencia:'Asistencia al viajero',estadisticas:'Estadísticas',contacto:'Datos de contacto',quienes:'Quiénes somos',seguridad:'Seguridad'};
   document.getElementById('topbar-title').textContent = titles[id] || id;
   if (id === 'quienes') { renderTeam(); populateQuienesForm(); }
   if (id === 'servicios') renderServicios();
@@ -1233,7 +1404,7 @@ function showPanel(id, triggerEl) {
 
 // ===== RENDER =====
 function renderAll() {
-  renderPaq(); renderGrup(); renderTest(); renderDest(); renderBlog(); renderAsistencia(); renderQuince();
+  renderPaq(); renderGrup(); renderMini(); renderTest(); renderDest(); renderBlog(); renderAsistencia(); renderQuince();
   updateStats();
   // Load currency settings
   if (SETTINGS.currency) {
@@ -1265,6 +1436,7 @@ function updateStats() {
   document.getElementById('paq-count').textContent = DATA.paquetes.length;
   document.getElementById('grup-count').textContent = DATA.grupales.length;
   document.getElementById('test-count').textContent = DATA.testimonios.length;
+  document.getElementById('mini-count').textContent = (DATA.miniturismo||[]).length;
 }
 
 function renderPaq() {
@@ -1294,6 +1466,35 @@ function duplicatePaq(i) {
   saveData(); renderPaq(); updateStats();
   showToast('Paquete duplicado ✓ — editá los datos y guardá', 'success');
   editPaq(DATA.paquetes.length - 1);
+}
+
+function renderMini() {
+  const el = document.getElementById('mini-list');
+  el.innerHTML = (DATA.miniturismo||[]).map((p,i) => `
+    <div class="item-card">
+      <img class="item-card-img" src="${p.img}" alt="${p.titulo}" onerror="this.style.background='#EEE'">
+      <div class="item-card-body">
+        <div class="item-card-title">${p.titulo}</div>
+        <div class="item-card-sub">${p.dest} · ${p.dur} · <strong>${p.moneda||'USD'} ${p.precio.toLocaleString()}</strong></div>
+        <div style="margin-top:0.3rem"><span class="badge-cat">${(p.cat||'').split(' ')[0]}</span></div>
+      </div>
+      <div class="item-card-actions">
+        <button class="btn btn-ghost btn-sm" onclick="editMini(${i})">✏️ Editar</button>
+        <button class="btn btn-ghost btn-sm" onclick="duplicateMini(${i})">📋 Duplicar</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteMini(${i})">🗑</button>
+      </div>
+    </div>`).join('');
+  document.getElementById('mini-count').textContent = (DATA.miniturismo||[]).length;
+}
+
+function duplicateMini(i) {
+  const copy = JSON.parse(JSON.stringify(DATA.miniturismo[i]));
+  copy.id = 'mini_' + Date.now();
+  copy.titulo = (copy.titulo || '') + ' (copia)';
+  DATA.miniturismo.push(copy);
+  saveData(); renderMini(); updateStats();
+  showToast('Miniturismo duplicado ✓ — editá los datos y guardá', 'success');
+  editMini(DATA.miniturismo.length - 1);
 }
 
 function renderGrup() {
@@ -1732,6 +1933,126 @@ function deletePaq(i) {
   if (!confirm('¿Eliminar este paquete?')) return;
   DATA.paquetes.splice(i,1); saveData(); renderPaq(); updateStats();
   showToast('Paquete eliminado','success');
+}
+
+// ===== MINITURISMO CRUD (mismas caracteristicas que Paquetes) =====
+function openNewMini() {
+  document.getElementById('mini-edit-id').value = '';
+  document.getElementById('modal-mini-title').textContent = 'Nuevo miniturismo';
+  ['mini-titulo','mini-dest','mini-dur','mini-precio','mini-img','mini-badge','mini-desc-corta','mini-desc-full','mini-fecha-salida','mini-fecha-regreso','mini-operador'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('mini-img-preview').removeAttribute('src');
+  document.getElementById('mini-moneda').value = 'USD';
+  document.getElementById('mini-estrellas').value = '4★';
+  document.getElementById('mini-vuelo').value = 'si';
+  document.getElementById('mini-traslado').value = 'si';
+  document.getElementById('mini-lugar-salida').value = 'Rosario (ROS)';
+  document.getElementById('mini-destacado').checked = false;
+  document.getElementById('mini-feat').checked = false;
+  document.getElementById('mini-vuelos-list').innerHTML = '';
+  document.getElementById('mini-itinerario-list').innerHTML = '';
+  document.getElementById('mini-hoteles-list').innerHTML = '';
+  document.getElementById('mini-pagos-list').innerHTML = '';
+  document.getElementById('mini-fechas-list').innerHTML = '';
+  setIncLines('mini-inc-si-list',[]);
+  setIncLines('mini-inc-no-list',[]);
+  setIncLines('mini-excursiones-list',[]);
+  setIncLines('mini-resumen-list',[]);
+  openModal('modal-mini');
+}
+
+function editMini(i) {
+  const p = DATA.miniturismo[i];
+  document.getElementById('mini-edit-id').value = i;
+  document.getElementById('modal-mini-title').textContent = 'Editar miniturismo';
+  document.getElementById('mini-titulo').value = p.titulo||'';
+  document.getElementById('mini-dest').value = p.dest||'';
+  document.getElementById('mini-dur').value = p.dur||'';
+  document.getElementById('mini-precio').value = p.precio||'';
+  document.getElementById('mini-estrellas').value = p.estrellas||'4★';
+  document.getElementById('mini-moneda').value = p.moneda||'USD';
+  document.getElementById('mini-desc-corta').value = p.descCorta||'';
+  document.getElementById('mini-desc-full').value = p.descFull||'';
+  document.getElementById('mini-img').value = p.img||'';
+  document.getElementById('mini-img-preview').src = p.img||'';
+  document.getElementById('mini-badge').value = p.badge||'';
+  document.getElementById('mini-operador').value = p.operador||'';
+  document.getElementById('mini-vuelo').value = p.vuelo||'si';
+  document.getElementById('mini-traslado').value = p.traslado ? 'si' : 'no';
+  document.getElementById('mini-destacado').checked = !!p.destacado;
+  document.getElementById('mini-feat').checked = !!p.feat;
+  document.getElementById('mini-fecha-salida').value = p.fechaSalida||'';
+  document.getElementById('mini-fecha-regreso').value = p.fechaRegreso||'';
+  document.getElementById('mini-lugar-salida').value = p.lugarSalida||'Rosario (ROS)';
+  // Vuelos
+  document.getElementById('mini-vuelos-list').innerHTML = '';
+  document.getElementById('mini-itinerario-list').innerHTML = '';
+  (p.vuelos||[]).forEach(v => addVueloRow(v, 'mini-vuelos-list'));
+  // Resumen por ciudad (debe cargarse antes que Hoteles para que el desplegable de ciudad tenga las opciones)
+  setIncLines('mini-resumen-list', p.resumen||[]);
+  // Hoteles
+  document.getElementById('mini-hoteles-list').innerHTML = '';
+  (p.hoteles||[]).forEach(h => addHotelRow(h, 'mini-hoteles-list', 'mini-resumen-list'));
+  // Pagos
+  document.getElementById('mini-pagos-list').innerHTML = '';
+  (p.pagos||[]).forEach(pg => addPagoLine(pg.label + ' · ' + pg.monto, 'mini-pagos-list'));
+  // Otras fechas de salida (la primera fecha ya está en los campos principales)
+  document.getElementById('mini-fechas-list').innerHTML = '';
+  (p.fechas||[]).slice(1).forEach(f => addFechaRow(f, 'mini-fechas-list'));
+  // Itinerario
+  document.getElementById('mini-itinerario-list').innerHTML = '';
+  (p.itinerario||[]).forEach(d => addItinRow('mini-itinerario-list', d));
+  setIncLines('mini-inc-si-list', p.incSi||[]);
+  setIncLines('mini-inc-no-list', p.incNo||[]);
+  setIncLines('mini-excursiones-list', p.excursiones||[]);
+  openModal('modal-mini');
+}
+
+function saveMini() {
+  const idx = document.getElementById('mini-edit-id').value;
+  const obj = {
+    id: idx !== '' ? DATA.miniturismo[idx].id : 'mini_'+Date.now(),
+    titulo: document.getElementById('mini-titulo').value,
+    dest: document.getElementById('mini-dest').value,
+    cat: 'nacional',
+    dur: document.getElementById('mini-dur').value,
+    precio: parseFloat(document.getElementById('mini-precio').value)||0,
+    estrellas: document.getElementById('mini-estrellas').value,
+    descCorta: document.getElementById('mini-desc-corta').value,
+    descFull: document.getElementById('mini-desc-full').value,
+    img: document.getElementById('mini-img').value,
+    badge: document.getElementById('mini-badge').value,
+    operador: document.getElementById('mini-operador').value,
+    vuelo: document.getElementById('mini-vuelo').value,
+    moneda: document.getElementById('mini-moneda').value,
+    traslado: document.getElementById('mini-traslado').value === 'si',
+    destacado: document.getElementById('mini-destacado').checked,
+    feat: document.getElementById('mini-feat').checked,
+    fechaSalida: document.getElementById('mini-fecha-salida').value || (idx !== '' ? DATA.miniturismo[idx].fechaSalida : ''),
+    fechaRegreso: document.getElementById('mini-fecha-regreso').value || (idx !== '' ? DATA.miniturismo[idx].fechaRegreso : ''),
+    lugarSalida: document.getElementById('mini-lugar-salida').value,
+    vuelos: getVuelos('mini-vuelos-list'),
+    hoteles: getHoteles('mini-hoteles-list'),
+    pagos: getPagos('mini-pagos-list'),
+    incSi: getIncLines('mini-inc-si-list'),
+    incNo: getIncLines('mini-inc-no-list'),
+    itinerario: getItinerario('mini-itinerario-list'),
+    excursiones: getIncLines('mini-excursiones-list'),
+    resumen: getIncLines('mini-resumen-list')
+  };
+  obj.fechas = [
+    { fecha: obj.fechaSalida, fechaRegreso: obj.fechaRegreso, precio: obj.precio },
+    ...getFechasExtra('mini-fechas-list')
+  ];
+  if (!obj.titulo) { showToast('El título es obligatorio','error'); return; }
+  if (idx !== '') DATA.miniturismo[idx] = obj; else DATA.miniturismo.push(obj);
+  saveData(); renderMini(); updateStats(); closeModal('modal-mini');
+  showToast('Miniturismo guardado ✓','success');
+}
+
+function deleteMini(i) {
+  if (!confirm('¿Eliminar este miniturismo?')) return;
+  DATA.miniturismo.splice(i,1); saveData(); renderMini(); updateStats();
+  showToast('Miniturismo eliminado','success');
 }
 
 // ===== GRUPALES CRUD =====
