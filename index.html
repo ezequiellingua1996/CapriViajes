@@ -637,16 +637,18 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
 .quince-page-hero .eyebrow{display:block;font-size:0.78rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#FEF3C7;margin-bottom:0.5rem}
 .quince-page-hero h1{font-family:"Playfair Display",serif;font-size:clamp(2rem,4vw,3.2rem);margin-bottom:0.75rem}
 .quince-page-hero p{color:rgba(255,255,255,0.88);max-width:560px;font-size:0.95rem}
-.quince-theme .filtro-btn:hover,.quince-theme .filtro-btn.active{background:#EC4899;color:#fff;border-color:#EC4899;box-shadow:0 2px 10px rgba(236,72,153,0.35)}
-.quince-theme .paq-card{border-color:#F5D0FE}
-.quince-theme .paq-badge{background:#EC4899}
-.quince-theme .paq-badge.hot{background:#F59E0B;color:#4C1D95}
-.quince-theme .paq-dest{color:#9333EA}
-.quince-theme .paq-tag{background:#FDF4FF;border-color:#F5D0FE;color:#86198F}
-.quince-theme .paq-price-val{color:#9333EA}
-.quince-theme .btn-ver{background:linear-gradient(135deg,#EC4899,#9333EA)}
-.quince-theme .btn-ver:hover{filter:brightness(1.08)}
-.quince-theme .cupos-strip{background:#FDF2F8!important;color:#BE185D!important;border-color:#FBCFE8!important}
+.quince-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.quince-card{background:#fff;border-radius:12px;overflow:hidden;border:1px solid #F5D0FE;box-shadow:0 1px 4px rgba(0,0,0,0.06);transition:box-shadow 0.25s,transform 0.2s;display:flex;flex-direction:column}
+.quince-card:hover{box-shadow:0 8px 24px rgba(0,0,0,0.12);transform:translateY(-3px)}
+.quince-card-img{width:100%;height:190px;object-fit:cover}
+.quince-card-body{padding:1.25rem 1.4rem 1.5rem;display:flex;flex-direction:column;flex:1}
+.quince-card-body h3{font-family:"Playfair Display",serif;font-size:1.15rem;color:#4C1D95;margin-bottom:0.5rem}
+.quince-card-desc{font-size:0.85rem;color:var(--gray);line-height:1.6;margin-bottom:1.1rem;flex:1}
+.btn-download-info{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:#fff;color:#9333EA;border:1.5px solid #9333EA;padding:0.75rem;border-radius:8px;font-size:0.85rem;font-weight:600;cursor:pointer;text-align:center;text-decoration:none;transition:background 0.2s,color 0.2s;margin-bottom:0.6rem}
+.btn-download-info:hover{background:#9333EA;color:#fff}
+@media(max-width:1024px){.quince-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){.quince-grid{grid-template-columns:repeat(2,1fr);gap:1rem}}
+@media(max-width:600px){.quince-grid{grid-template-columns:1fr}}
 
 /* ===== ASISTENCIA AL VIAJERO ===== */
 .asistencia-page-hero{background:linear-gradient(135deg,var(--navy) 0%,var(--ocean) 100%);padding:7rem 5% 4rem;color:var(--white)}
@@ -1565,18 +1567,9 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
     <h1>Paquetes de viaje para tus 15</h1>
     <p>Grupos con onda, aventura y una experiencia inolvidable para festejar con amigas. Armamos el viaje de xv perfecto para vos.</p>
   </div>
-  <div class="filtros" style="gap:0.75rem;align-items:center">
-    <input type="text" id="quince-search" placeholder="Buscar destino..." oninput="searchQuince()" style="padding:0.5rem 1rem;border:1.5px solid #DDD;border-radius:50px;font-size:0.85rem;min-width:200px;outline:none;font-family:inherit">
-    <select id="quince-salida-filter" onchange="filterQuinceAdvanced()" style="padding:0.5rem 1rem;border:1.5px solid #DDD;border-radius:50px;font-size:0.82rem;background:#fff;cursor:pointer;font-family:inherit">
-      <option value="">Salida desde: Todos</option>
-      <option value="Rosario">Rosario</option>
-      <option value="Buenos Aires">Buenos Aires</option>
-      <option value="Córdoba">Córdoba</option>
-    </select>
-  </div>
-  <div class="paquetes-section" style="padding:1.5rem 5% 3rem">
-    <div class="paq-grid" id="quince-grid">
-      <p style="grid-column:1/-1;text-align:center;color:var(--gray);padding:3rem 0">🎉 Muy pronto vas a encontrar acá nuestros paquetes para festejar tus 15.</p>
+  <div class="paquetes-section" style="padding:2.5rem 5% 3rem">
+    <div class="quince-grid" id="quince-grid">
+      <p style="grid-column:1/-1;text-align:center;color:var(--gray);padding:3rem 0">🎉 Muy pronto vas a encontrar acá nuestras opciones para festejar tus 15.</p>
     </div>
   </div>
     <footer>
@@ -2699,6 +2692,30 @@ function renderAsistenciaGrid() {
   }).join('');
 }
 
+// ===== QUINCEAÑERAS (catalogo simple, igual que Asistencia al viajero) =====
+let quinceItems = [];
+function renderQuinceGrid() {
+  const grid = document.getElementById('quince-grid');
+  if (!grid) return;
+  if (!quinceItems.length) {
+    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--gray);padding:3rem 0">🎉 Muy pronto vas a encontrar acá nuestras opciones para festejar tus 15.</p>';
+    return;
+  }
+  grid.innerHTML = quinceItems.map(q => {
+    const waMsg = encodeURIComponent(`Hola! Quiero consultar sobre ${q.titulo||'este viaje de 15'}`);
+    return `
+    <div class="quince-card">
+      <img class="quince-card-img" src="${escapeHtml(q.img||'')}" alt="${escapeHtml(q.titulo||'')}" loading="lazy" onerror="this.style.background='#EEE'">
+      <div class="quince-card-body">
+        <h3>${escapeHtml(q.titulo||'')}</h3>
+        <p class="quince-card-desc">${nl2br(q.descripcion||q.desc||'')}</p>
+        ${q.driveLink ? `<a class="btn-download-info" href="${escapeHtml(q.driveLink)}" target="_blank" rel="noopener">📄 Descargar más información</a>` : ""}
+        <a class="btn-wa-det" href="https://wa.me/${WA_NUMBER}?text=${waMsg}" target="_blank" rel="noopener">💬 Consultar por WhatsApp</a>
+      </div>
+    </div>`;
+  }).join('');
+}
+
 let blogPosts = [];
 function renderBlogGrid() {
   const grid = document.getElementById('blog-grid');
@@ -2998,6 +3015,8 @@ async function loadFromAdmin() {
   renderBlogGrid();
   asistencias = (stored && stored.asistencias) || [];
   renderAsistenciaGrid();
+  quinceItems = (stored && stored.quince) || [];
+  renderQuinceGrid();
   if (stored && stored.servicios && stored.servicios.length) renderServiciosGrid(stored.servicios);
   if (stored && stored.quienes) renderQuienesInfo(stored.quienes);
   if (stored && stored.team && stored.team.length) renderTeamGrid(stored.team);
@@ -3005,15 +3024,12 @@ async function loadFromAdmin() {
   // Merge admin data into paquetes object (used by showDetalle)
   (stored.paquetes||[]).forEach(p => { paquetes[p.id] = adminPaqToDetalle(p, false); });
   (stored.grupales||[]).forEach(g => { paquetes[g.id] = adminPaqToDetalle(g, true); });
-  (stored.quince||[]).forEach(q => { paquetes[q.id] = adminPaqToDetalle(q, true); });
   (stored.miniturismo||[]).forEach(m => { paquetes[m.id] = adminPaqToDetalle(m, false); });
   // Render grids
   const paqGrid = document.getElementById('paq-grid');
   if (paqGrid && (stored.paquetes||[]).length) paqGrid.innerHTML = stored.paquetes.map(renderPaqCard).join('');
   const grupGrid = document.getElementById('grup-grid');
   if (grupGrid && (stored.grupales||[]).length) grupGrid.innerHTML = stored.grupales.map(renderGrupCard).join('');
-  const quinceGrid = document.getElementById('quince-grid');
-  if (quinceGrid && (stored.quince||[]).length) quinceGrid.innerHTML = stored.quince.map(renderGrupCard).join('');
   const miniGrid = document.getElementById('mini-grid');
   if (miniGrid) miniGrid.innerHTML = (stored.miniturismo||[]).map(renderPaqCard).join('');
   const destGrid = document.getElementById('destinos-grid');
@@ -3022,7 +3038,6 @@ async function loadFromAdmin() {
       ...(stored.destinos||[]).map(d => ({ type:'destino', id:d.id, pais:d.pais, nombre:d.nombre, precio:d.precio, tag:d.tag, img:d.img, feat: d.feat==='si' })),
       ...(stored.paquetes||[]).filter(p => p.destacado).map(p => ({ type:'paquete', id:p.id, pais:p.dest, nombre:p.titulo, precio:p.precio, tag:p.badge, img:p.img, moneda:p.moneda, feat: !!p.feat })),
       ...(stored.grupales||[]).filter(g => g.destacado).map(g => ({ type:'grupal', id:g.id, pais:joinDest(g.dest), nombre:g.titulo, precio:g.precio, tag:g.badge, img:g.img, moneda:g.moneda, feat: !!g.feat })),
-      ...(stored.quince||[]).filter(q => q.destacado).map(q => ({ type:'quince', id:q.id, pais:joinDest(q.dest), nombre:q.titulo, precio:q.precio, tag:q.badge, img:q.img, moneda:q.moneda, feat: !!q.feat })),
       ...(stored.miniturismo||[]).filter(m => m.destacado).map(m => ({ type:'miniturismo', id:m.id, pais:m.dest, nombre:m.titulo, precio:m.precio, tag:m.badge, img:m.img, moneda:m.moneda, feat: !!m.feat }))
     ];
     if (cards.length) {
@@ -3095,23 +3110,6 @@ function filterGrupAdvanced(q) {
 }
 
 // ===== FIESTAS DE 15 (misma logica que Grupales) =====
-function searchQuince() {
-  const q = (document.getElementById('quince-search')?.value||'').toLowerCase();
-  filterQuinceAdvanced(q);
-}
-function filterQuinceAdvanced(q) {
-  if (q === undefined) q = (document.getElementById('quince-search')?.value||'').toLowerCase();
-  const salida = (document.getElementById('quince-salida-filter')?.value||'').toLowerCase();
-  document.querySelectorAll('#quince-grid .paq-card').forEach(card => {
-    const txt = card.textContent.toLowerCase();
-    const salidaEl = card.querySelector('.paq-salida');
-    const salidaTxt = (salidaEl?.textContent||'').toLowerCase();
-    const matchQ = !q || txt.includes(q);
-    const matchSalida = !salida || salidaTxt.includes(salida);
-    card.style.display = (matchQ && matchSalida) ? '' : 'none';
-  });
-}
-
 function toggleMenu() {
   document.getElementById("mobile-menu").classList.toggle("open");
   document.getElementById("hamburger").classList.toggle("open");
