@@ -668,8 +668,8 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
           </div>
         </div>
         <div class="field-row">
-          <div class="field"><label>Vuelo incluido</label>
-            <select id="paq-vuelo2"><option value="si">Sí</option><option value="no">No</option></select>
+          <div class="field"><label>Hotel incluido</label>
+            <select id="paq-hotel"><option value="si">Sí</option><option value="no">No</option></select>
           </div>
         </div>
         <div style="font-size:0.75rem;font-weight:600;color:var(--navy);margin-bottom:0.5rem">Pagos (opcional — si no se completa, se divide en 2 automáticamente)</div>
@@ -813,8 +813,8 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
           </div>
         </div>
         <div class="field-row">
-          <div class="field"><label>Vuelo incluido</label>
-            <select id="mini-vuelo2"><option value="si">Sí</option><option value="no">No</option></select>
+          <div class="field"><label>Hotel incluido</label>
+            <select id="mini-hotel"><option value="si">Sí</option><option value="no">No</option></select>
           </div>
         </div>
         <div style="font-size:0.75rem;font-weight:600;color:var(--navy);margin-bottom:0.5rem">Pagos (opcional — si no se completa, se divide en 2 automáticamente)</div>
@@ -965,9 +965,13 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
         <div id="grup-vuelos-list" style="display:flex;flex-direction:column;gap:0.75rem"></div>
         <button class="btn btn-ghost btn-sm" style="margin-top:0.5rem" onclick="addVueloRow(null,'grup-vuelos-list')">+ Agregar tramo</button>
         <div class="hint" style="margin-top:0.3rem">Agregá ida y vuelta como tramos separados</div>
-        <div class="field" style="margin-top:0.75rem">
-          <label>Traslados in/out incluidos</label>
-          <select id="grup-traslado"><option value="si">Sí — incluidos en el paquete</option><option value="no">No</option></select>
+        <div class="field-row" style="margin-top:0.75rem">
+          <div class="field"><label>Traslados in/out incluidos</label>
+            <select id="grup-traslado"><option value="si">Sí — incluidos en el paquete</option><option value="no">No</option></select>
+          </div>
+          <div class="field"><label>Hotel incluido</label>
+            <select id="grup-hotel"><option value="si">Sí</option><option value="no">No</option></select>
+          </div>
         </div>
       </div>
 
@@ -1762,6 +1766,7 @@ function openNewPaq() {
   document.getElementById('paq-cat').value = 'internacional';
   document.getElementById('paq-moneda').value = 'USD';
   document.getElementById('paq-vuelo').value = 'si';
+  document.getElementById('paq-hotel').value = 'si';
   document.getElementById('paq-traslado').value = 'si';
   document.getElementById('paq-lugar-salida').value = 'Rosario (ROS)';
   document.getElementById('paq-destacado').checked = false;
@@ -1795,6 +1800,7 @@ function editPaq(i) {
   document.getElementById('paq-badge').value = p.badge||'';
   document.getElementById('paq-operador').value = p.operador||'';
   document.getElementById('paq-vuelo').value = p.vuelo||'si';
+  document.getElementById('paq-hotel').value = p.hotelIncluido || ((p.hoteles||[]).length ? 'si' : 'no');
   document.getElementById('paq-traslado').value = p.traslado ? 'si' : 'no';
   document.getElementById('paq-destacado').checked = !!p.destacado;
   document.getElementById('paq-feat').checked = !!p.feat;
@@ -1842,6 +1848,7 @@ function savePaq() {
     badge: document.getElementById('paq-badge').value,
     operador: document.getElementById('paq-operador').value,
     vuelo: document.getElementById('paq-vuelo').value,
+    hotelIncluido: document.getElementById('paq-hotel').value,
     moneda: document.getElementById('paq-moneda').value,
     traslado: document.getElementById('paq-traslado').value === 'si',
     destacado: document.getElementById('paq-destacado').checked,
@@ -1883,6 +1890,7 @@ function openNewMini() {
   document.getElementById('mini-img-preview').removeAttribute('src');
   document.getElementById('mini-moneda').value = 'USD';
   document.getElementById('mini-vuelo').value = 'si';
+  document.getElementById('mini-hotel').value = 'si';
   document.getElementById('mini-traslado').value = 'si';
   document.getElementById('mini-lugar-salida').value = 'Rosario (ROS)';
   document.getElementById('mini-destacado').checked = false;
@@ -1915,6 +1923,7 @@ function editMini(i) {
   document.getElementById('mini-badge').value = p.badge||'';
   document.getElementById('mini-operador').value = p.operador||'';
   document.getElementById('mini-vuelo').value = p.vuelo||'si';
+  document.getElementById('mini-hotel').value = p.hotelIncluido || ((p.hoteles||[]).length ? 'si' : 'no');
   document.getElementById('mini-traslado').value = p.traslado ? 'si' : 'no';
   document.getElementById('mini-destacado').checked = !!p.destacado;
   document.getElementById('mini-feat').checked = !!p.feat;
@@ -1961,6 +1970,7 @@ function saveMini() {
     badge: document.getElementById('mini-badge').value,
     operador: document.getElementById('mini-operador').value,
     vuelo: document.getElementById('mini-vuelo').value,
+    hotelIncluido: document.getElementById('mini-hotel').value,
     moneda: document.getElementById('mini-moneda').value,
     traslado: document.getElementById('mini-traslado').value === 'si',
     destacado: document.getElementById('mini-destacado').checked,
@@ -2008,6 +2018,7 @@ function openNewGrup() {
   const go=document.getElementById('grup-orden'); if(go) go.value='';
   const ghc=document.getElementById('grup-hab-compartir'); if(ghc) ghc.checked=false;
   const gtr=document.getElementById('grup-traslado'); if(gtr) gtr.value='si';
+  const gho=document.getElementById('grup-hotel'); if(gho) gho.value='si';
   setIncLines('grup-dest-list',[]);
   setIncLines('grup-inc-list',[]);
   setIncLines('grup-no-list',[]);
@@ -2048,6 +2059,7 @@ function editGrup(i) {
   const ghce=document.getElementById('grup-hab-compartir'); if(ghce) ghce.checked=!!g.habCompartir;
   document.getElementById('grup-operador').value = g.operador||'';
   const gtr=document.getElementById('grup-traslado'); if(gtr) gtr.value = g.traslado===false ? 'no' : 'si';
+  const gho=document.getElementById('grup-hotel'); if(gho) gho.value = g.hotelIncluido || ((g.hoteles||[]).length ? 'si' : 'no');
   const gvl=document.getElementById('grup-vuelos-list'); if(gvl){gvl.innerHTML='';(g.vuelos||[]).forEach(v=>addVueloRow(v,'grup-vuelos-list'));}
   const gpl=document.getElementById('grup-pagos-list'); if(gpl){gpl.innerHTML='';(g.pagos||[]).forEach(pg=>addPagoLine(pg.label+' · '+pg.monto,'grup-pagos-list'));}
   const gfl=document.getElementById('grup-fechas-list'); if(gfl){gfl.innerHTML='';(g.fechas||[]).slice(1).forEach(f=>addFechaRow(f,'grup-fechas-list'));}
@@ -2082,6 +2094,7 @@ function saveGrup() {
     habCompartir: document.getElementById('grup-hab-compartir')?.checked || false,
     operador: document.getElementById('grup-operador').value,
     traslado: (document.getElementById('grup-traslado')?.value || 'si') !== 'no',
+    hotelIncluido: document.getElementById('grup-hotel')?.value || 'si',
     inc: getIncLines('grup-inc-list'),
     incNo: getIncLines('grup-no-list'),
     excursiones: getIncLines('grup-exc-list'),

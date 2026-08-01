@@ -2898,7 +2898,7 @@ function renderPaqCard(p) {
   const si = p.incSi || [];
   const tags = [
     p.vuelo === 'si' ? 'Vuelo' : '',
-    (p.hoteles && p.hoteles.length) ? 'Hotel' : '',
+    (p.hotelIncluido !== undefined ? p.hotelIncluido === 'si' : (p.hoteles && p.hoteles.length > 0)) ? 'Hotel' : '',
     si.some(i=>i.toLowerCase().includes('traslado')) ? 'Traslados' : '',
     si.some(i=>i.toLowerCase().includes('desayuno')) ? 'Desayuno' : '',
     si.some(i=>i.toLowerCase().includes('seguro')||i.toLowerCase().includes('asistencia')) ? 'Asistencia' : ''
@@ -2933,7 +2933,7 @@ function renderGrupCard(g) {
   const inc = g.inc||[];
   const tags = [
     'Vuelo',
-    'Hotel',
+    (g.hotelIncluido !== undefined ? g.hotelIncluido === 'si' : (g.hoteles && g.hoteles.length > 0)) ? 'Hotel' : '',
     inc.some(i=>i.toLowerCase().includes('traslado')) ? 'Traslados' : '',
     'Guía incluido',
     inc.some(i=>i.toLowerCase().includes('seguro')||i.toLowerCase().includes('asistencia')) ? 'Asistencia' : ''
