@@ -2181,7 +2181,7 @@ function renderDetallePrecio(p) {
         `<div style="margin-bottom:0.5rem"><div style="font-size:0.65rem;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.08em">${pg.label}</div><div style="font-size:1.55rem;font-weight:800;color:white;line-height:1.1">${formatPrice(pg.monto, moneda)}</div></div><div style="border-top:1px solid rgba(255,255,255,0.15);margin:0.4rem 0"></div>`
       ).join("") + "";
     } else {
-      const p1 = Math.round(basePrice * 0.45);
+      const p1 = Math.round(basePrice * (p.grupal ? 0.45 : 0.40));
       const p2 = basePrice - p1;
       cuotasEl.innerHTML =
         `<div style="margin-bottom:0.4rem"><div style="font-size:0.65rem;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.08em">1er pago</div><div style="font-size:1.55rem;font-weight:800;color:white;line-height:1.1">${formatPrice(p1,moneda)}</div></div>` +
@@ -2881,7 +2881,7 @@ function renderPaqCard(p) {
   const si = p.incSi || [];
   const tags = [
     p.vuelo === 'si' ? 'Vuelo' : '',
-    p.estrellas ? 'Hotel '+p.estrellas : '',
+    (p.hoteles && p.hoteles.length) ? 'Hotel' : '',
     si.some(i=>i.toLowerCase().includes('traslado')) ? 'Traslados' : '',
     si.some(i=>i.toLowerCase().includes('desayuno')) ? 'Desayuno' : '',
     si.some(i=>i.toLowerCase().includes('seguro')||i.toLowerCase().includes('asistencia')) ? 'Asistencia' : ''

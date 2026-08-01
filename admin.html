@@ -667,13 +667,6 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
           </div>
         </div>
         <div class="field-row">
-          <div class="field"><label>Estrellas hotel base</label>
-            <select id="paq-estrellas">
-              <option value="3★">3 estrellas</option>
-              <option value="4★">4 estrellas</option>
-              <option value="5★">5 estrellas</option>
-            </select>
-          </div>
           <div class="field"><label>Vuelo incluido</label>
             <select id="paq-vuelo2"><option value="si">Sí</option><option value="no">No</option></select>
           </div>
@@ -818,13 +811,6 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
           </div>
         </div>
         <div class="field-row">
-          <div class="field"><label>Estrellas hotel base</label>
-            <select id="mini-estrellas">
-              <option value="3★">3 estrellas</option>
-              <option value="4★">4 estrellas</option>
-              <option value="5★">5 estrellas</option>
-            </select>
-          </div>
           <div class="field"><label>Vuelo incluido</label>
             <select id="mini-vuelo2"><option value="si">Sí</option><option value="no">No</option></select>
           </div>
@@ -1820,7 +1806,6 @@ function openNewPaq() {
   document.getElementById('paq-img-preview').removeAttribute('src');
   document.getElementById('paq-cat').value = 'internacional';
   document.getElementById('paq-moneda').value = 'USD';
-  document.getElementById('paq-estrellas').value = '4★';
   document.getElementById('paq-vuelo').value = 'si';
   document.getElementById('paq-traslado').value = 'si';
   document.getElementById('paq-lugar-salida').value = 'Rosario (ROS)';
@@ -1847,7 +1832,6 @@ function editPaq(i) {
   document.getElementById('paq-cat').value = (p.cat||'internacional').split(' ')[0];
   document.getElementById('paq-dur').value = p.dur||'';
   document.getElementById('paq-precio').value = p.precio||'';
-  document.getElementById('paq-estrellas').value = p.estrellas||'4★';
   document.getElementById('paq-moneda').value = p.moneda||'USD';
   document.getElementById('paq-desc-corta').value = p.descCorta||'';
   document.getElementById('paq-desc-full').value = p.descFull||'';
@@ -1896,7 +1880,6 @@ function savePaq() {
     cat: document.getElementById('paq-cat').value,
     dur: document.getElementById('paq-dur').value,
     precio: parseFloat(document.getElementById('paq-precio').value)||0,
-    estrellas: document.getElementById('paq-estrellas').value,
     descCorta: document.getElementById('paq-desc-corta').value,
     descFull: document.getElementById('paq-desc-full').value,
     img: document.getElementById('paq-img').value,
@@ -1942,7 +1925,6 @@ function openNewMini() {
   ['mini-titulo','mini-dest','mini-dur','mini-precio','mini-img','mini-badge','mini-desc-corta','mini-desc-full','mini-fecha-salida','mini-fecha-regreso','mini-operador'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('mini-img-preview').removeAttribute('src');
   document.getElementById('mini-moneda').value = 'USD';
-  document.getElementById('mini-estrellas').value = '4★';
   document.getElementById('mini-vuelo').value = 'si';
   document.getElementById('mini-traslado').value = 'si';
   document.getElementById('mini-lugar-salida').value = 'Rosario (ROS)';
@@ -1968,7 +1950,6 @@ function editMini(i) {
   document.getElementById('mini-dest').value = p.dest||'';
   document.getElementById('mini-dur').value = p.dur||'';
   document.getElementById('mini-precio').value = p.precio||'';
-  document.getElementById('mini-estrellas').value = p.estrellas||'4★';
   document.getElementById('mini-moneda').value = p.moneda||'USD';
   document.getElementById('mini-desc-corta').value = p.descCorta||'';
   document.getElementById('mini-desc-full').value = p.descFull||'';
@@ -2016,7 +1997,6 @@ function saveMini() {
     cat: 'nacional',
     dur: document.getElementById('mini-dur').value,
     precio: parseFloat(document.getElementById('mini-precio').value)||0,
-    estrellas: document.getElementById('mini-estrellas').value,
     descCorta: document.getElementById('mini-desc-corta').value,
     descFull: document.getElementById('mini-desc-full').value,
     img: document.getElementById('mini-img').value,
