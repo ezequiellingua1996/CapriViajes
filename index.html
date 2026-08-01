@@ -2391,7 +2391,6 @@ function showDetalle(id) {
   window._currentDetalle = p;
   window._currentDetalleId = id;
   p._selectedHotelPrice = p.precioBase || 0;
-  const isGrupal = p.grupal === true;
 
   document.getElementById("det-hero-img").src = p.img;
   document.getElementById("det-hero-img").alt = p.title;
@@ -2542,11 +2541,12 @@ function showDetalle(id) {
     }
   }
 
-  // Itinerario — only for grupales
+  // Itinerario — se muestra para paquetes, grupales y miniturismo, ordenado cronológicamente por día
   const itinSection = document.getElementById("det-itinerario-section");
-  if (isGrupal && p.itinerario && p.itinerario.length) {
+  if (p.itinerario && p.itinerario.length) {
     itinSection.style.display = "";
-    document.getElementById("det-itinerario").innerHTML = p.itinerario.map(d=>`
+    const itinOrdenado = [...p.itinerario].sort((a,b) => (parseInt(a.day,10)||0) - (parseInt(b.day,10)||0));
+    document.getElementById("det-itinerario").innerHTML = itinOrdenado.map(d=>`
       <div class="itin-day">
         <div class="itin-day-num">${d.day}</div>
         <div class="itin-day-content">
@@ -3035,11 +3035,12 @@ async function loadFromAdmin() {
   const destGrid = document.getElementById('destinos-grid');
   if (destGrid) {
     const cards = [
-      ...(stored.destinos||[]).map(d => ({ type:'destino', id:d.id, pais:d.pais, nombre:d.nombre, precio:d.precio, tag:d.tag, img:d.img, feat: d.feat==='si' })),
-      ...(stored.paquetes||[]).filter(p => p.destacado).map(p => ({ type:'paquete', id:p.id, pais:p.dest, nombre:p.titulo, precio:p.precio, tag:p.badge, img:p.img, moneda:p.moneda, feat: !!p.feat })),
-      ...(stored.grupales||[]).filter(g => g.destacado).map(g => ({ type:'grupal', id:g.id, pais:joinDest(g.dest), nombre:g.titulo, precio:g.precio, tag:g.badge, img:g.img, moneda:g.moneda, feat: !!g.feat })),
-      ...(stored.miniturismo||[]).filter(m => m.destacado).map(m => ({ type:'miniturismo', id:m.id, pais:m.dest, nombre:m.titulo, precio:m.precio, tag:m.badge, img:m.img, moneda:m.moneda, feat: !!m.feat }))
+      ...(stored.destinos||[]).map(d => ({ type:'destino', id:d.id, pais:d.pais, nombre:d.nombre, precio:d.precio, tag:d.tag, img:d.img, feat: d.feat==='si', orden: d.orden||0 })),
+      ...(stored.paquetes||[]).filter(p => p.destacado).map(p => ({ type:'paquete', id:p.id, pais:p.dest, nombre:p.titulo, precio:p.precio, tag:p.badge, img:p.img, moneda:p.moneda, feat: !!p.feat, orden: p.orden||0 })),
+      ...(stored.grupales||[]).filter(g => g.destacado).map(g => ({ type:'grupal', id:g.id, pais:joinDest(g.dest), nombre:g.titulo, precio:g.precio, tag:g.badge, img:g.img, moneda:g.moneda, feat: !!g.feat, orden: g.orden||0 })),
+      ...(stored.miniturismo||[]).filter(m => m.destacado).map(m => ({ type:'miniturismo', id:m.id, pais:m.dest, nombre:m.titulo, precio:m.precio, tag:m.badge, img:m.img, moneda:m.moneda, feat: !!m.feat, orden: m.orden||0 }))
     ];
+    cards.sort((a, b) => a.orden - b.orden);
     if (cards.length) {
       destGrid.innerHTML = cards.map(c => {
         const mon = (c.moneda||'USD') === 'ARS' ? '$ ' : 'USD ';

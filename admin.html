@@ -638,6 +638,7 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
           <div class="field"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="paq-destacado" style="width:16px;height:16px"> Mostrar como destino en inicio</label></div>
           <div class="field"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="paq-feat" style="width:16px;height:16px"> Card grande (destacado visual)</label></div>
         </div>
+        <div class="field"><label>Orden en inicio (si está destacado)</label><input type="number" id="paq-orden" placeholder="0"><div class="hint">Menor número aparece primero en la grilla de inicio</div></div>
         <div class="field" style="background:#FEF3C7;border:1px solid #FCD34D;border-radius:6px;padding:0.75rem 1rem"><label>🔒 Operador mayorista (solo interno, no se muestra en la web)</label><input type="text" id="paq-operador" placeholder="Ej: Ola, Isento, Interlagos..."></div>
         <div class="field"><label>URL imagen principal</label><input type="url" id="paq-img" placeholder="https://images.unsplash.com/..." oninput="this.nextElementSibling.src=this.value"><img class="img-preview" id="paq-img-preview" onerror="this.removeAttribute('src')"></div>
         <div class="field"><label>Descripción corta (visible en tarjeta)</label><textarea id="paq-desc-corta" placeholder="Resumen para la tarjeta..." style="min-height:60px"></textarea></div>
@@ -722,7 +723,7 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
       <!-- Itinerario día a día -->
       <div style="background:#F8FAFC;border-radius:8px;padding:1rem;margin-bottom:1rem">
         <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ocean);margin-bottom:0.5rem">📅 Itinerario día a día</div>
-        <p style="font-size:0.75rem;color:var(--gray);margin-bottom:0.75rem">Solo se muestra en paquetes <strong>grupales</strong>. Para paquetes individuales se ignora.</p>
+        <p style="font-size:0.75rem;color:var(--gray);margin-bottom:0.75rem">Se muestra en el detalle del paquete, ordenado automáticamente por número de día.</p>
         <div id="itinerario-list" style="display:flex;flex-direction:column;gap:0.75rem"></div>
         <button class="btn btn-ghost btn-sm" style="margin-top:0.5rem" onclick="addItinRow()">+ Agregar día</button>
       </div>
@@ -782,6 +783,7 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
           <div class="field"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="mini-destacado" style="width:16px;height:16px"> Mostrar como destino en inicio</label></div>
           <div class="field"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="mini-feat" style="width:16px;height:16px"> Card grande (destacado visual)</label></div>
         </div>
+        <div class="field"><label>Orden en inicio (si está destacado)</label><input type="number" id="mini-orden" placeholder="0"><div class="hint">Menor número aparece primero en la grilla de inicio</div></div>
         <div class="field" style="background:#FEF3C7;border:1px solid #FCD34D;border-radius:6px;padding:0.75rem 1rem"><label>🔒 Operador mayorista (solo interno, no se muestra en la web)</label><input type="text" id="mini-operador" placeholder="Ej: Ola, Isento, Interlagos..."></div>
         <div class="field"><label>URL imagen principal</label><input type="url" id="mini-img" placeholder="https://images.unsplash.com/..." oninput="this.nextElementSibling.src=this.value"><img class="img-preview" id="mini-img-preview" onerror="this.removeAttribute('src')"></div>
         <div class="field"><label>Descripción corta (visible en tarjeta)</label><textarea id="mini-desc-corta" placeholder="Resumen para la tarjeta..." style="min-height:60px"></textarea></div>
@@ -866,7 +868,7 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
       <!-- Itinerario día a día -->
       <div style="background:#F8FAFC;border-radius:8px;padding:1rem;margin-bottom:1rem">
         <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--ocean);margin-bottom:0.5rem">📅 Itinerario día a día</div>
-        <p style="font-size:0.75rem;color:var(--gray);margin-bottom:0.75rem">Solo se muestra en paquetes <strong>grupales</strong>. Para paquetes individuales se ignora.</p>
+        <p style="font-size:0.75rem;color:var(--gray);margin-bottom:0.75rem">Se muestra en el detalle del miniturismo, ordenado automáticamente por número de día.</p>
         <div id="mini-itinerario-list" style="display:flex;flex-direction:column;gap:0.75rem"></div>
         <button class="btn btn-ghost btn-sm" style="margin-top:0.5rem" onclick="addItinRow('mini-itinerario-list')">+ Agregar día</button>
       </div>
@@ -952,6 +954,7 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
         <div class="field"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="grup-destacado" style="width:16px;height:16px"> Mostrar como destino en inicio</label></div>
         <div class="field"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="grup-feat" style="width:16px;height:16px"> Card grande (destacado visual)</label></div>
       </div>
+      <div class="field"><label>Orden en inicio (si está destacado)</label><input type="number" id="grup-orden" placeholder="0"><div class="hint">Menor número aparece primero en la grilla de inicio</div></div>
       <div class="field"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="grup-hab-compartir" style="width:16px;height:16px"> Tiene habitaciones dobles a compartir</label></div>
       <div class="field" style="background:#FEF3C7;border:1px solid #FCD34D;border-radius:6px;padding:0.75rem 1rem"><label>🔒 Operador mayorista (solo interno, no se muestra en la web)</label><input type="text" id="grup-operador" placeholder="Ej: Ola, Isento, Interlagos..."></div>
       <div class="field"><label>Descripción</label><textarea id="grup-desc" placeholder="Descripción del viaje grupal..." style="min-height:80px"></textarea></div>
@@ -1083,8 +1086,11 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
         <div class="field"><label>Tag especial (opcional)</label><input type="text" id="dest-tag" placeholder="Ej: Más buscado, Oferta"></div>
       </div>
       <div class="field"><label>URL imagen</label><input type="url" id="dest-img" placeholder="https://images.unsplash.com/..." oninput="this.nextElementSibling.src=this.value"><img class="img-preview" id="dest-img-preview" onerror="this.removeAttribute('src')"></div>
-      <div class="field"><label>¿Es el destacado grande? (featured)</label>
-        <select id="dest-feat"><option value="no">No</option><option value="si">Sí (ocupa el doble de espacio)</option></select>
+      <div class="field-row">
+        <div class="field"><label>¿Es el destacado grande? (featured)</label>
+          <select id="dest-feat"><option value="no">No</option><option value="si">Sí (ocupa el doble de espacio)</option></select>
+        </div>
+        <div class="field"><label>Orden en inicio</label><input type="number" id="dest-orden" placeholder="0"><div class="hint">Menor número aparece primero. Se compara contra el orden de paquetes/grupales/miniturismo destacados.</div></div>
       </div>
     </div>
     <div class="modal-footer">
@@ -1513,7 +1519,7 @@ function renderDest() {
       <img class="item-card-img" src="${d.img}" alt="${d.nombre}" onerror="this.style.background='#EEE'">
       <div class="item-card-body">
         <div class="item-card-title">${d.nombre}, ${d.pais}</div>
-        <div class="item-card-sub">Desde USD ${d.precio.toLocaleString()} · ${d.feat==='si'?'⭐ Destacado':'Normal'}${d.tag?' · '+d.tag:''}</div>
+        <div class="item-card-sub">Desde USD ${d.precio.toLocaleString()} · ${d.feat==='si'?'⭐ Destacado':'Normal'}${d.tag?' · '+d.tag:''} · Orden: ${d.orden||0}</div>
       </div>
       <div class="item-card-actions">
         <button class="btn btn-ghost btn-sm" onclick="editDest(${i})">✏️ Editar</button>
@@ -1751,7 +1757,7 @@ function getFechasExtra(listId) {
 function openNewPaq() {
   document.getElementById('paq-edit-id').value = '';
   document.getElementById('modal-paq-title').textContent = 'Nuevo paquete';
-  ['paq-titulo','paq-dest','paq-dur','paq-precio','paq-img','paq-badge','paq-desc-corta','paq-desc-full','paq-fecha-salida','paq-fecha-regreso','paq-operador'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['paq-titulo','paq-dest','paq-dur','paq-precio','paq-img','paq-badge','paq-desc-corta','paq-desc-full','paq-fecha-salida','paq-fecha-regreso','paq-operador','paq-orden'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('paq-img-preview').removeAttribute('src');
   document.getElementById('paq-cat').value = 'internacional';
   document.getElementById('paq-moneda').value = 'USD';
@@ -1792,6 +1798,7 @@ function editPaq(i) {
   document.getElementById('paq-traslado').value = p.traslado ? 'si' : 'no';
   document.getElementById('paq-destacado').checked = !!p.destacado;
   document.getElementById('paq-feat').checked = !!p.feat;
+  document.getElementById('paq-orden').value = p.orden||'';
   document.getElementById('paq-fecha-salida').value = p.fechaSalida||'';
   document.getElementById('paq-fecha-regreso').value = p.fechaRegreso||'';
   document.getElementById('paq-lugar-salida').value = p.lugarSalida||'Rosario (ROS)';
@@ -1839,6 +1846,7 @@ function savePaq() {
     traslado: document.getElementById('paq-traslado').value === 'si',
     destacado: document.getElementById('paq-destacado').checked,
     feat: document.getElementById('paq-feat').checked,
+    orden: parseFloat(document.getElementById('paq-orden').value)||0,
     fechaSalida: document.getElementById('paq-fecha-salida').value || (idx !== '' ? DATA.paquetes[idx].fechaSalida : ''),
     fechaRegreso: document.getElementById('paq-fecha-regreso').value || (idx !== '' ? DATA.paquetes[idx].fechaRegreso : ''),
     lugarSalida: document.getElementById('paq-lugar-salida').value,
@@ -1871,7 +1879,7 @@ function deletePaq(i) {
 function openNewMini() {
   document.getElementById('mini-edit-id').value = '';
   document.getElementById('modal-mini-title').textContent = 'Nuevo miniturismo';
-  ['mini-titulo','mini-dest','mini-dur','mini-precio','mini-img','mini-badge','mini-desc-corta','mini-desc-full','mini-fecha-salida','mini-fecha-regreso','mini-operador'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['mini-titulo','mini-dest','mini-dur','mini-precio','mini-img','mini-badge','mini-desc-corta','mini-desc-full','mini-fecha-salida','mini-fecha-regreso','mini-operador','mini-orden'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('mini-img-preview').removeAttribute('src');
   document.getElementById('mini-moneda').value = 'USD';
   document.getElementById('mini-vuelo').value = 'si';
@@ -1910,6 +1918,7 @@ function editMini(i) {
   document.getElementById('mini-traslado').value = p.traslado ? 'si' : 'no';
   document.getElementById('mini-destacado').checked = !!p.destacado;
   document.getElementById('mini-feat').checked = !!p.feat;
+  document.getElementById('mini-orden').value = p.orden||'';
   document.getElementById('mini-fecha-salida').value = p.fechaSalida||'';
   document.getElementById('mini-fecha-regreso').value = p.fechaRegreso||'';
   document.getElementById('mini-lugar-salida').value = p.lugarSalida||'Rosario (ROS)';
@@ -1956,6 +1965,7 @@ function saveMini() {
     traslado: document.getElementById('mini-traslado').value === 'si',
     destacado: document.getElementById('mini-destacado').checked,
     feat: document.getElementById('mini-feat').checked,
+    orden: parseFloat(document.getElementById('mini-orden').value)||0,
     fechaSalida: document.getElementById('mini-fecha-salida').value || (idx !== '' ? DATA.miniturismo[idx].fechaSalida : ''),
     fechaRegreso: document.getElementById('mini-fecha-regreso').value || (idx !== '' ? DATA.miniturismo[idx].fechaRegreso : ''),
     lugarSalida: document.getElementById('mini-lugar-salida').value,
@@ -1995,6 +2005,7 @@ function openNewGrup() {
   if(document.getElementById('grup-lugar-salida'))document.getElementById('grup-lugar-salida').value='Rosario (ROS)';
   const gd=document.getElementById('grup-destacado'); if(gd) gd.checked=false;
   const gf=document.getElementById('grup-feat'); if(gf) gf.checked=false;
+  const go=document.getElementById('grup-orden'); if(go) go.value='';
   const ghc=document.getElementById('grup-hab-compartir'); if(ghc) ghc.checked=false;
   const gtr=document.getElementById('grup-traslado'); if(gtr) gtr.value='si';
   setIncLines('grup-dest-list',[]);
@@ -2033,6 +2044,7 @@ function editGrup(i) {
   setIncLines('grup-exc-list', g.excursiones||[]);
   const gde=document.getElementById('grup-destacado'); if(gde) gde.checked=!!g.destacado;
   const gfe=document.getElementById('grup-feat'); if(gfe) gfe.checked=!!g.feat;
+  const goe=document.getElementById('grup-orden'); if(goe) goe.value=g.orden||'';
   const ghce=document.getElementById('grup-hab-compartir'); if(ghce) ghce.checked=!!g.habCompartir;
   document.getElementById('grup-operador').value = g.operador||'';
   const gtr=document.getElementById('grup-traslado'); if(gtr) gtr.value = g.traslado===false ? 'no' : 'si';
@@ -2066,6 +2078,7 @@ function saveGrup() {
     img: document.getElementById('grup-img').value,
     destacado: document.getElementById('grup-destacado')?.checked || false,
     feat: document.getElementById('grup-feat')?.checked || false,
+    orden: parseFloat(document.getElementById('grup-orden')?.value)||0,
     habCompartir: document.getElementById('grup-hab-compartir')?.checked || false,
     operador: document.getElementById('grup-operador').value,
     traslado: (document.getElementById('grup-traslado')?.value || 'si') !== 'no',
@@ -2181,7 +2194,7 @@ function deleteTest(i) {
 function openNewDest() {
   document.getElementById('dest-edit-id').value = '';
   document.getElementById('modal-dest-title').textContent = 'Nuevo destino';
-  ['dest-pais','dest-nombre','dest-precio','dest-tag','dest-img'].forEach(id=>document.getElementById(id).value='');
+  ['dest-pais','dest-nombre','dest-precio','dest-tag','dest-img','dest-orden'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('dest-img-preview').removeAttribute('src');
   document.getElementById('dest-feat').value = 'no';
   openModal('modal-dest');
@@ -2198,6 +2211,7 @@ function editDest(i) {
   document.getElementById('dest-img').value = d.img;
   document.getElementById('dest-img-preview').src = d.img||'';
   document.getElementById('dest-feat').value = d.feat;
+  document.getElementById('dest-orden').value = d.orden||'';
   openModal('modal-dest');
 }
 
@@ -2210,7 +2224,8 @@ function saveDest() {
     precio: parseFloat(document.getElementById('dest-precio').value)||0,
     tag: document.getElementById('dest-tag').value,
     img: document.getElementById('dest-img').value,
-    feat: document.getElementById('dest-feat').value
+    feat: document.getElementById('dest-feat').value,
+    orden: parseFloat(document.getElementById('dest-orden').value)||0
   };
   if (!obj.nombre) { showToast('El nombre es obligatorio','error'); return; }
   if (idx !== '') DATA.destinos[idx] = obj; else DATA.destinos.push(obj);
