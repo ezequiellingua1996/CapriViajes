@@ -6,18 +6,37 @@
 <title>Capri Viajes | Agencia de viajes en Rosario</title>
 <meta name="description" content="Agencia de viajes en Rosario, Santa Fe con más de 15 años de experiencia. Paquetes nacionales e internacionales, salidas grupales y asesoramiento personalizado.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link rel="canonical" href="https://ezequiellingua1996.github.io/CapriViajes/">
+<link rel="canonical" href="https://capriviajes.com.ar/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Capri Viajes | Agencia de viajes en Rosario">
 <meta property="og:description" content="Agencia de viajes en Rosario, Santa Fe con más de 15 años de experiencia. Paquetes nacionales e internacionales, salidas grupales y asesoramiento personalizado.">
 <meta property="og:image" content="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=80">
-<meta property="og:url" content="https://ezequiellingua1996.github.io/CapriViajes/">
+<meta property="og:url" content="https://capriviajes.com.ar/">
 <meta property="og:locale" content="es_AR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Capri Viajes | Agencia de viajes en Rosario">
 <meta name="twitter:description" content="Agencia de viajes en Rosario, Santa Fe con más de 15 años de experiencia. Paquetes nacionales e internacionales, salidas grupales y asesoramiento personalizado.">
 <meta name="twitter:image" content="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=80">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script type="application/ld+json" id="ld-travelagency">
+{
+  "@context": "https://schema.org",
+  "@type": "TravelAgency",
+  "name": "Capri Viajes",
+  "url": "https://capriviajes.com.ar/",
+  "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=80",
+  "description": "Agencia de viajes en Rosario, Santa Fe con más de 15 años de experiencia. Paquetes nacionales e internacionales, salidas grupales y asesoramiento personalizado.",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Rosario",
+    "addressRegion": "Santa Fe",
+    "addressCountry": "AR"
+  },
+  "areaServed": "AR"
+}
+</script>
 <!-- Google Analytics (GA4) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BWCY09NCS1"></script>
 <script>
@@ -137,6 +156,8 @@ section{padding:5rem 5%}
 .destinos-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:auto auto;gap:1rem}
 .d-card{position:relative;border-radius:8px;overflow:hidden;cursor:pointer}
 .d-card.feat{grid-row:span 2}
+.d-card.skeleton{cursor:default;background:linear-gradient(90deg,#E5E5E5 25%,#EFEFEF 37%,#E5E5E5 63%);background-size:400% 100%;animation:skel-shimmer 1.4s ease infinite}
+.d-card.skeleton img{visibility:hidden}
 .d-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s}
 .d-card:hover img{transform:scale(1.04)}
 .d-card.feat img{min-height:500px}
@@ -504,6 +525,12 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
 /* ===== NEW PACKAGE CARD STYLE ===== */
 .paq-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
 .paq-card{background:#fff;border-radius:12px;overflow:hidden;border:1px solid #E8EDF2;box-shadow:0 1px 4px rgba(0,0,0,0.06);transition:box-shadow 0.25s,transform 0.2s;display:flex;flex-direction:column}
+.skeleton-card{background:#fff;border-radius:12px;overflow:hidden;border:1px solid #E8EDF2;height:380px;display:flex;flex-direction:column}
+.skeleton-card .skel-img{height:210px;background:linear-gradient(90deg,#EEE 25%,#F5F5F5 37%,#EEE 63%);background-size:400% 100%;animation:skel-shimmer 1.4s ease infinite}
+.skeleton-card .skel-line{margin:0.9rem 1.25rem;height:12px;border-radius:6px;background:linear-gradient(90deg,#EEE 25%,#F5F5F5 37%,#EEE 63%);background-size:400% 100%;animation:skel-shimmer 1.4s ease infinite}
+.skeleton-card .skel-line.short{width:50%}
+@keyframes skel-shimmer{0%{background-position:100% 50%}100%{background-position:0 50%}}
+.grid-empty-msg{grid-column:1/-1;text-align:center;color:var(--gray);padding:3rem 1rem;font-size:0.95rem}
 .paq-card:hover{box-shadow:0 8px 24px rgba(0,0,0,0.12);transform:translateY(-3px)}
 .paq-img{position:relative;height:210px;overflow:hidden;flex-shrink:0;cursor:pointer}
 .paq-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.4s}
@@ -631,6 +658,10 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
 .wa-float svg{width:30px;height:30px;fill:white}
 .wa-float.hidden{display:none}
 @media(max-width:768px){.wa-float{bottom:16px;right:16px;width:52px;height:52px}}
+.back-to-top{position:fixed;bottom:94px;right:24px;width:42px;height:42px;background:var(--navy);color:white;border:none;border-radius:50%;display:none;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,0.22);z-index:249;cursor:pointer;transition:transform 0.2s,opacity 0.2s}
+.back-to-top:hover{transform:scale(1.08)}
+.back-to-top.show{display:flex}
+@media(max-width:768px){.back-to-top{bottom:80px;right:16px;width:38px;height:38px}}
 
 /* ===== PAQUETES XV (estilo juvenil) ===== */
 .quince-page-hero{background:linear-gradient(135deg,#7C3AED 0%,#EC4899 55%,#F59E0B 100%);padding:7rem 5% 4rem;color:var(--white)}
@@ -670,6 +701,11 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
 </style>
 </head>
 <body>
+
+<!-- Banner de error de carga — oculto por default, lo muestra loadFromAdmin() si falla la conexión con Supabase -->
+<div id="load-error-banner" role="alert" style="display:none;position:sticky;top:0;z-index:1001;background:#B91C1C;color:#fff;text-align:center;padding:0.6rem 1rem;font-size:0.85rem">
+  No pudimos cargar el catálogo actualizado. Comprobá tu conexión y probá <a href="#" onclick="location.reload();return false" style="color:#fff;text-decoration:underline">recargar la página</a>.
+</div>
 
 <!-- ===== NAV ===== -->
 <nav>
@@ -741,6 +777,11 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
+<!-- ===== BOTON VOLVER ARRIBA ===== -->
+<button type="button" class="back-to-top" id="back-to-top-btn" aria-label="Volver arriba" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+</button>
+
 <!-- ===== GLOBAL SEARCH OVERLAY ===== -->
 <div class="search-overlay" id="search-overlay">
   <div class="search-box">
@@ -778,28 +819,12 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
       <a href="#" class="ver-todos" onclick="showPage('paquetes');return false">Ver todos los destinos →</a>
     </div>
     <div class="destinos-grid" id="destinos-grid">
-      <div class="d-card feat" onclick="showDetalle('santorini')" style="cursor:pointer">
-        <img src="https://images.unsplash.com/photo-1533105079780-92b9be482077?w=800&q=80" alt="Santorini">
-        <div class="d-overlay"><p class="d-country">Grecia</p><h3 class="d-name">Santorini</h3><p class="d-price">Desde <strong>USD 1.890</strong> por persona</p></div>
-        <span class="d-tag">Más buscado</span>
-      </div>
-      <div class="d-card" onclick="showDetalle('japon')" style="cursor:pointer">
-        <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80" alt="Tokio">
-        <div class="d-overlay"><p class="d-country">Japón</p><h3 class="d-name">Tokio</h3><p class="d-price">Desde <strong>USD 2.350</strong></p></div>
-      </div>
-      <div class="d-card" onclick="showPage('paquetes')" style="cursor:pointer">
-        <img src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=600&q=80" alt="París">
-        <div class="d-overlay"><p class="d-country">Francia</p><h3 class="d-name">París</h3><p class="d-price">Desde <strong>USD 1.650</strong></p></div>
-        <span class="d-tag">Oferta</span>
-      </div>
-      <div class="d-card" onclick="showDetalle('caribe')" style="cursor:pointer">
-        <img src="https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=600&q=80" alt="Cancún">
-        <div class="d-overlay"><p class="d-country">México</p><h3 class="d-name">Cancún</h3><p class="d-price">Desde <strong>USD 980</strong></p></div>
-      </div>
-      <div class="d-card" onclick="showDetalle('peru')" style="cursor:pointer">
-        <img src="https://images.unsplash.com/photo-1531761535209-83234b757d8c?w=600&q=80" alt="Machu Picchu">
-        <div class="d-overlay"><p class="d-country">Perú</p><h3 class="d-name">Machu Picchu</h3><p class="d-price">Desde <strong>USD 750</strong></p></div>
-      </div>
+      <!-- Placeholder mientras carga el catálogo real desde Supabase (ver loadFromAdmin) -->
+      <div class="d-card feat skeleton" aria-hidden="true"><img src="" alt=""></div>
+      <div class="d-card skeleton" aria-hidden="true"><img src="" alt=""></div>
+      <div class="d-card skeleton" aria-hidden="true"><img src="" alt=""></div>
+      <div class="d-card skeleton" aria-hidden="true"><img src="" alt=""></div>
+      <div class="d-card skeleton" aria-hidden="true"><img src="" alt=""></div>
     </div>
   </section>
 
@@ -871,9 +896,10 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
       <div><p class="section-label">Testimonios</p><h2 class="section-title">Lo que dicen nuestros viajeros</h2></div>
     </div>
     <div class="test-grid" id="test-grid">
-      <div class="test-card"><div class="estrellas">★★★★★</div><p>Organicé mi luna de miel con Capri Viajes y fue perfecto. Cada detalle estaba cuidado: hoteles, excursiones y hasta nos dieron un upgrade inesperado.</p><div class="test-autor"><div class="test-avatar-letter">V</div><div><div class="test-nombre">Valentina R.</div><div class="test-viaje">Luna de miel en Santorini</div></div></div></div>
-      <div class="test-card"><div class="estrellas">★★★★★</div><p>Llevé a mi familia a Japón y gracias a Capri no tuvimos que preocuparnos por nada. Los chicos quedaron fascinados con Tokio.</p><div class="test-autor"><div class="test-avatar-letter">M</div><div><div class="test-nombre">Martín G.</div><div class="test-viaje">Viaje familiar a Japón</div></div></div></div>
-      <div class="test-card"><div class="estrellas">★★★★★</div><p>La atención es increíble. Me ayudaron a cambiar las fechas sin costo cuando tuve un problema de trabajo. Esa flexibilidad vale oro.</p><div class="test-autor"><div class="test-avatar-letter">L</div><div><div class="test-nombre">Laura M.</div><div class="test-viaje">Escape a París</div></div></div></div>
+      <!-- Placeholder mientras cargan los testimonios reales desde Supabase (ver loadFromAdmin) -->
+      <div class="skeleton-card" style="height:170px" aria-hidden="true"><div class="skel-line"></div><div class="skel-line"></div><div class="skel-line short"></div></div>
+      <div class="skeleton-card" style="height:170px" aria-hidden="true"><div class="skel-line"></div><div class="skel-line"></div><div class="skel-line short"></div></div>
+      <div class="skeleton-card" style="height:170px" aria-hidden="true"><div class="skel-line"></div><div class="skel-line"></div><div class="skel-line short"></div></div>
     </div>
   </section>
 
@@ -967,121 +993,13 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
   </div>
   <div class="paquetes-section" style="padding:1.5rem 5% 3rem">
     <div class="paq-grid" id="paq-grid">
-
-      <div class="paq-card" data-cat="internacional europa">
-        <div class="paq-img">
-          <img src="https://images.unsplash.com/photo-1503917988258-f87a78e3c995?w=600&q=80" alt="Roma">
-          <div class="paq-badges"><span class="paq-badge">7 NOCHES</span></div>
-        </div>
-        <div class="paq-body">
-          <p class="paq-salida">Salida desde <strong>Rosario (ROS)</strong></p>
-          <p class="paq-dest">Italia</p>
-          <h3>Roma Clásica &amp; Toscana</h3>
-          <div class="paq-meta"><span class="paq-tag">Vuelo</span><span class="paq-tag">Hotel 4★</span><span class="paq-tag">Desayuno</span><span class="paq-tag">Asistencia</span></div>
-        </div>
-        <div class="paq-footer">
-          <div class="paq-price-label">Desde</div>
-          <div class="paq-price-val" data-usd="1490" data-moneda="USD"><sup>USD </sup>1.490</div>
-          <div class="paq-price-sub">Precio por persona · 7 noches</div>
-          <a href="#" class="btn-ver" onclick="showDetalle('roma');return false">Ver más</a>
-        </div>
-      </div>
-
-      <div class="paq-card" data-cat="internacional caribe">
-        <div class="paq-img">
-          <img src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=600&q=80" alt="Caribe">
-          <div class="paq-badges"><span class="paq-badge hot">Oferta</span><span class="paq-badge">5 NOCHES</span></div>
-        </div>
-        <div class="paq-body">
-          <p class="paq-salida">Salida desde <strong>Rosario (ROS)</strong></p>
-          <p class="paq-dest">México · República Dominicana</p>
-          <h3>Caribe Todo Incluido</h3>
-          <div class="paq-meta"><span class="paq-tag">Vuelo</span><span class="paq-tag">Todo incluido</span><span class="paq-tag">Traslados</span><span class="paq-tag">Asistencia</span></div>
-        </div>
-        <div class="paq-footer">
-          <div class="paq-price-label">Desde</div>
-          <div class="paq-price-val" data-usd="890" data-moneda="USD"><sup>USD </sup>890</div>
-          <div class="paq-price-sub">Precio por persona · 5 noches</div>
-          <a href="#" class="btn-ver" onclick="showDetalle('caribe');return false">Ver más</a>
-        </div>
-      </div>
-
-      <div class="paq-card" data-cat="internacional asia">
-        <div class="paq-img">
-          <img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80" alt="Japón">
-          <div class="paq-badges"><span class="paq-badge">12 NOCHES</span></div>
-        </div>
-        <div class="paq-body">
-          <p class="paq-salida">Salida desde <strong>Rosario (ROS)</strong></p>
-          <p class="paq-dest">Japón</p>
-          <h3>Maravillas de Japón</h3>
-          <div class="paq-meta"><span class="paq-tag">Vuelo</span><span class="paq-tag">Hotel 5★</span><span class="paq-tag">JR Pass</span><span class="paq-tag">Asistencia</span></div>
-        </div>
-        <div class="paq-footer">
-          <div class="paq-price-label">Desde</div>
-          <div class="paq-price-val" data-usd="2890" data-moneda="USD"><sup>USD </sup>2.890</div>
-          <div class="paq-price-sub">Precio por persona · 12 noches</div>
-          <a href="#" class="btn-ver" onclick="showDetalle('japon');return false">Ver más</a>
-        </div>
-      </div>
-
-      <div class="paq-card" data-cat="internacional europa">
-        <div class="paq-img">
-          <img src="https://images.unsplash.com/photo-1533105079780-92b9be482077?w=600&q=80" alt="Santorini">
-          <div class="paq-badges"><span class="paq-badge">8 NOCHES</span><span class="paq-badge hot">Romántico</span></div>
-        </div>
-        <div class="paq-body">
-          <p class="paq-salida">Salida desde <strong>Rosario (ROS)</strong></p>
-          <p class="paq-dest">Grecia</p>
-          <h3>Santorini &amp; Mykonos</h3>
-          <div class="paq-meta"><span class="paq-tag">Vuelo</span><span class="paq-tag">Hotel 5★</span><span class="paq-tag">Ferry</span><span class="paq-tag">Asistencia</span></div>
-        </div>
-        <div class="paq-footer">
-          <div class="paq-price-label">Desde</div>
-          <div class="paq-price-val" data-usd="2190" data-moneda="USD"><sup>USD </sup>2.190</div>
-          <div class="paq-price-sub">Precio por persona · 8 noches</div>
-          <a href="#" class="btn-ver" onclick="showDetalle('santorini');return false">Ver más</a>
-        </div>
-      </div>
-
-      <div class="paq-card" data-cat="internacional latam">
-        <div class="paq-img">
-          <img src="https://images.unsplash.com/photo-1531761535209-83234b757d8c?w=600&q=80" alt="Machu Picchu">
-          <div class="paq-badges"><span class="paq-badge">6 NOCHES</span></div>
-        </div>
-        <div class="paq-body">
-          <p class="paq-salida">Salida desde <strong>Rosario (ROS)</strong></p>
-          <p class="paq-dest">Perú</p>
-          <h3>Perú Mágico</h3>
-          <div class="paq-meta"><span class="paq-tag">Vuelo</span><span class="paq-tag">Hotel 4★</span><span class="paq-tag">Tren Inca</span><span class="paq-tag">Asistencia</span></div>
-        </div>
-        <div class="paq-footer">
-          <div class="paq-price-label">Desde</div>
-          <div class="paq-price-val" data-usd="1050" data-moneda="USD"><sup>USD </sup>1.050</div>
-          <div class="paq-price-sub">Precio por persona · 6 noches</div>
-          <a href="#" class="btn-ver" onclick="showDetalle('peru');return false">Ver más</a>
-        </div>
-      </div>
-
-      <div class="paq-card" data-cat="nacional">
-        <div class="paq-img">
-          <img src="https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=600&q=80" alt="Bariloche">
-          <div class="paq-badges"><span class="paq-badge">5 NOCHES</span></div>
-        </div>
-        <div class="paq-body">
-          <p class="paq-salida">Salida desde <strong>Rosario (ROS)</strong></p>
-          <p class="paq-dest">Argentina · Río Negro</p>
-          <h3>Bariloche &amp; Patagonia</h3>
-          <div class="paq-meta"><span class="paq-tag">Vuelo</span><span class="paq-tag">Hotel 4★</span><span class="paq-tag">Excursiones</span><span class="paq-tag">Asistencia</span></div>
-        </div>
-        <div class="paq-footer">
-          <div class="paq-price-label">Desde</div>
-          <div class="paq-price-val" data-usd="620" data-moneda="USD"><sup>USD </sup>620</div>
-          <div class="paq-price-sub">Precio por persona · 5 noches</div>
-          <a href="#" class="btn-ver" onclick="showDetalle('bariloche');return false">Ver más</a>
-        </div>
-      </div>
-
+      <!-- Placeholder mientras carga el catálogo real desde Supabase (ver loadFromAdmin) -->
+      <div class="skeleton-card" aria-hidden="true"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div><div class="skel-line"></div></div>
+      <div class="skeleton-card" aria-hidden="true"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div><div class="skel-line"></div></div>
+      <div class="skeleton-card" aria-hidden="true"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div><div class="skel-line"></div></div>
+      <div class="skeleton-card" aria-hidden="true"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div><div class="skel-line"></div></div>
+      <div class="skeleton-card" aria-hidden="true"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div><div class="skel-line"></div></div>
+      <div class="skeleton-card" aria-hidden="true"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div><div class="skel-line"></div></div>
     </div>
   </div>
     <footer>
@@ -1296,64 +1214,10 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
   </div>
   <div class="paquetes-section" style="padding:1.5rem 5% 3rem">
     <div class="paq-grid" id="grup-grid">
-
-      <div class="paq-card" data-cat="internacional">
-        <div class="paq-img">
-          <img src="https://images.unsplash.com/photo-1563492065599-3520f775eeed?w=600&q=80" alt="España">
-          <div class="paq-badges"><span class="paq-badge">AGO 2025</span></div>
-        </div>
-        <div class="paq-body">
-          <p class="paq-salida">Salida desde <strong>Rosario</strong></p>
-          <p class="paq-dest">España</p>
-          <h3>Madrid, Barcelona &amp; Sevilla</h3>
-          <div class="paq-meta"><span class="paq-tag">Vuelo</span><span class="paq-tag">Hotel</span><span class="paq-tag">Guía incluido</span><span class="paq-tag">Desayuno</span><span class="paq-tag">18/20 cupos</span></div>
-        </div>
-        <div class="paq-footer">
-          <div class="paq-price-label">Desde</div>
-          <div class="paq-price-val" data-usd="2490" data-moneda="USD"><sup>USD </sup>2.490</div>
-          <div class="paq-price-sub">Precio por persona · 14 noches</div>
-          <a href="#" class="btn-ver" onclick="showDetalle('espana');return false">Ver más</a>
-        </div>
-      </div>
-
-      <div class="paq-card" data-cat="internacional">
-        <div class="paq-img">
-          <img src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=600&q=80" alt="Caribe Grupal">
-          <div class="paq-badges"><span class="paq-badge">SEP 2025</span></div>
-        </div>
-        <div class="paq-body">
-          <p class="paq-salida">Salida desde <strong>Rosario</strong></p>
-          <p class="paq-dest">República Dominicana</p>
-          <h3>Caribe Grupal Todo Incluido</h3>
-          <div class="paq-meta"><span class="paq-tag">Vuelo</span><span class="paq-tag">Todo incluido</span><span class="paq-tag">Guía incluido</span><span class="paq-tag">12/20 cupos</span></div>
-        </div>
-        <div class="paq-footer">
-          <div class="paq-price-label">Desde</div>
-          <div class="paq-price-val" data-usd="1190" data-moneda="USD"><sup>USD </sup>1.190</div>
-          <div class="paq-price-sub">Precio por persona · 7 noches</div>
-          <a href="#" class="btn-ver" onclick="showDetalle('caribe');return false">Ver más</a>
-        </div>
-      </div>
-
-      <div class="paq-card" data-cat="nacional">
-        <div class="paq-img">
-          <img src="https://images.unsplash.com/photo-1498307833015-e7b400441eb8?w=600&q=80" alt="Patagonia">
-          <div class="paq-badges"><span class="paq-badge">OCT 2025</span></div>
-        </div>
-        <div class="paq-body">
-          <p class="paq-salida">Salida desde <strong>Rosario</strong></p>
-          <p class="paq-dest">Argentina · Chile</p>
-          <h3>Patagonia Argentina &amp; Chilena</h3>
-          <div class="paq-meta"><span class="paq-tag">Vuelo</span><span class="paq-tag">Hotel</span><span class="paq-tag">Excursiones</span><span class="paq-tag">Guía incluido</span><span class="paq-tag">8/20 cupos</span></div>
-        </div>
-        <div class="paq-footer">
-          <div class="paq-price-label">Desde</div>
-          <div class="paq-price-val" data-usd="1850" data-moneda="USD"><sup>USD </sup>1.850</div>
-          <div class="paq-price-sub">Precio por persona · 8 noches</div>
-          <a href="#" class="btn-ver" onclick="showDetalle('patagonia');return false">Ver más</a>
-        </div>
-      </div>
-
+      <!-- Placeholder mientras carga el catálogo real desde Supabase (ver loadFromAdmin) -->
+      <div class="skeleton-card" aria-hidden="true"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div><div class="skel-line"></div></div>
+      <div class="skeleton-card" aria-hidden="true"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div><div class="skel-line"></div></div>
+      <div class="skeleton-card" aria-hidden="true"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div><div class="skel-line"></div></div>
     </div>
   </div>
     <footer>
@@ -1428,7 +1292,12 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
     </div>
   </div>
   <div class="paquetes-section" style="padding:1.5rem 5% 3rem">
-    <div class="paq-grid" id="mini-grid"></div>
+    <div class="paq-grid" id="mini-grid">
+      <!-- Placeholder mientras carga el catálogo real desde Supabase (ver loadFromAdmin) -->
+      <div class="skeleton-card" aria-hidden="true"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div><div class="skel-line"></div></div>
+      <div class="skeleton-card" aria-hidden="true"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div><div class="skel-line"></div></div>
+      <div class="skeleton-card" aria-hidden="true"><div class="skel-img"></div><div class="skel-line"></div><div class="skel-line short"></div><div class="skel-line"></div></div>
+    </div>
   </div>
     <footer>
     <div class="footer-grid">
@@ -2075,13 +1944,14 @@ footer{background:var(--navy);color:rgba(255,255,255,0.6);padding:3.5rem 5% 2rem
     </div>
   </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.js"></script>
+<!-- Sanitiza el HTML de las notas de blog antes de insertarlo (el admin permite cargar HTML libre) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.4.15/purify.min.js"></script>
 <script src="supabase-config.js"></script>
 <script>
 // ===== DATA DE PAQUETES =====
 // Currency state — se actualiza cuando llegan los datos desde Supabase (ver loadFromAdmin)
 let currentCurrency = "USD";
-const USD_TO_ARS = 1250;
 
 // Numero de WhatsApp — se actualiza con los datos de contacto reales del admin (ver applyContactSettings)
 let WA_NUMBER = "5493412279027";
@@ -2108,6 +1978,21 @@ function applyContactSettings(s) {
   if (s.wa) document.querySelectorAll('.cd-wa-generic').forEach(el => el.href = 'https://wa.me/' + s.wa);
   if (s.wa) { const wf = document.getElementById('wa-float-btn'); if (wf) wf.href = 'https://wa.me/' + s.wa + '?text=Hola!%20Quiero%20hacer%20una%20consulta.'; }
   setText('.cd-legajo', s.legajo);
+  updateTravelAgencyLd(s);
+}
+
+// Completa el JSON-LD de TravelAgency con los datos reales de contacto cuando llegan de Supabase
+function updateTravelAgencyLd(s) {
+  const el = document.getElementById('ld-travelagency');
+  if (!el) return;
+  try {
+    const data = JSON.parse(el.textContent);
+    if (s.telefono) data.telephone = s.telefono;
+    if (s.email) data.email = s.email;
+    if (s.direccion) data.address.streetAddress = s.direccion;
+    if (s.ciudad) data.address.addressLocality = s.ciudad;
+    el.textContent = JSON.stringify(data);
+  } catch (e) {}
 }
 
 // Carga los datos publicados desde el panel admin (Supabase)
@@ -2117,6 +2002,20 @@ window.addEventListener('load', () => {
     if (postSlug) showBlogPost(postSlug);
   });
   setTimeout(initCardPrices, 100);
+});
+
+// Botón "volver arriba" — aparece después de scrollear un poco
+window.addEventListener('scroll', () => {
+  const btn = document.getElementById('back-to-top-btn');
+  if (btn) btn.classList.toggle('show', window.scrollY > 500);
+}, { passive: true });
+
+// Accesibilidad: las tarjetas clickeables armadas con <div onclick> (role="button" + tabindex="0")
+// también responden a Enter/Espacio, no solo al click del mouse.
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const el = e.target.closest('[role="button"][tabindex]');
+  if (el) { e.preventDefault(); el.click(); }
 });
 
 window.addEventListener('popstate', () => {
@@ -2186,196 +2085,8 @@ function renderDetallePrecio(p) {
   if (sticky) sticky.innerHTML = formatPrice(basePrice, moneda);
 }
 
-const paquetes = {
-  roma:{
-    title:"Roma Clásica & Toscana",sub:"7 noches · Italia",
-    fechaSalida:"15 de agosto 2025",fechaRegreso:"22 de agosto 2025",
-    lugarSalida:"Rosario (ROS)",precioBase:1490,traslado:true,
-    excursiones:[],
-    img:"https://images.unsplash.com/photo-1503917988258-f87a78e3c995?w=1200&q=80",
-    badges:["7 noches","Europa","Vuelo incluido"],precio:"<sup>USD </sup>1.490",
-    descripcion:"<p>Italia es uno de esos destinos que te deja sin palabras. Este paquete combina lo mejor de Roma, la ciudad eterna, con la tranquilidad y el sabor auténtico de la Toscana. Un itinerario pensado para vivir cada momento al máximo, sin apuros.</p><p>Desde el imponente Coliseo hasta los viñedos infinitos de la campiña italiana, cada día es una nueva sorpresa. Hotel 4 estrellas en el centro de Roma, desayuno incluido y guía en español.</p>",
-    resumen:`<div class="resumen-row"><span>Roma</span><span>5 noches · Hotel Colosseo 4★</span></div><div class="resumen-row"><span>Siena/Toscana</span><span>2 noches · Agriturismo Toscana</span></div>`,
-    itinerario:[
-      {day:1,city:"Roma",title:"Llegada a Roma",desc:"Traslado desde el aeropuerto. Tarde libre para ambientarse. Cena de bienvenida.",img:"https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=600&q=80"},
-      {day:2,city:"Roma",title:"Ciudad Eterna",desc:"Visita al Coliseo, Foro Romano y Palatino. Por la tarde, Fontana di Trevi y Plaza España.",img:"https://images.unsplash.com/photo-1529154036614-a60975f5c760?w=600&q=80"},
-      {day:3,city:"Roma",title:"El Vaticano",desc:"Día completo en Ciudad del Vaticano. Museos Vaticanos, Capilla Sixtina y Basílica de San Pedro.",img:"https://images.unsplash.com/photo-1531572753322-ad063cecc140?w=600&q=80"},
-      {day:4,city:"Toscana",title:"Campiña toscana",desc:"Excursión a Siena y San Gimignano. Degustación de vinos y productos locales.",img:"https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80"},
-      {day:5,city:"Roma",title:"Roma a tu ritmo",desc:"Día libre para explorar barrios típicos como Trastevere o Pigneto.",img:"https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?w=600&q=80"},
-    ],
-    incluye:{si:["Vuelo de ida y vuelta","Hotel 4 estrellas (7 noches)","Desayuno diario","Traslados aeropuerto","Seguro de viaje internacional","Guía en español","Entradas al Coliseo y Vaticano"],no:["Almuerzo y cena (salvo bienvenida)","Bebidas","Gastos personales","Propinas","Excursiones opcionales"]},
-    vuelos:[
-      {dir:"IDA",aero:"Iberia / Air Europa",orig:"ROS",dest:"FCO",escala:"MAD",salida:"23:45",llegada:"15:30+1",equipaje:"Carry on + mochila"},
-      {dir:"VUELTA",aero:"Iberia / Air Europa",orig:"FCO",dest:"ROS",escala:"MAD",salida:"10:15",llegada:"06:00+1",equipaje:"Carry on + mochila"},
-    ],
-    hoteles:[
-      {nombre:"Hotel Colosseo Roma 4★",estrellas:4,detail:"7 noches · Desayuno incluido | Vista al Coliseo",tags:["Desayuno","Wifi","Céntrico"],img:"https://images.unsplash.com/photo-1566073771259-6a8506099945?w=300&q=80",precio:1490},
-      {nombre:"Hotel Vatican View 4★",estrellas:4,detail:"7 noches · Desayuno incluido | Cerca del Vaticano",tags:["Desayuno","Wifi","Spa"],img:"https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=300&q=80",precio:1590},
-      {nombre:"Grand Hotel de la Minerve 5★",estrellas:5,detail:"7 noches · Media pensión | Centro histórico",tags:["Media pensión","Spa","Piscina"],img:"https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=300&q=80",precio:1890},
-    ]
-  },
-  caribe:{
-    title:"Caribe Todo Incluido",sub:"5 noches · Punta Cana o Cancún",
-    fechaSalida:"10 septiembre 2025",fechaRegreso:"15 septiembre 2025",lugarSalida:"Rosario (ROS)",precioBase:890,traslado:true,
-    excursiones:[],
-    img:"https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=1200&q=80",
-    badges:["5 noches","Todo incluido","Oferta"],precio:"<sup>USD </sup>890",
-    descripcion:"<p>Sol, playa y todo incluido desde el momento en que llegás. Elegí entre Punta Cana o Cancún según disponibilidad de fechas. Resorts 5 estrellas frente al mar con comidas, bebidas, actividades acuáticas y entretenimiento.</p><p>El paquete ideal para quienes buscan descanso absoluto sin preocuparse por nada más.</p>",
-    resumen:`<div class="resumen-row"><span>Punta Cana / Cancún</span><span>5 noches · Resort Todo incluido 5★</span></div>`,
-    itinerario:[
-      {day:1,city:"Punta Cana",title:"Llegada al paraíso",desc:"Check-in en el resort. Tarde libre en la playa. Cena buffet incluida.",img:"https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?w=600&q=80"},
-      {day:2,city:"Punta Cana",title:"Playa y relax",desc:"Día libre en la playa. Actividades acuáticas gratuitas: kayak, snorkeling, velero.",img:"https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80"},
-      {day:3,city:"Punta Cana",title:"Excursión opcional",desc:"Excursión a Isla Saona o cenotes (costo adicional).",img:"https://images.unsplash.com/photo-1501426026826-31c667bdf23d?w=600&q=80"},
-    ],
-    incluye:{si:["Vuelo de ida y vuelta","5 noches en resort 5★","Todo incluido (comidas y bebidas)","Traslados aeropuerto - hotel","Seguro de viaje internacional","Actividades acuáticas"],no:["Excursiones opcionales","Bebidas premium fuera del bar","Gastos personales","Propinas"]},
-    vuelos:[
-      {dir:"IDA",aero:"Copa Airlines",orig:"ROS",dest:"PUJ",escala:"PTY",salida:"02:10",llegada:"07:45",equipaje:"Carry on + mochila"},
-      {dir:"VUELTA",aero:"Copa Airlines",orig:"PUJ",dest:"ROS",escala:"PTY",salida:"09:30",llegada:"18:15",equipaje:"Carry on + mochila"},
-    ],
-    hoteles:[
-      {nombre:"Sunscape Dominicus La Romana ★★★★",estrellas:4,detail:"7 noches · All Inclusive | Tropical View",tags:["All Inclusive","Piscina","Playa"],img:"https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=300&q=80",precio:890},
-      {nombre:"Viva Dominicus Palace by Wyndham ★★★★",estrellas:4,detail:"7 noches · All Inclusive | Superior Rooms",tags:["All Inclusive","Parque acuático","Casino"],img:"https://images.unsplash.com/photo-1570213489059-0aac6626cade?w=300&q=80",precio:980},
-      {nombre:"Dreams Dominicus La Romana ★★★★★",estrellas:5,detail:"7 noches · All Inclusive | Deluxe vista tropical",tags:["All Inclusive","Spa","5 Piscinas"],img:"https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=300&q=80",precio:1190},
-    ]
-  },
-  japon:{
-    title:"Maravillas de Japón",sub:"12 noches · Tokio, Kioto & Osaka",
-    fechaSalida:"5 octubre 2025",fechaRegreso:"17 octubre 2025",lugarSalida:"Rosario (ROS)",precioBase:2890,traslado:true,
-    excursiones:[],
-    img:"https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=1200&q=80",
-    badges:["12 noches","Asia","JR Pass"],precio:"<sup>USD </sup>2.890",
-    descripcion:"<p>Japón es uno de los destinos más fascinantes del mundo, y este paquete te lleva a recorrer sus tres ciudades icónicas: Tokio, la megalópolis del futuro; Kioto, capital cultural y espiritual; y Osaka, paraíso gastronómico.</p><p>Incluye el JR Pass para moverte libremente en el famoso tren bala Shinkansen entre ciudades.</p>",
-    resumen:`<div class="resumen-row"><span>Tokio</span><span>5 noches · Hotel Shinjuku 4★</span></div><div class="resumen-row"><span>Kioto</span><span>4 noches · Ryokan tradicional</span></div><div class="resumen-row"><span>Osaka</span><span>3 noches · Hotel Namba 4★</span></div>`,
-    itinerario:[
-      {day:1,city:"Tokio",title:"Llegada a Tokio",desc:"Traslado al hotel. Bienvenida y briefing del viaje. Primera noche en Shinjuku.",img:"https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80"},
-      {day:2,city:"Tokio",title:"Tokio moderno",desc:"Shibuya crossing, Harajuku, Akihabara. Exploración del Tokio más contemporáneo.",img:"https://images.unsplash.com/photo-1513407030348-c983a97b98d8?w=600&q=80"},
-      {day:3,city:"Kioto",title:"Templos de Kioto",desc:"Shinkansen a Kioto. Fushimi Inari, Kinkakuji (Pabellón Dorado) y Arashiyama.",img:"https://images.unsplash.com/photo-1493780474015-ba834fd0ce2f?w=600&q=80"},
-    ],
-    incluye:{si:["Vuelo de ida y vuelta","12 noches en hoteles 4★ y 5★","Desayuno diario","JR Pass 14 días","Traslados aeropuerto","Seguro de viaje internacional","Guía en español"],no:["Almuerzo y cena","Gastos personales","Visas (no requerida para ARG)","Propinas"]},
-    vuelos:[
-      {dir:"IDA",aero:"LATAM",orig:"ROS",dest:"NRT",escala:"GRU",salida:"23:55",llegada:"19:30+1",equipaje:"Carry on + 23kg"},
-      {dir:"VUELTA",aero:"LATAM",orig:"KIX",dest:"ROS",escala:"GRU",salida:"11:10",llegada:"09:45+1",equipaje:"Carry on + 23kg"},
-    ],
-    hoteles:[
-      {nombre:"Hotel Shinjuku Prince 4★",estrellas:4,detail:"5 noches Tokio + 4 Kioto + 3 Osaka | Desayuno",tags:["Desayuno","Céntrico","Wifi"],img:"https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=300&q=80",precio:2890},
-      {nombre:"Hotel New Otani Tokyo 5★",estrellas:5,detail:"5 noches Tokio + 4 Kioto + 3 Osaka | Media pensión",tags:["Media pensión","Jardín","Spa"],img:"https://images.unsplash.com/photo-1513407030348-c983a97b98d8?w=300&q=80",precio:3290},
-    ]
-  },
-  santorini:{
-    title:"Santorini & Mykonos",sub:"8 noches · Islas Griegas",
-    fechaSalida:"20 noviembre 2025",fechaRegreso:"28 noviembre 2025",lugarSalida:"Rosario (ROS)",precioBase:2190,traslado:true,
-    excursiones:[],
-    img:"https://images.unsplash.com/photo-1533105079780-92b9be482077?w=1200&q=80",
-    badges:["8 noches","Romántico","5★"],precio:"<sup>USD </sup>2.190",
-    descripcion:"<p>Santorini y Mykonos son las joyas del Mar Egeo. Cúpulas azules, acantilados blancos y atardeceres únicos que parecen sacados de una postal. Este paquete es ideal para parejas en busca de una experiencia romántica e inolvidable.</p>",
-    resumen:`<div class="resumen-row"><span>Santorini</span><span>5 noches · Suite con vista al volcán 5★</span></div><div class="resumen-row"><span>Mykonos</span><span>3 noches · Hotel boutique 4★</span></div>`,
-    itinerario:[
-      {day:1,city:"Santorini",title:"Llegada a Santorini",desc:"Vuelo a Atenas + ferry a Santorini. Check-in con vista al volcán. Cena al atardecer.",img:"https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=600&q=80"},
-      {day:2,city:"Santorini",title:"Oia y Fira",desc:"Recorrida por Oia, el pueblo más fotografiado de Grecia. Atardecer desde el castillo.",img:"https://images.unsplash.com/photo-1533105079780-92b9be482077?w=600&q=80"},
-    ],
-    incluye:{si:["Vuelo internacional","Ferry Santorini-Mykonos","8 noches hoteles 4★ y 5★","Desayuno diario","Traslados aeropuerto","Seguro de viaje"],no:["Almuerzo y cena","Excursiones en barco","Gastos personales"]},
-    vuelos:[
-      {dir:"IDA",aero:"Air Europa",orig:"ROS",dest:"ATH",escala:"MAD",salida:"23:30",llegada:"18:45+1",equipaje:"Carry on + mochila"},
-      {dir:"VUELTA",aero:"Air Europa",orig:"ATH",dest:"ROS",escala:"MAD",salida:"14:20",llegada:"07:10+1",equipaje:"Carry on + mochila"},
-    ],
-    hoteles:[
-      {nombre:"Canaves Oia Suites 4★",estrellas:4,detail:"5 noches Santorini + 3 Mykonos | Desayuno",tags:["Desayuno","Vista caldera","Piscina infinity"],img:"https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=300&q=80",precio:2190},
-      {nombre:"Grace Santorini 5★",estrellas:5,detail:"5 noches Santorini + 3 Mykonos | Media pensión",tags:["Media pensión","Spa","Butler"],img:"https://images.unsplash.com/photo-1533105079780-92b9be482077?w=300&q=80",precio:2690},
-    ]
-  },
-  peru:{
-    title:"Perú Mágico",sub:"6 noches · Cusco & Machu Picchu",
-    fechaSalida:"8 diciembre 2025",fechaRegreso:"14 diciembre 2025",lugarSalida:"Rosario (ROS)",precioBase:1050,traslado:true,
-    excursiones:["Tren Inca a Aguas Calientes", "Visita guiada Ciudadela Inca", "Excursión Valle Sagrado (Pisac + Ollantaytambo)"],
-    img:"https://images.unsplash.com/photo-1531761535209-83234b757d8c?w=1200&q=80",
-    badges:["6 noches","América Latina","Tren Inca"],precio:"<sup>USD </sup>1.050",
-    descripcion:"<p>Machu Picchu es uno de los lugares más impresionantes del planeta, y este paquete te lleva a vivirlo de manera completa. Cusco, el Valle Sagrado de los Incas y la ciudadela perdida te esperan en un viaje que transforma.</p>",
-    resumen:`<div class="resumen-row"><span>Cusco</span><span>3 noches · Hotel 4★ centro</span></div><div class="resumen-row"><span>Aguas Calientes</span><span>1 noche · Lodge junto al río</span></div><div class="resumen-row"><span>Valle Sagrado</span><span>2 noches · Hacienda 4★</span></div>`,
-    itinerario:[
-      {day:1,city:"Cusco",title:"Llegada a Cusco",desc:"Aclimatación recomendada. Visita liviana al centro histórico. Mate de coca.",img:"https://images.unsplash.com/photo-1526392060635-9d6019884377?w=600&q=80"},
-      {day:2,city:"Cusco",title:"Valle Sagrado",desc:"Excursión al Valle Sagrado: Pisac, Ollantaytambo y mercado artesanal.",img:"https://images.unsplash.com/photo-1531761535209-83234b757d8c?w=600&q=80"},
-      {day:3,city:"Machu Picchu",title:"Machu Picchu",desc:"Tren Inca a Aguas Calientes. Visita guiada a la Ciudadela Inca. Momento único.",img:"https://images.unsplash.com/photo-1567593810070-7a3d471af022?w=600&q=80"},
-    ],
-    incluye:{si:["Vuelo de ida y vuelta","6 noches en hoteles 4★","Tren Inca Aguas Calientes","Entrada a Machu Picchu","Guía en español","Traslados","Seguro de viaje"],no:["Almuerzo y cena","Vuelo doméstico Lima-Cusco","Gastos personales"]},
-    vuelos:[
-      {dir:"IDA",aero:"Aerolíneas Argentinas",orig:"ROS",dest:"LIM",escala:"-",salida:"04:30",llegada:"07:15",equipaje:"Carry on + 23kg"},
-      {dir:"VUELTA",aero:"Aerolíneas Argentinas",orig:"LIM",dest:"ROS",escala:"-",salida:"21:40",llegada:"02:20+1",equipaje:"Carry on + 23kg"},
-    ],
-    hoteles:[
-      {nombre:"Palacio del Inka 5★",estrellas:5,detail:"3 noches Cusco + 1 Aguas Calientes + 2 Valle Sagrado",tags:["Desayuno","Colonial","Centro"],img:"https://images.unsplash.com/photo-1526392060635-9d6019884377?w=300&q=80",precio:1050},
-      {nombre:"Inkaterra Machu Picchu 5★",estrellas:5,detail:"3 noches Cusco + 2 Aguas Calientes + 1 Valle",tags:["Full board","Spa","Jardín tropical"],img:"https://images.unsplash.com/photo-1531761535209-83234b757d8c?w=300&q=80",precio:1290},
-    ]
-  },
-  bariloche:{
-    title:"Bariloche & Patagonia",sub:"5 noches · Río Negro, Argentina",
-    fechaSalida:"15 julio 2025",fechaRegreso:"20 julio 2025",lugarSalida:"Rosario (ROS)",precioBase:620,traslado:true,
-    excursiones:["Excursión Circuito Chico (Campanario + Llao Llao)", "Paseo lacustre por el lago Nahuel Huapi"],
-    img:"https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=1200&q=80",
-    badges:["5 noches","Nacional","Argentina"],precio:"<sup>USD </sup>620",
-    descripcion:"<p>Bariloche es el destino patagónico por excelencia. Lagos cristalinos, montañas nevadas, chocolate artesanal y una gastronomía de montaña inigualable. Un destino para todas las estaciones: ski en invierno, trekking y kayak en verano.</p>",
-    resumen:`<div class="resumen-row"><span>Bariloche</span><span>5 noches · Hotel Lagos del Sur 4★</span></div>`,
-    itinerario:[
-      {day:1,city:"Bariloche",title:"Llegada a Bariloche",desc:"Vuelo desde Rosario/Buenos Aires. Traslado al hotel. Tarde libre en el centro.",img:"https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=600&q=80"},
-      {day:2,city:"Bariloche",title:"Circuito Chico",desc:"Cerro Campanario, Llao Llao y Bahía López. Las vistas más icónicas de la región.",img:"https://images.unsplash.com/photo-1531771686035-25f47595c87a?w=600&q=80"},
-    ],
-    incluye:{si:["Vuelo de ida y vuelta","5 noches en hotel 4★","Desayuno diario","Traslados aeropuerto","Seguro de viaje","Excursión Circuito Chico"],no:["Almuerzo y cena","Ski (alquiler de equipo)","Excursiones opcionales","Gastos personales"]},
-    vuelos:[
-      {dir:"IDA",aero:"Aerolíneas Argentinas",orig:"ROS",dest:"BRC",escala:"-",salida:"08:45",llegada:"11:30",equipaje:"Carry on + 23kg"},
-      {dir:"VUELTA",aero:"Aerolíneas Argentinas",orig:"BRC",dest:"ROS",escala:"-",salida:"12:15",llegada:"14:55",equipaje:"Carry on + 23kg"},
-    ],
-    hoteles:[
-      {nombre:"Hotel Edenia Nahuel 4★",estrellas:4,detail:"5 noches · Desayuno incluido | Frente al lago",tags:["Desayuno","Vista lago","Ski room"],img:"https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=300&q=80",precio:620},
-      {nombre:"Llao Llao Hotel & Resort 5★",estrellas:5,detail:"5 noches · Media pensión | Icónico resort",tags:["Media pensión","Golf","Spa","Piscinas"],img:"https://images.unsplash.com/photo-1531771686035-25f47595c87a?w=300&q=80",precio:890},
-    ]
-  },
-  espana:{
-    grupal:true,
-    title:"Madrid, Barcelona & Sevilla",sub:"14 noches · España · Grupal",
-    fechaSalida:"15 agosto 2025",fechaRegreso:"29 agosto 2025",lugarSalida:"Rosario (ROS)",precioBase:2490,traslado:true,
-    excursiones:["Entradas a museos principales (Prado, Sagrada Familia)", "City tour Madrid, Barcelona y Sevilla", "Cena de bienvenida grupal"],
-    img:"https://images.unsplash.com/photo-1563492065599-3520f775eeed?w=1200&q=80",
-    badges:["14 noches","Grupal","Salida: 15 ago 2025"],precio:"<sup>USD </sup>2.490",
-    descripcion:"<p>Un recorrido grupal por las tres ciudades más vibrantes de España. Arte, gastronomía, historia y cultura en un itinerario diseñado para grupos reducidos (máx. 20 personas) con guía en español durante todo el recorrido.</p>",
-    resumen:`<div class="resumen-row"><span>Madrid</span><span>4 noches · Hotel Gran Vía 4★</span></div><div class="resumen-row"><span>Barcelona</span><span>5 noches · Hotel Gràcia 4★</span></div><div class="resumen-row"><span>Sevilla</span><span>5 noches · Hotel Santa Cruz 4★</span></div>`,
-    itinerario:[
-      {day:1,city:"Madrid",title:"Llegada a Madrid",desc:"Traslado y check-in. Presentación grupal. Cena de bienvenida con el grupo.",img:"https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=600&q=80"},
-      {day:2,city:"Madrid",title:"Madrid histórico",desc:"Prado, Puerta del Sol, Plaza Mayor y Palacio Real. Tapas por La Latina.",img:"https://images.unsplash.com/photo-1543783207-ec64e4d95325?w=600&q=80"},
-      {day:5,city:"Barcelona",title:"Barcelona modernista",desc:"Sagrada Familia, Casa Batlló, Las Ramblas y el barrio Gótico.",img:"https://images.unsplash.com/photo-1464790719320-516ecd75af6c?w=600&q=80"},
-    ],
-    incluye:{si:["Vuelo de ida y vuelta","14 noches en hoteles 4★","Desayuno diario","Traslados entre ciudades","Guía en español todo el viaje","Seguro de viaje","Entradas a museos principales"],no:["Almuerzo y cena","Bebidas","Gastos personales","Excursiones opcionales"]},
-    vuelos:[
-      {dir:"IDA",aero:"Iberia / Air Europa",orig:"ROS",dest:"MAD",escala:"EZE",salida:"23:00",llegada:"15:30+1",equipaje:"Carry on + 23kg"},
-      {dir:"VUELTA",aero:"Iberia",orig:"SVQ",dest:"ROS",escala:"MAD",salida:"08:30",llegada:"23:45+1",equipaje:"Carry on + 23kg"},
-    ],
-    hoteles:[
-      {nombre:"Hotel Gran Vía Madrid 4★",estrellas:4,detail:"4 noches Madrid + 5 Barcelona + 5 Sevilla | Desayuno",tags:["Desayuno","Céntrico","Wifi"],img:"https://images.unsplash.com/photo-1543783207-ec64e4d95325?w=300&q=80",precio:2490},
-      {nombre:"Hotel Arts Barcelona 5★",estrellas:5,detail:"4 noches Madrid + 5 Barcelona + 5 Sevilla | Media pensión",tags:["Media pensión","Vista mar","Spa"],img:"https://images.unsplash.com/photo-1464790719320-516ecd75af6c?w=300&q=80",precio:2890},
-    ]
-  },
-  patagonia:{
-    grupal:true,
-    title:"Patagonia Argentina & Chilena",sub:"8 noches · El Calafate · Torres del Paine",
-    fechaSalida:"3 octubre 2025",fechaRegreso:"11 octubre 2025",lugarSalida:"Rosario (ROS)",precioBase:1850,traslado:true,
-    excursiones:["Excursión Glaciar Perito Moreno + navegación", "Entrada Parque Nacional Torres del Paine", "Trekking guiado en el parque"],
-    img:"https://images.unsplash.com/photo-1498307833015-e7b400441eb8?w=1200&q=80",
-    badges:["8 noches","Grupal","Aventura"],precio:"<sup>USD </sup>1.850",
-    descripcion:"<p>La Patagonia es uno de los lugares más salvajes y hermosos del planeta. Este viaje grupal te lleva a conocer el imponente Glaciar Perito Moreno, las torres de granito del Parque Nacional Torres del Paine y la magia de El Calafate y El Chaltén.</p>",
-    resumen:`<div class="resumen-row"><span>El Calafate</span><span>3 noches · Hotel Los Sauces 4★</span></div><div class="resumen-row"><span>Puerto Natales</span><span>2 noches · Hotel Remota</span></div><div class="resumen-row"><span>Torres del Paine</span><span>3 noches · Lodge dentro del parque</span></div>`,
-    itinerario:[
-      {day:1,city:"El Calafate",title:"Llegada a El Calafate",desc:"Vuelo desde Buenos Aires. Traslado al hotel. Primera noche patagónica.",img:"https://images.unsplash.com/photo-1501854140801-50d01698950b?w=600&q=80"},
-      {day:2,city:"El Calafate",title:"Glaciar Perito Moreno",desc:"Excursión al Glaciar Perito Moreno. Navegación frente al glaciar.",img:"https://images.unsplash.com/photo-1498307833015-e7b400441eb8?w=600&q=80"},
-    ],
-    incluye:{si:["Vuelo de ida y vuelta","8 noches en hoteles y lodges","Desayuno diario","Traslados","Excursión Glaciar Perito Moreno","Entrada Torres del Paine","Guía en español","Seguro de viaje"],no:["Almuerzo y cena","Trekking W (opcional)","Gastos personales"]},
-    vuelos:[
-      {dir:"IDA",aero:"Aerolíneas Argentinas",orig:"ROS",dest:"FTE",escala:"AEP",salida:"07:15",llegada:"10:30",equipaje:"Carry on + 23kg"},
-      {dir:"VUELTA",aero:"LATAM",orig:"PUQ",dest:"ROS",escala:"AEP",salida:"16:40",llegada:"20:15",equipaje:"Carry on + 23kg"},
-    ],
-    hoteles:[
-      {nombre:"Hotel Los Sauces El Calafate 4★",estrellas:4,detail:"3 noches El Calafate + 2 Natales + 3 Torres | Desayuno",tags:["Desayuno","Vista glaciar","Excursiones"],img:"https://images.unsplash.com/photo-1501854140801-50d01698950b?w=300&q=80",precio:1850},
-      {nombre:"Remota Patagonia Lodge 5★",estrellas:5,detail:"3 noches El Calafate + 2 Natales + 3 Torres | Full board",tags:["Full board","Spa","Kayak","Lodge"],img:"https://images.unsplash.com/photo-1498307833015-e7b400441eb8?w=300&q=80",precio:2200},
-    ]
-  }
-};
+// paquetes se llena en runtime con los datos reales desde Supabase (ver loadFromAdmin y adminPaqToDetalle)
+const paquetes = {};
 
 function logEvent(type, packageId, packageTitle) {
   try { sb.from('page_events').insert({ type, package_id: packageId||null, package_title: packageTitle||null }).then(()=>{}); } catch(e) {}
@@ -2385,6 +2096,7 @@ function showDetalle(id) {
   const p = paquetes[id];
   if (!p) return;
   logEvent('view', id, p.title);
+  setPageMeta(p.title + ' | Capri Viajes', p.sub ? `${p.title} — ${p.sub}. Consultá disponibilidad y precios con Capri Viajes.` : null);
   if (typeof gtag === 'function') {
     gtag('event', 'page_view', { page_title: p.title, page_path: '/paquetes/' + id, page_location: location.origin + location.pathname + '#/paquetes/' + id });
   }
@@ -2488,7 +2200,7 @@ function showDetalle(id) {
   } else {
     fechasSection.style.display = "";
     document.getElementById("det-fechas-opciones").innerHTML = p.fechas.map((f,i) => `
-      <div class="hotel-option ${i===0?"selected":""}" onclick="selectFecha(this,${i})">
+      <div class="hotel-option ${i===0?"selected":""}" onclick="selectFecha(this,${i})" role="button" tabindex="0">
         <div class="hotel-option-body">
           <div class="hotel-option-name">${formatFechaLarga(f.fecha)||"A consultar"}</div>
           ${f.fechaRegreso ? `<div class="hotel-option-detail">Regreso: ${formatFechaLarga(f.fechaRegreso)}</div>` : ""}
@@ -2520,7 +2232,7 @@ function showDetalle(id) {
       document.getElementById("det-hoteles").innerHTML = ciudades.map((ciudad, gi) => `
         ${ciudad ? `<div class="hotel-city-label">${escapeHtml(ciudad)}</div>` : ""}
         ${grupos[ciudad].map((h,i) => `
-        <div class="hotel-option ${i===0?"selected":""}" data-group="${gi}" data-ciudad="${escapeHtml(ciudad)}" onclick="selectHotel(this,${h.precio},${gi})">
+        <div class="hotel-option ${i===0?"selected":""}" data-group="${gi}" data-ciudad="${escapeHtml(ciudad)}" onclick="selectHotel(this,${h.precio},${gi})" role="button" tabindex="0">
           <img class="hotel-option-img" src="${h.img}" alt="${h.nombre}" onerror="this.style.background='#EEE'">
           <div class="hotel-option-body">
             <div class="hotel-option-name">${h.nombre}</div>
@@ -2652,6 +2364,26 @@ function initCardPrices() {
     if (val) el.innerHTML = formatPrice(val, moneda);
   });
 }
+// Título y meta description por sección — se actualizan en cada navegación de la SPA
+// (antes quedaban siempre en el valor por default de <head>, lo que hacía que todas
+// las "páginas" compartieran el mismo <title> ante Google y en los reportes de GA4).
+const PAGE_META = {
+  inicio: { title: 'Capri Viajes | Agencia de viajes en Rosario', desc: 'Agencia de viajes en Rosario, Santa Fe con más de 15 años de experiencia. Paquetes nacionales e internacionales, salidas grupales y asesoramiento personalizado.' },
+  paquetes: { title: 'Paquetes de viaje | Capri Viajes', desc: 'Paquetes de viaje individuales, nacionales e internacionales, con salida desde Rosario. Cuotas, vuelos y hoteles incluidos.' },
+  grupales: { title: 'Viajes grupales | Capri Viajes', desc: 'Salidas grupales con guía incluido, nacionales e internacionales y cupos limitados. Viajá acompañado con Capri Viajes.' },
+  miniturismo: { title: 'Miniturismo | Capri Viajes', desc: 'Escapadas cortas y viajes de miniturismo nacional con salida desde Rosario.' },
+  quince: { title: 'Fiestas de 15 | Capri Viajes', desc: 'Propuestas para festejar tus 15 años, con asesoramiento personalizado de Capri Viajes.' },
+  asistencia: { title: 'Asistencia al viajero | Capri Viajes', desc: 'Empresas de asistencia al viajero recomendadas por Capri Viajes para viajar tranquilo.' },
+  quienes: { title: '¿Quiénes somos? | Capri Viajes', desc: 'Conocé al equipo de Capri Viajes, agencia de viajes en Rosario con más de 15 años de experiencia.' },
+  contacto: { title: 'Contacto | Capri Viajes', desc: 'Contactate con Capri Viajes: teléfono, WhatsApp, email y dirección en Rosario, Santa Fe.' },
+  blog: { title: 'Blog de viajes | Capri Viajes', desc: 'Consejos, guías y novedades para tu próximo viaje, por Capri Viajes.' }
+};
+function setPageMeta(title, desc) {
+  if (title) document.title = title;
+  if (desc) document.querySelectorAll('meta[name="description"], meta[property="og:description"], meta[name="twitter:description"]').forEach(el => el.setAttribute('content', desc));
+  if (title) document.querySelectorAll('meta[property="og:title"], meta[name="twitter:title"]').forEach(el => el.setAttribute('content', title));
+}
+
 function showPage(id) {
   document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
   document.querySelectorAll("nav ul li a").forEach(a => a.classList.remove("active"));
@@ -2662,6 +2394,8 @@ function showPage(id) {
   const waFloat = document.getElementById('wa-float-btn');
   if (waFloat) waFloat.classList.toggle('hidden', id === 'detalle');
   window.scrollTo(0, 0);
+  const meta = PAGE_META[id];
+  if (meta) setPageMeta(meta.title, meta.desc);
   // Google Analytics: pageview virtual para la SPA (detalle y blog-post mandan el suyo propio, mas especifico)
   if (id !== 'detalle' && id !== 'blog-post' && typeof gtag === 'function') {
     gtag('event', 'page_view', { page_title: document.title, page_path: '/' + id, page_location: location.origin + location.pathname + '#' + id });
@@ -2725,7 +2459,7 @@ function renderBlogGrid() {
     return;
   }
   grid.innerHTML = blogPosts.map(p => `
-    <div class="blog-card" onclick="showBlogPost('${escapeHtml(p.slug||p.id)}')">
+    <div class="blog-card" onclick="showBlogPost('${escapeHtml(p.slug||p.id)}')" role="button" tabindex="0">
       <div class="blog-card-img"><img src="${escapeHtml(p.cover||'')}" alt="${escapeHtml(p.titulo||'')}" loading="lazy"></div>
       <div class="blog-card-body">
         <p class="blog-card-date">${escapeHtml(formatFechaLarga(p.fecha)||'')}</p>
@@ -2738,6 +2472,7 @@ function showBlogPost(slug) {
   const post = blogPosts.find(p => (p.slug||p.id) === slug);
   if (!post) return;
   logEvent('blog_view', slug, post.titulo);
+  setPageMeta(post.titulo + ' | Capri Viajes', post.excerpt || null);
   if (typeof gtag === 'function') {
     gtag('event', 'page_view', { page_title: post.titulo, page_path: '/blog/' + slug, page_location: location.origin + location.pathname + '#/blog/' + slug });
   }
@@ -2745,7 +2480,8 @@ function showBlogPost(slug) {
   document.getElementById('blogpost-cover').alt = post.titulo||'';
   document.getElementById('blogpost-title').textContent = post.titulo||'';
   document.getElementById('blogpost-date').textContent = formatFechaLarga(post.fecha)||'';
-  document.getElementById('blogpost-content').innerHTML = post.contenido||'';
+  // Sanitizado con DOMPurify: el contenido viene del admin como HTML libre (p, h2, img, etc.)
+  document.getElementById('blogpost-content').innerHTML = typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(post.contenido||'') : (post.contenido||'');
   if (new URLSearchParams(location.search).get('post') !== slug) {
     history.pushState(null, '', '?post=' + encodeURIComponent(slug));
   }
@@ -2774,7 +2510,7 @@ function runGlobalSearch(val) {
     return;
   }
   box.innerHTML = matches.map(([id, p]) => `
-    <div class="search-result-item" onclick="closeSearch();showDetalle('${escapeHtml(id)}')">
+    <div class="search-result-item" onclick="closeSearch();showDetalle('${escapeHtml(id)}')" role="button" tabindex="0">
       <img src="${escapeHtml(p.img||'')}" alt="${escapeHtml(p.title||'')}">
       <div>
         <div class="sr-title">${escapeHtml(p.title||'')}</div>
@@ -3006,19 +2742,33 @@ function porFechaSalida(a, b) {
   return fa < fb ? -1 : fa > fb ? 1 : 0;
 }
 
+// Reemplaza una grilla por las tarjetas reales, o por un mensaje si no hay datos
+// (ya sea porque todavía no se cargó nada desde el admin, o porque falló la conexión).
+function renderGridOrEmpty(grid, items, renderFn, emptyMsg) {
+  if (!grid) return;
+  grid.innerHTML = (items && items.length) ? items.map(renderFn).join('') : `<p class="grid-empty-msg">${escapeHtml(emptyMsg)}</p>`;
+}
+
 async function loadFromAdmin() {
   let stored = null;
-  try {
-    const { data, error } = await sb.from('site_data').select('value').eq('id','capri_data').maybeSingle();
-    if (!error && data && data.value && Object.keys(data.value).length) stored = data.value;
-  } catch(e) {}
-  // Datos de contacto / moneda — se cargan primero para que WA_NUMBER ya este actualizado
-  // antes de renderizar tarjetas (asistencia, etc.) que arman links de WhatsApp.
   let settings = {};
+  let loadError = false;
   try {
-    const { data, error } = await sb.from('site_data').select('value').eq('id','capri_settings').maybeSingle();
-    if (!error && data && data.value) settings = data.value;
-  } catch(e) {}
+    // Ambas consultas en paralelo — antes eran secuenciales (round-trip extra sin necesidad).
+    const [dataRes, settingsRes] = await Promise.all([
+      sb.from('site_data').select('value').eq('id','capri_data').maybeSingle(),
+      sb.from('site_data').select('value').eq('id','capri_settings').maybeSingle()
+    ]);
+    if (!dataRes.error && dataRes.data && dataRes.data.value && Object.keys(dataRes.data.value).length) stored = dataRes.data.value;
+    else if (dataRes.error) loadError = true;
+    if (!settingsRes.error && settingsRes.data && settingsRes.data.value) settings = settingsRes.data.value;
+    else if (settingsRes.error) loadError = true;
+  } catch(e) {
+    console.error('Capri Viajes: error cargando datos desde Supabase.', e);
+    loadError = true;
+  }
+  const errorBanner = document.getElementById('load-error-banner');
+  if (errorBanner) errorBanner.style.display = loadError ? 'block' : 'none';
   if (settings.currency && settings.currency !== currentCurrency) setCurrency(settings.currency);
   applyContactSettings(settings);
   blogPosts = (stored && stored.blog) || [];
@@ -3030,32 +2780,35 @@ async function loadFromAdmin() {
   if (stored && stored.servicios && stored.servicios.length) renderServiciosGrid(stored.servicios);
   if (stored && stored.quienes) renderQuienesInfo(stored.quienes);
   if (stored && stored.team && stored.team.length) renderTeamGrid(stored.team);
-  if (!stored) return;
-  // Merge admin data into paquetes object (used by showDetalle)
-  (stored.paquetes||[]).forEach(p => { paquetes[p.id] = adminPaqToDetalle(p, false); });
-  (stored.grupales||[]).forEach(g => { paquetes[g.id] = adminPaqToDetalle(g, true); });
-  (stored.miniturismo||[]).forEach(m => { paquetes[m.id] = adminPaqToDetalle(m, false); });
+
+  const emptyMsg = loadError
+    ? 'No pudimos cargar el catálogo en este momento. Probá recargar la página en unos minutos.'
+    : 'Muy pronto vamos a sumar nuevas propuestas acá.';
+
+  // Merge admin data into paquetes object (used por showDetalle)
+  (stored?.paquetes||[]).forEach(p => { paquetes[p.id] = adminPaqToDetalle(p, false); });
+  (stored?.grupales||[]).forEach(g => { paquetes[g.id] = adminPaqToDetalle(g, true); });
+  (stored?.miniturismo||[]).forEach(m => { paquetes[m.id] = adminPaqToDetalle(m, false); });
+
   // Render grids — ordenados cronologicamente por fecha de salida
-  const paqGrid = document.getElementById('paq-grid');
-  if (paqGrid && (stored.paquetes||[]).length) paqGrid.innerHTML = [...stored.paquetes].sort(porFechaSalida).map(renderPaqCard).join('');
-  const grupGrid = document.getElementById('grup-grid');
-  if (grupGrid && (stored.grupales||[]).length) grupGrid.innerHTML = [...stored.grupales].sort(porFechaSalida).map(renderGrupCard).join('');
-  const miniGrid = document.getElementById('mini-grid');
-  if (miniGrid) miniGrid.innerHTML = [...(stored.miniturismo||[])].sort(porFechaSalida).map(renderPaqCard).join('');
+  renderGridOrEmpty(document.getElementById('paq-grid'), [...(stored?.paquetes||[])].sort(porFechaSalida), renderPaqCard, emptyMsg);
+  renderGridOrEmpty(document.getElementById('grup-grid'), [...(stored?.grupales||[])].sort(porFechaSalida), renderGrupCard, emptyMsg);
+  renderGridOrEmpty(document.getElementById('mini-grid'), [...(stored?.miniturismo||[])].sort(porFechaSalida), renderPaqCard, emptyMsg);
+
   const destGrid = document.getElementById('destinos-grid');
   if (destGrid) {
     const cards = [
-      ...(stored.destinos||[]).map(d => ({ type:'destino', id:d.id, pais:d.pais, nombre:d.nombre, precio:d.precio, tag:d.tag, img:d.img, feat: d.feat==='si', orden: d.orden||0 })),
-      ...(stored.paquetes||[]).filter(p => p.destacado).map(p => ({ type:'paquete', id:p.id, pais:p.dest, nombre:p.titulo, precio:p.precio, tag:p.badge, img:p.img, moneda:p.moneda, feat: !!p.feat, orden: p.orden||0 })),
-      ...(stored.grupales||[]).filter(g => g.destacado).map(g => ({ type:'grupal', id:g.id, pais:joinDest(g.dest), nombre:g.titulo, precio:g.precio, tag:g.badge, img:g.img, moneda:g.moneda, feat: !!g.feat, orden: g.orden||0 })),
-      ...(stored.miniturismo||[]).filter(m => m.destacado).map(m => ({ type:'miniturismo', id:m.id, pais:m.dest, nombre:m.titulo, precio:m.precio, tag:m.badge, img:m.img, moneda:m.moneda, feat: !!m.feat, orden: m.orden||0 }))
+      ...(stored?.destinos||[]).map(d => ({ type:'destino', id:d.id, pais:d.pais, nombre:d.nombre, precio:d.precio, tag:d.tag, img:d.img, feat: d.feat==='si', orden: d.orden||0 })),
+      ...(stored?.paquetes||[]).filter(p => p.destacado).map(p => ({ type:'paquete', id:p.id, pais:p.dest, nombre:p.titulo, precio:p.precio, tag:p.badge, img:p.img, moneda:p.moneda, feat: !!p.feat, orden: p.orden||0 })),
+      ...(stored?.grupales||[]).filter(g => g.destacado).map(g => ({ type:'grupal', id:g.id, pais:joinDest(g.dest), nombre:g.titulo, precio:g.precio, tag:g.badge, img:g.img, moneda:g.moneda, feat: !!g.feat, orden: g.orden||0 })),
+      ...(stored?.miniturismo||[]).filter(m => m.destacado).map(m => ({ type:'miniturismo', id:m.id, pais:m.dest, nombre:m.titulo, precio:m.precio, tag:m.badge, img:m.img, moneda:m.moneda, feat: !!m.feat, orden: m.orden||0 }))
     ];
     cards.sort((a, b) => a.orden - b.orden);
     if (cards.length) {
       destGrid.innerHTML = cards.map(c => {
         const mon = (c.moneda||'USD') === 'ARS' ? '$ ' : 'USD ';
         const click = c.type === 'destino' ? "showPage('paquetes')" : `showDetalle('${escapeHtml(c.id)}')`;
-        return `<div class="d-card${c.feat?' feat':''}" onclick="${click}" style="cursor:pointer">
+        return `<div class="d-card${c.feat?' feat':''}" onclick="${click}" style="cursor:pointer" role="button" tabindex="0">
           <img src="${escapeHtml(c.img||'')}" alt="${escapeHtml(c.nombre||'')}" loading="lazy">
           <div class="d-overlay">
             <p class="d-country">${escapeHtml(c.pais||'')}</p>
@@ -3065,11 +2818,11 @@ async function loadFromAdmin() {
           ${c.tag ? `<span class="d-tag">${escapeHtml(c.tag)}</span>` : ''}
         </div>`;
       }).join('');
+    } else {
+      destGrid.innerHTML = `<p class="grid-empty-msg">${escapeHtml(emptyMsg)}</p>`;
     }
   }
-  const testGrid = document.getElementById('test-grid');
-  if (testGrid && (stored.testimonios||[]).length) {
-    testGrid.innerHTML = stored.testimonios.map(t => `
+  renderGridOrEmpty(document.getElementById('test-grid'), stored?.testimonios||[], t => `
       <div class="test-card">
         <div class="estrellas">${'★'.repeat(Math.min(5,t.estrellas||5))}</div>
         <p>${nl2br(t.texto||'')}</p>
@@ -3078,8 +2831,7 @@ async function loadFromAdmin() {
           <div><div class="test-nombre">${escapeHtml(t.nombre||'')}</div>
           <div class="test-viaje">${escapeHtml(t.viaje||'')}</div></div>
         </div>
-      </div>`).join('');
-  }
+      </div>`, loadError ? emptyMsg : 'Todavía no hay testimonios cargados.');
   setTimeout(initCardPrices, 50);
 }
 
