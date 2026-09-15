@@ -1283,38 +1283,16 @@ async function loadCloudSettings() {
   if (!error && data && data.value && Object.keys(data.value).length) SETTINGS = data.value;
 }
 
+// DATA arranca vacío y se reemplaza con el contenido real apenas responde loadCloudData().
+// Antes tenía paquetes/grupales/testimonios/destinos/equipo de ejemplo hardcodeados (Roma, Caribe,
+// Japón...) que quedaban visibles unos instantes en cada carga y, si fallaba la conexión, se
+// arriesgaban a guardarse por encima de los datos reales (ver dataLoadOk en loadCloudData/saveData).
 let DATA = {
-  paquetes: [
-    {id:'roma',titulo:'Roma Clásica & Toscana',dest:'Italia',cat:'internacional europa',dur:'7 noches',precio:1490,estrellas:'4★',descCorta:'Vaticano, Coliseo y los viñedos de la campiña italiana en un itinerario diseñado para disfrutar cada momento.',descFull:'Italia es uno de esos destinos que te deja sin palabras. Hotel 4 estrellas en el centro de Roma, desayuno incluido y guía en español.',img:'https://images.unsplash.com/photo-1503917988258-f87a78e3c995?w=600&q=80',badge:'Europa',vuelo:'si',incSi:['Vuelo de ida y vuelta','Hotel 4 estrellas (7 noches)','Desayuno diario','Traslados aeropuerto','Seguro de viaje internacional','Guía en español'],incNo:['Almuerzo y cena','Bebidas','Gastos personales'],resumen:['Roma|5 noches · Hotel Colosseo 4★','Toscana|2 noches · Agriturismo']},
-    {id:'caribe',titulo:'Caribe Todo Incluido',dest:'México · Rep. Dominicana',cat:'internacional caribe',dur:'5 noches',precio:890,estrellas:'5★',descCorta:'Sol y playa en Punta Cana o Cancún. Resorts de primer nivel con comidas, bebidas y actividades incluidas.',descFull:'Sol, playa y todo incluido desde que llegás. Resorts 5 estrellas frente al mar.',img:'https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=600&q=80',badge:'Oferta',vuelo:'si',incSi:['Vuelo de ida y vuelta','5 noches en resort 5★','Todo incluido','Traslados aeropuerto','Seguro de viaje'],incNo:['Excursiones opcionales','Bebidas premium','Gastos personales'],resumen:['Punta Cana / Cancún|5 noches · Resort Todo incluido 5★']},
-    {id:'japon',titulo:'Maravillas de Japón',dest:'Japón',cat:'internacional asia',dur:'12 noches',precio:2890,estrellas:'5★',descCorta:'Tokio, Kioto y Osaka. Un recorrido por los templos, mercados y la gastronomía del país del sol naciente.',descFull:'Japón es uno de los destinos más fascinantes del mundo. Incluye JR Pass.',img:'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80',badge:'Asia',vuelo:'si',incSi:['Vuelo de ida y vuelta','12 noches en hoteles 4★ y 5★','Desayuno diario','JR Pass 14 días','Guía en español'],incNo:['Almuerzo y cena','Gastos personales'],resumen:['Tokio|5 noches · Hotel Shinjuku 4★','Kioto|4 noches · Ryokan tradicional','Osaka|3 noches · Hotel Namba 4★']},
-    {id:'santorini',titulo:'Santorini & Mykonos',dest:'Grecia',cat:'internacional europa',dur:'8 noches',precio:2190,estrellas:'5★',descCorta:'Las islas más románticas de Grecia. Cúpulas azules, atardeceres únicos y gastronomía mediterránea.',descFull:'Santorini y Mykonos son las joyas del Mar Egeo.',img:'https://images.unsplash.com/photo-1533105079780-92b9be482077?w=600&q=80',badge:'Romántico',vuelo:'si',incSi:['Vuelo internacional','Ferry Santorini-Mykonos','8 noches hoteles 4★ y 5★','Desayuno diario','Seguro de viaje'],incNo:['Almuerzo y cena','Excursiones en barco'],resumen:['Santorini|5 noches · Suite con vista al volcán 5★','Mykonos|3 noches · Hotel boutique 4★']},
-    {id:'peru',titulo:'Perú Mágico',dest:'Perú',cat:'internacional latam',dur:'6 noches',precio:1050,estrellas:'4★',descCorta:'Machu Picchu, Cusco y el Valle Sagrado. Una de las experiencias más impactantes de América del Sur.',descFull:'Machu Picchu es uno de los lugares más impresionantes del planeta.',img:'https://images.unsplash.com/photo-1531761535209-83234b757d8c?w=600&q=80',badge:'Latam',vuelo:'si',incSi:['Vuelo de ida y vuelta','6 noches en hoteles 4★','Tren Inca','Entrada a Machu Picchu','Guía en español'],incNo:['Almuerzo y cena','Vuelo doméstico Lima-Cusco'],resumen:['Cusco|3 noches · Hotel 4★ centro','Machu Picchu|1 noche · Lodge','Valle Sagrado|2 noches · Hacienda 4★']},
-    {id:'bariloche',titulo:'Bariloche & Patagonia',dest:'Argentina · Río Negro',cat:'nacional',dur:'5 noches',precio:620,estrellas:'4★',descCorta:'Lagos, montañas y chocolate artesanal. El destino más icónico de Argentina.',descFull:'Bariloche es el destino patagónico por excelencia.',img:'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=600&q=80',badge:'Nacional',vuelo:'si',incSi:['Vuelo de ida y vuelta','5 noches en hotel 4★','Desayuno diario','Traslados aeropuerto','Seguro de viaje'],incNo:['Almuerzo y cena','Ski','Excursiones opcionales'],resumen:['Bariloche|5 noches · Hotel Lagos del Sur 4★']}
-  ],
-  grupales: [
-    {id:'espana',titulo:'Madrid, Barcelona & Sevilla',dest:'España',fecha:'15 de agosto 2025',dur:'14 noches',precio:2490,cupos:'18/20 cupos',desc:'Un recorrido grupal por las tres ciudades más vibrantes de España con guía en español.',img:'https://images.unsplash.com/photo-1563492065599-3520f775eeed?w=600&q=80',inc:['Vuelo de ida y vuelta','14 noches en hoteles 4★','Desayuno diario','Guía en español todo el viaje','Seguro de viaje']},
-    {id:'caribe-g',titulo:'Caribe Grupal Todo Incluido',dest:'República Dominicana',fecha:'12 de septiembre 2025',dur:'7 noches',precio:1190,cupos:'12/20 cupos',desc:'Punta Cana en modo grupal: diversión, playa y la mejor compañía en un resort de primer nivel.',img:'https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=600&q=80',inc:['Vuelo de ida y vuelta','Todo incluido','Guía en español','Seguro de viaje']},
-    {id:'patagonia-g',titulo:'Patagonia Argentina & Chilena',dest:'Argentina · Chile',fecha:'3 de octubre 2025',dur:'8 noches',precio:1850,cupos:'8/20 cupos',desc:'Glaciar Perito Moreno, Torres del Paine y El Calafate. La aventura más impresionante del sur.',img:'https://images.unsplash.com/photo-1498307833015-e7b400441eb8?w=600&q=80',inc:['Vuelo de ida y vuelta','8 noches en hoteles y lodges','Excursión Glaciar Perito Moreno','Entrada Torres del Paine','Guía en español','Seguro de viaje']}
-  ],
-  testimonios: [
-    {id:'t1',nombre:'Valentina R.',viaje:'Luna de miel en Santorini',texto:'Organicé mi luna de miel con Capri Viajes y fue perfecto. Cada detalle estaba cuidado: hoteles, excursiones y hasta nos dieron un upgrade inesperado.',estrellas:5,foto:'https://i.pravatar.cc/80?img=47'},
-    {id:'t2',nombre:'Martín G.',viaje:'Viaje familiar a Japón',texto:'Llevé a mi familia a Japón y gracias a Capri no tuvimos que preocuparnos por nada. Los chicos quedaron fascinados con Tokio.',estrellas:5,foto:'https://i.pravatar.cc/80?img=12'},
-    {id:'t3',nombre:'Laura M.',viaje:'Escape a París',texto:'La atención es increíble. Me ayudaron a cambiar las fechas sin costo cuando tuve un problema de trabajo. Esa flexibilidad vale oro.',estrellas:5,foto:'https://i.pravatar.cc/80?img=32'}
-  ],
-  destinos: [
-    {id:'d1',pais:'Grecia',nombre:'Santorini',precio:1890,tag:'Más buscado',img:'https://images.unsplash.com/photo-1533105079780-92b9be482077?w=800&q=80',feat:'si'},
-    {id:'d2',pais:'Japón',nombre:'Tokio',precio:2350,tag:'',img:'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80',feat:'no'},
-    {id:'d3',pais:'Francia',nombre:'París',precio:1650,tag:'Oferta',img:'https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=600&q=80',feat:'no'},
-    {id:'d4',pais:'México',nombre:'Cancún',precio:980,tag:'',img:'https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=600&q=80',feat:'no'},
-    {id:'d5',pais:'Perú',nombre:'Machu Picchu',precio:750,tag:'',img:'https://images.unsplash.com/photo-1531761535209-83234b757d8c?w=600&q=80',feat:'no'}
-  ],
-  team: [
-    {nombre:'Carolina Martínez',rol:'Directora & Fundadora',foto:'https://i.pravatar.cc/400?img=5'},
-    {nombre:'Sebastián López',rol:'Consultor de viajes',foto:'https://i.pravatar.cc/400?img=15'},
-    {nombre:'Lucía Fernández',rol:'Especialista Europa & Asia',foto:'https://i.pravatar.cc/400?img=44'},
-    {nombre:'Tomás Quiroga',rol:'Atención al viajero',foto:'https://i.pravatar.cc/400?img=25'}
-  ],
+  paquetes: [],
+  grupales: [],
+  testimonios: [],
+  destinos: [],
+  team: [],
   blog: [],
   asistencias: [],
   quince: [],
