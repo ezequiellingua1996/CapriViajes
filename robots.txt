@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin.html
 Disallow: /admin
 
-Sitemap: https://ezequiellingua1996.github.io/CapriViajes/sitemap.xml
+Sitemap: https://capriviajes.com.ar/sitemap.xml

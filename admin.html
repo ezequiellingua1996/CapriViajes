@@ -286,6 +286,13 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
 
     <!-- Main -->
     <main class="admin-main">
+      <!-- Banner de error de carga — oculto por default. Se muestra si falla la carga inicial desde
+           Supabase, para evitar que se guarde por encima de los datos reales el contenido de ejemplo
+           con el que arranca DATA (ver loadCloudData/saveData). -->
+      <div id="data-load-error-banner" role="alert" style="display:none;background:#B91C1C;color:#fff;padding:0.75rem 1.25rem;font-size:0.85rem;display:none;align-items:center;justify-content:space-between;gap:1rem">
+        <span>⚠️ No se pudo cargar el catálogo actual desde la nube. Por seguridad, <strong>guardar está deshabilitado</strong> hasta reintentar — así no se sobrescriben tus datos reales con contenido de ejemplo.</span>
+        <button class="btn btn-sm" style="background:white;color:#B91C1C;white-space:nowrap" onclick="location.reload()">Reintentar</button>
+      </div>
       <div class="admin-topbar">
         <div class="topbar-title" id="topbar-title">Dashboard</div>
         <div class="topbar-right">
@@ -478,6 +485,10 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
           <div class="card" style="margin-top:1.5rem">
             <div class="card-header"><h3>Paquetes con más clicks a WhatsApp</h3></div>
             <div class="card-body"><div class="item-list" id="stats-top-wa">Cargando...</div></div>
+          </div>
+          <div class="card" style="margin-top:1.5rem">
+            <div class="card-header"><h3>Conversión por paquete (vistas → consultas por WhatsApp)</h3></div>
+            <div class="card-body"><div class="item-list" id="stats-conversion">Cargando...</div></div>
           </div>
         </div>
 
@@ -1156,7 +1167,7 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.js"></script>
 <script src="supabase-config.js"></script>
 <script>
 // ===== AUTH =====
@@ -1182,7 +1193,9 @@ async function doLogin() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('admin-screen').style.display = 'block';
   document.getElementById('s-user-current').value = data.user.email;
-  await Promise.all([loadCloudData(), loadCloudSettings()]);
+  const [dataOk] = await Promise.all([loadCloudData(), loadCloudSettings()]);
+  const banner = document.getElementById('data-load-error-banner');
+  if (banner) banner.style.display = dataOk ? 'none' : 'flex';
   renderAll();
 }
 
@@ -1227,9 +1240,15 @@ let SETTINGS = {
   legajo: '20607'
 };
 
+// dataLoadOk queda en false si falló la carga inicial — saveData() lo chequea para no
+// sobrescribir el catálogo real en Supabase con el contenido de ejemplo con el que arranca DATA.
+let dataLoadOk = true;
 async function loadCloudData() {
-  const { data, error } = await sb.from('site_data').select('value').eq('id','capri_data').maybeSingle();
-  if (error) { showToast('No se pudo cargar desde la nube: ' + error.message, 'error'); return; }
+  let data, error;
+  try {
+    ({ data, error } = await sb.from('site_data').select('value').eq('id','capri_data').maybeSingle());
+  } catch (e) { error = e; }
+  if (error) { showToast('No se pudo cargar desde la nube: ' + error.message, 'error'); dataLoadOk = false; return false; }
   if (data && data.value && Object.keys(data.value).length) DATA = data.value;
   if (!DATA.blog) DATA.blog = [];
   if (!DATA.asistencias) DATA.asistencias = [];
@@ -1255,6 +1274,8 @@ async function loadCloudData() {
       {v:'4.9★', l:'Calificación promedio'}
     ]
   };
+  dataLoadOk = true;
+  return true;
 }
 
 async function loadCloudSettings() {
@@ -1262,38 +1283,16 @@ async function loadCloudSettings() {
   if (!error && data && data.value && Object.keys(data.value).length) SETTINGS = data.value;
 }
 
+// DATA arranca vacío y se reemplaza con el contenido real apenas responde loadCloudData().
+// Antes tenía paquetes/grupales/testimonios/destinos/equipo de ejemplo hardcodeados (Roma, Caribe,
+// Japón...) que quedaban visibles unos instantes en cada carga y, si fallaba la conexión, se
+// arriesgaban a guardarse por encima de los datos reales (ver dataLoadOk en loadCloudData/saveData).
 let DATA = {
-  paquetes: [
-    {id:'roma',titulo:'Roma Clásica & Toscana',dest:'Italia',cat:'internacional europa',dur:'7 noches',precio:1490,estrellas:'4★',descCorta:'Vaticano, Coliseo y los viñedos de la campiña italiana en un itinerario diseñado para disfrutar cada momento.',descFull:'Italia es uno de esos destinos que te deja sin palabras. Hotel 4 estrellas en el centro de Roma, desayuno incluido y guía en español.',img:'https://images.unsplash.com/photo-1503917988258-f87a78e3c995?w=600&q=80',badge:'Europa',vuelo:'si',incSi:['Vuelo de ida y vuelta','Hotel 4 estrellas (7 noches)','Desayuno diario','Traslados aeropuerto','Seguro de viaje internacional','Guía en español'],incNo:['Almuerzo y cena','Bebidas','Gastos personales'],resumen:['Roma|5 noches · Hotel Colosseo 4★','Toscana|2 noches · Agriturismo']},
-    {id:'caribe',titulo:'Caribe Todo Incluido',dest:'México · Rep. Dominicana',cat:'internacional caribe',dur:'5 noches',precio:890,estrellas:'5★',descCorta:'Sol y playa en Punta Cana o Cancún. Resorts de primer nivel con comidas, bebidas y actividades incluidas.',descFull:'Sol, playa y todo incluido desde que llegás. Resorts 5 estrellas frente al mar.',img:'https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=600&q=80',badge:'Oferta',vuelo:'si',incSi:['Vuelo de ida y vuelta','5 noches en resort 5★','Todo incluido','Traslados aeropuerto','Seguro de viaje'],incNo:['Excursiones opcionales','Bebidas premium','Gastos personales'],resumen:['Punta Cana / Cancún|5 noches · Resort Todo incluido 5★']},
-    {id:'japon',titulo:'Maravillas de Japón',dest:'Japón',cat:'internacional asia',dur:'12 noches',precio:2890,estrellas:'5★',descCorta:'Tokio, Kioto y Osaka. Un recorrido por los templos, mercados y la gastronomía del país del sol naciente.',descFull:'Japón es uno de los destinos más fascinantes del mundo. Incluye JR Pass.',img:'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80',badge:'Asia',vuelo:'si',incSi:['Vuelo de ida y vuelta','12 noches en hoteles 4★ y 5★','Desayuno diario','JR Pass 14 días','Guía en español'],incNo:['Almuerzo y cena','Gastos personales'],resumen:['Tokio|5 noches · Hotel Shinjuku 4★','Kioto|4 noches · Ryokan tradicional','Osaka|3 noches · Hotel Namba 4★']},
-    {id:'santorini',titulo:'Santorini & Mykonos',dest:'Grecia',cat:'internacional europa',dur:'8 noches',precio:2190,estrellas:'5★',descCorta:'Las islas más románticas de Grecia. Cúpulas azules, atardeceres únicos y gastronomía mediterránea.',descFull:'Santorini y Mykonos son las joyas del Mar Egeo.',img:'https://images.unsplash.com/photo-1533105079780-92b9be482077?w=600&q=80',badge:'Romántico',vuelo:'si',incSi:['Vuelo internacional','Ferry Santorini-Mykonos','8 noches hoteles 4★ y 5★','Desayuno diario','Seguro de viaje'],incNo:['Almuerzo y cena','Excursiones en barco'],resumen:['Santorini|5 noches · Suite con vista al volcán 5★','Mykonos|3 noches · Hotel boutique 4★']},
-    {id:'peru',titulo:'Perú Mágico',dest:'Perú',cat:'internacional latam',dur:'6 noches',precio:1050,estrellas:'4★',descCorta:'Machu Picchu, Cusco y el Valle Sagrado. Una de las experiencias más impactantes de América del Sur.',descFull:'Machu Picchu es uno de los lugares más impresionantes del planeta.',img:'https://images.unsplash.com/photo-1531761535209-83234b757d8c?w=600&q=80',badge:'Latam',vuelo:'si',incSi:['Vuelo de ida y vuelta','6 noches en hoteles 4★','Tren Inca','Entrada a Machu Picchu','Guía en español'],incNo:['Almuerzo y cena','Vuelo doméstico Lima-Cusco'],resumen:['Cusco|3 noches · Hotel 4★ centro','Machu Picchu|1 noche · Lodge','Valle Sagrado|2 noches · Hacienda 4★']},
-    {id:'bariloche',titulo:'Bariloche & Patagonia',dest:'Argentina · Río Negro',cat:'nacional',dur:'5 noches',precio:620,estrellas:'4★',descCorta:'Lagos, montañas y chocolate artesanal. El destino más icónico de Argentina.',descFull:'Bariloche es el destino patagónico por excelencia.',img:'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=600&q=80',badge:'Nacional',vuelo:'si',incSi:['Vuelo de ida y vuelta','5 noches en hotel 4★','Desayuno diario','Traslados aeropuerto','Seguro de viaje'],incNo:['Almuerzo y cena','Ski','Excursiones opcionales'],resumen:['Bariloche|5 noches · Hotel Lagos del Sur 4★']}
-  ],
-  grupales: [
-    {id:'espana',titulo:'Madrid, Barcelona & Sevilla',dest:'España',fecha:'15 de agosto 2025',dur:'14 noches',precio:2490,cupos:'18/20 cupos',desc:'Un recorrido grupal por las tres ciudades más vibrantes de España con guía en español.',img:'https://images.unsplash.com/photo-1563492065599-3520f775eeed?w=600&q=80',inc:['Vuelo de ida y vuelta','14 noches en hoteles 4★','Desayuno diario','Guía en español todo el viaje','Seguro de viaje']},
-    {id:'caribe-g',titulo:'Caribe Grupal Todo Incluido',dest:'República Dominicana',fecha:'12 de septiembre 2025',dur:'7 noches',precio:1190,cupos:'12/20 cupos',desc:'Punta Cana en modo grupal: diversión, playa y la mejor compañía en un resort de primer nivel.',img:'https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=600&q=80',inc:['Vuelo de ida y vuelta','Todo incluido','Guía en español','Seguro de viaje']},
-    {id:'patagonia-g',titulo:'Patagonia Argentina & Chilena',dest:'Argentina · Chile',fecha:'3 de octubre 2025',dur:'8 noches',precio:1850,cupos:'8/20 cupos',desc:'Glaciar Perito Moreno, Torres del Paine y El Calafate. La aventura más impresionante del sur.',img:'https://images.unsplash.com/photo-1498307833015-e7b400441eb8?w=600&q=80',inc:['Vuelo de ida y vuelta','8 noches en hoteles y lodges','Excursión Glaciar Perito Moreno','Entrada Torres del Paine','Guía en español','Seguro de viaje']}
-  ],
-  testimonios: [
-    {id:'t1',nombre:'Valentina R.',viaje:'Luna de miel en Santorini',texto:'Organicé mi luna de miel con Capri Viajes y fue perfecto. Cada detalle estaba cuidado: hoteles, excursiones y hasta nos dieron un upgrade inesperado.',estrellas:5,foto:'https://i.pravatar.cc/80?img=47'},
-    {id:'t2',nombre:'Martín G.',viaje:'Viaje familiar a Japón',texto:'Llevé a mi familia a Japón y gracias a Capri no tuvimos que preocuparnos por nada. Los chicos quedaron fascinados con Tokio.',estrellas:5,foto:'https://i.pravatar.cc/80?img=12'},
-    {id:'t3',nombre:'Laura M.',viaje:'Escape a París',texto:'La atención es increíble. Me ayudaron a cambiar las fechas sin costo cuando tuve un problema de trabajo. Esa flexibilidad vale oro.',estrellas:5,foto:'https://i.pravatar.cc/80?img=32'}
-  ],
-  destinos: [
-    {id:'d1',pais:'Grecia',nombre:'Santorini',precio:1890,tag:'Más buscado',img:'https://images.unsplash.com/photo-1533105079780-92b9be482077?w=800&q=80',feat:'si'},
-    {id:'d2',pais:'Japón',nombre:'Tokio',precio:2350,tag:'',img:'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80',feat:'no'},
-    {id:'d3',pais:'Francia',nombre:'París',precio:1650,tag:'Oferta',img:'https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=600&q=80',feat:'no'},
-    {id:'d4',pais:'México',nombre:'Cancún',precio:980,tag:'',img:'https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=600&q=80',feat:'no'},
-    {id:'d5',pais:'Perú',nombre:'Machu Picchu',precio:750,tag:'',img:'https://images.unsplash.com/photo-1531761535209-83234b757d8c?w=600&q=80',feat:'no'}
-  ],
-  team: [
-    {nombre:'Carolina Martínez',rol:'Directora & Fundadora',foto:'https://i.pravatar.cc/400?img=5'},
-    {nombre:'Sebastián López',rol:'Consultor de viajes',foto:'https://i.pravatar.cc/400?img=15'},
-    {nombre:'Lucía Fernández',rol:'Especialista Europa & Asia',foto:'https://i.pravatar.cc/400?img=44'},
-    {nombre:'Tomás Quiroga',rol:'Atención al viajero',foto:'https://i.pravatar.cc/400?img=25'}
-  ],
+  paquetes: [],
+  grupales: [],
+  testimonios: [],
+  destinos: [],
+  team: [],
   blog: [],
   asistencias: [],
   quince: [],
@@ -1321,6 +1320,10 @@ let DATA = {
 };
 
 function saveData() {
+  if (!dataLoadOk) {
+    showToast('No se puede guardar: no se cargó el catálogo real desde la nube. Recargá la página e intentá de nuevo.', 'error');
+    return;
+  }
   sb.from('site_data').upsert({ id:'capri_data', value: DATA, updated_at: new Date().toISOString() }).then(({error}) => {
     if (error) showToast('Error guardando en la nube: ' + error.message, 'error');
   });
@@ -1758,251 +1761,163 @@ function getFechasExtra(listId) {
   }).filter(f => f.fecha);
 }
 
-function openNewPaq() {
-  document.getElementById('paq-edit-id').value = '';
-  document.getElementById('modal-paq-title').textContent = 'Nuevo paquete';
-  ['paq-titulo','paq-dest','paq-dur','paq-precio','paq-img','paq-badge','paq-desc-corta','paq-desc-full','paq-fecha-salida','paq-fecha-regreso','paq-operador','paq-orden'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-  document.getElementById('paq-img-preview').removeAttribute('src');
-  document.getElementById('paq-cat').value = 'internacional';
-  document.getElementById('paq-moneda').value = 'USD';
-  document.getElementById('paq-vuelo').value = 'si';
-  document.getElementById('paq-hotel').value = 'si';
-  document.getElementById('paq-traslado').value = 'si';
-  document.getElementById('paq-lugar-salida').value = 'Rosario (ROS)';
-  document.getElementById('paq-destacado').checked = false;
-  document.getElementById('paq-feat').checked = false;
-  document.getElementById('vuelos-list').innerHTML = '';
-  document.getElementById('itinerario-list').innerHTML = '';
-  document.getElementById('hoteles-list').innerHTML = '';
-  document.getElementById('pagos-list').innerHTML = '';
-  document.getElementById('paq-fechas-list').innerHTML = '';
-  setIncLines('inc-si-list',[]);
-  setIncLines('inc-no-list',[]);
-  setIncLines('excursiones-list',[]);
-  setIncLines('resumen-list',[]);
-  openModal('modal-paq');
-}
+// ===== PAQUETES / MINITURISMO CRUD =====
+// Paquetes y Miniturismo comparten exactamente los mismos campos (ver README) — antes cada uno
+// tenía su propio openNew/edit/save duplicado a mano; ahora ambos usan las funciones genéricas
+// de abajo parametrizadas por "kind", así un campo nuevo se agrega en un solo lugar.
+const PAQ_LIKE = {
+  paq: {
+    prefix: 'paq', dataKey: 'paquetes', hasCat: true, catDefault: 'internacional', label: 'Paquete',
+    lists: { vuelos:'vuelos-list', itinerario:'itinerario-list', hoteles:'hoteles-list', pagos:'pagos-list', fechas:'paq-fechas-list', incSi:'inc-si-list', incNo:'inc-no-list', excursiones:'excursiones-list', resumen:'resumen-list' }
+  },
+  mini: {
+    prefix: 'mini', dataKey: 'miniturismo', hasCat: false, catFixed: 'nacional', label: 'Miniturismo',
+    lists: { vuelos:'mini-vuelos-list', itinerario:'mini-itinerario-list', hoteles:'mini-hoteles-list', pagos:'mini-pagos-list', fechas:'mini-fechas-list', incSi:'mini-inc-si-list', incNo:'mini-inc-no-list', excursiones:'mini-excursiones-list', resumen:'mini-resumen-list' }
+  }
+};
+// El elemento con id "<prefix>-<sufijo>" (los ids de Paquetes ya venían así para los campos simples)
+function pl(kind, suffix) { return PAQ_LIKE[kind].prefix + '-' + suffix; }
 
-function editPaq(i) {
-  const p = DATA.paquetes[i];
-  document.getElementById('paq-edit-id').value = i;
-  document.getElementById('modal-paq-title').textContent = 'Editar paquete';
-  document.getElementById('paq-titulo').value = p.titulo||'';
-  document.getElementById('paq-dest').value = p.dest||'';
-  document.getElementById('paq-cat').value = (p.cat||'internacional').split(' ')[0];
-  document.getElementById('paq-dur').value = p.dur||'';
-  document.getElementById('paq-precio').value = p.precio||'';
-  document.getElementById('paq-moneda').value = p.moneda||'USD';
-  document.getElementById('paq-desc-corta').value = p.descCorta||'';
-  document.getElementById('paq-desc-full').value = p.descFull||'';
-  document.getElementById('paq-img').value = p.img||'';
-  document.getElementById('paq-img-preview').src = p.img||'';
-  document.getElementById('paq-badge').value = p.badge||'';
-  document.getElementById('paq-operador').value = p.operador||'';
-  document.getElementById('paq-vuelo').value = p.vuelo||'si';
-  document.getElementById('paq-hotel').value = p.hotelIncluido || ((p.hoteles||[]).length ? 'si' : 'no');
-  document.getElementById('paq-traslado').value = p.traslado ? 'si' : 'no';
-  document.getElementById('paq-destacado').checked = !!p.destacado;
-  document.getElementById('paq-feat').checked = !!p.feat;
-  document.getElementById('paq-orden').value = p.orden||'';
-  document.getElementById('paq-fecha-salida').value = p.fechaSalida||'';
-  document.getElementById('paq-fecha-regreso').value = p.fechaRegreso||'';
-  document.getElementById('paq-lugar-salida').value = p.lugarSalida||'Rosario (ROS)';
-  // Vuelos
-  document.getElementById('vuelos-list').innerHTML = '';
-  document.getElementById('itinerario-list').innerHTML = '';
-  (p.vuelos||[]).forEach(v => addVueloRow(v));
+function openNewPaqLike(kind) {
+  const cfg = PAQ_LIKE[kind];
+  document.getElementById(pl(kind,'edit-id')).value = '';
+  document.getElementById('modal-'+cfg.prefix+'-title').textContent = 'Nuevo ' + cfg.label.toLowerCase();
+  ['titulo','dest','dur','precio','img','badge','desc-corta','desc-full','fecha-salida','fecha-regreso','operador','orden'].forEach(suf => {
+    const el = document.getElementById(pl(kind,suf)); if (el) el.value = '';
+  });
+  document.getElementById(pl(kind,'img-preview')).removeAttribute('src');
+  if (cfg.hasCat) document.getElementById(pl(kind,'cat')).value = cfg.catDefault;
+  document.getElementById(pl(kind,'moneda')).value = 'USD';
+  document.getElementById(pl(kind,'vuelo')).value = 'si';
+  document.getElementById(pl(kind,'hotel')).value = 'si';
+  document.getElementById(pl(kind,'traslado')).value = 'si';
+  document.getElementById(pl(kind,'lugar-salida')).value = 'Rosario (ROS)';
+  document.getElementById(pl(kind,'destacado')).checked = false;
+  document.getElementById(pl(kind,'feat')).checked = false;
+  document.getElementById(cfg.lists.vuelos).innerHTML = '';
+  document.getElementById(cfg.lists.itinerario).innerHTML = '';
+  document.getElementById(cfg.lists.hoteles).innerHTML = '';
+  document.getElementById(cfg.lists.pagos).innerHTML = '';
+  document.getElementById(cfg.lists.fechas).innerHTML = '';
+  setIncLines(cfg.lists.incSi,[]);
+  setIncLines(cfg.lists.incNo,[]);
+  setIncLines(cfg.lists.excursiones,[]);
+  setIncLines(cfg.lists.resumen,[]);
+  openModal('modal-'+cfg.prefix);
+}
+function openNewPaq() { openNewPaqLike('paq'); }
+function openNewMini() { openNewPaqLike('mini'); }
+
+function editPaqLike(kind, i) {
+  const cfg = PAQ_LIKE[kind];
+  const p = DATA[cfg.dataKey][i];
+  document.getElementById(pl(kind,'edit-id')).value = i;
+  document.getElementById('modal-'+cfg.prefix+'-title').textContent = 'Editar ' + cfg.label.toLowerCase();
+  document.getElementById(pl(kind,'titulo')).value = p.titulo||'';
+  document.getElementById(pl(kind,'dest')).value = p.dest||'';
+  if (cfg.hasCat) document.getElementById(pl(kind,'cat')).value = (p.cat||'internacional').split(' ')[0];
+  document.getElementById(pl(kind,'dur')).value = p.dur||'';
+  document.getElementById(pl(kind,'precio')).value = p.precio||'';
+  document.getElementById(pl(kind,'moneda')).value = p.moneda||'USD';
+  document.getElementById(pl(kind,'desc-corta')).value = p.descCorta||'';
+  document.getElementById(pl(kind,'desc-full')).value = p.descFull||'';
+  document.getElementById(pl(kind,'img')).value = p.img||'';
+  document.getElementById(pl(kind,'img-preview')).src = p.img||'';
+  document.getElementById(pl(kind,'badge')).value = p.badge||'';
+  document.getElementById(pl(kind,'operador')).value = p.operador||'';
+  document.getElementById(pl(kind,'vuelo')).value = p.vuelo||'si';
+  document.getElementById(pl(kind,'hotel')).value = p.hotelIncluido || ((p.hoteles||[]).length ? 'si' : 'no');
+  document.getElementById(pl(kind,'traslado')).value = p.traslado ? 'si' : 'no';
+  document.getElementById(pl(kind,'destacado')).checked = !!p.destacado;
+  document.getElementById(pl(kind,'feat')).checked = !!p.feat;
+  document.getElementById(pl(kind,'orden')).value = p.orden||'';
+  document.getElementById(pl(kind,'fecha-salida')).value = p.fechaSalida||'';
+  document.getElementById(pl(kind,'fecha-regreso')).value = p.fechaRegreso||'';
+  document.getElementById(pl(kind,'lugar-salida')).value = p.lugarSalida||'Rosario (ROS)';
+  document.getElementById(cfg.lists.vuelos).innerHTML = '';
+  document.getElementById(cfg.lists.itinerario).innerHTML = '';
+  (p.vuelos||[]).forEach(v => addVueloRow(v, cfg.lists.vuelos));
   // Resumen por ciudad (debe cargarse antes que Hoteles para que el desplegable de ciudad tenga las opciones)
-  setIncLines('resumen-list', p.resumen||[]);
-  // Hoteles
-  document.getElementById('hoteles-list').innerHTML = '';
-  (p.hoteles||[]).forEach(h => addHotelRow(h));
-  // Pagos
-  document.getElementById('pagos-list').innerHTML = '';
-  (p.pagos||[]).forEach(pg => addPagoLine(pg.label + ' · ' + pg.monto));
+  setIncLines(cfg.lists.resumen, p.resumen||[]);
+  document.getElementById(cfg.lists.hoteles).innerHTML = '';
+  (p.hoteles||[]).forEach(h => addHotelRow(h, cfg.lists.hoteles, cfg.lists.resumen));
+  document.getElementById(cfg.lists.pagos).innerHTML = '';
+  (p.pagos||[]).forEach(pg => addPagoLine(pg.label + ' · ' + pg.monto, cfg.lists.pagos));
   // Otras fechas de salida (la primera fecha ya está en los campos principales)
-  document.getElementById('paq-fechas-list').innerHTML = '';
-  (p.fechas||[]).slice(1).forEach(f => addFechaRow(f, 'paq-fechas-list'));
-  // Includes
-  // Itinerario
-  document.getElementById('itinerario-list').innerHTML = '';
-  (p.itinerario||[]).forEach(d => addItinRow('itinerario-list', d));
-  setIncLines('inc-si-list', p.incSi||[]);
-  setIncLines('inc-no-list', p.incNo||[]);
-  setIncLines('excursiones-list', p.excursiones||[]);
-  openModal('modal-paq');
+  document.getElementById(cfg.lists.fechas).innerHTML = '';
+  (p.fechas||[]).slice(1).forEach(f => addFechaRow(f, cfg.lists.fechas));
+  document.getElementById(cfg.lists.itinerario).innerHTML = '';
+  (p.itinerario||[]).forEach(d => addItinRow(cfg.lists.itinerario, d));
+  setIncLines(cfg.lists.incSi, p.incSi||[]);
+  setIncLines(cfg.lists.incNo, p.incNo||[]);
+  setIncLines(cfg.lists.excursiones, p.excursiones||[]);
+  openModal('modal-'+cfg.prefix);
 }
+function editPaq(i) { editPaqLike('paq', i); }
+function editMini(i) { editPaqLike('mini', i); }
 
-function savePaq() {
-  const idx = document.getElementById('paq-edit-id').value;
+function savePaqLike(kind) {
+  const cfg = PAQ_LIKE[kind];
+  const list = DATA[cfg.dataKey];
+  const idx = document.getElementById(pl(kind,'edit-id')).value;
   const obj = {
-    id: idx !== '' ? DATA.paquetes[idx].id : 'paq_'+Date.now(),
-    titulo: document.getElementById('paq-titulo').value,
-    dest: document.getElementById('paq-dest').value,
-    cat: document.getElementById('paq-cat').value,
-    dur: document.getElementById('paq-dur').value,
-    precio: parseFloat(document.getElementById('paq-precio').value)||0,
-    descCorta: document.getElementById('paq-desc-corta').value,
-    descFull: document.getElementById('paq-desc-full').value,
-    img: document.getElementById('paq-img').value,
-    badge: document.getElementById('paq-badge').value,
-    operador: document.getElementById('paq-operador').value,
-    vuelo: document.getElementById('paq-vuelo').value,
-    hotelIncluido: document.getElementById('paq-hotel').value,
-    moneda: document.getElementById('paq-moneda').value,
-    traslado: document.getElementById('paq-traslado').value === 'si',
-    destacado: document.getElementById('paq-destacado').checked,
-    feat: document.getElementById('paq-feat').checked,
-    orden: parseFloat(document.getElementById('paq-orden').value)||0,
-    fechaSalida: document.getElementById('paq-fecha-salida').value || (idx !== '' ? DATA.paquetes[idx].fechaSalida : ''),
-    fechaRegreso: document.getElementById('paq-fecha-regreso').value || (idx !== '' ? DATA.paquetes[idx].fechaRegreso : ''),
-    lugarSalida: document.getElementById('paq-lugar-salida').value,
-    vuelos: getVuelos(),
-    hoteles: getHoteles(),
-    pagos: getPagos(),
-    incSi: getIncLines('inc-si-list'),
-    incNo: getIncLines('inc-no-list'),
-    itinerario: getItinerario('itinerario-list'),
-    excursiones: getIncLines('excursiones-list'),
-    resumen: getIncLines('resumen-list')
+    id: idx !== '' ? list[idx].id : cfg.prefix+'_'+Date.now(),
+    titulo: document.getElementById(pl(kind,'titulo')).value,
+    dest: document.getElementById(pl(kind,'dest')).value,
+    cat: cfg.hasCat ? document.getElementById(pl(kind,'cat')).value : cfg.catFixed,
+    dur: document.getElementById(pl(kind,'dur')).value,
+    precio: parseFloat(document.getElementById(pl(kind,'precio')).value)||0,
+    descCorta: document.getElementById(pl(kind,'desc-corta')).value,
+    descFull: document.getElementById(pl(kind,'desc-full')).value,
+    img: document.getElementById(pl(kind,'img')).value,
+    badge: document.getElementById(pl(kind,'badge')).value,
+    operador: document.getElementById(pl(kind,'operador')).value,
+    vuelo: document.getElementById(pl(kind,'vuelo')).value,
+    hotelIncluido: document.getElementById(pl(kind,'hotel')).value,
+    moneda: document.getElementById(pl(kind,'moneda')).value,
+    traslado: document.getElementById(pl(kind,'traslado')).value === 'si',
+    destacado: document.getElementById(pl(kind,'destacado')).checked,
+    feat: document.getElementById(pl(kind,'feat')).checked,
+    orden: parseFloat(document.getElementById(pl(kind,'orden')).value)||0,
+    fechaSalida: document.getElementById(pl(kind,'fecha-salida')).value || (idx !== '' ? list[idx].fechaSalida : ''),
+    fechaRegreso: document.getElementById(pl(kind,'fecha-regreso')).value || (idx !== '' ? list[idx].fechaRegreso : ''),
+    lugarSalida: document.getElementById(pl(kind,'lugar-salida')).value,
+    vuelos: getVuelos(cfg.lists.vuelos),
+    hoteles: getHoteles(cfg.lists.hoteles),
+    pagos: getPagos(cfg.lists.pagos),
+    incSi: getIncLines(cfg.lists.incSi),
+    incNo: getIncLines(cfg.lists.incNo),
+    itinerario: getItinerario(cfg.lists.itinerario),
+    excursiones: getIncLines(cfg.lists.excursiones),
+    resumen: getIncLines(cfg.lists.resumen)
   };
   obj.fechas = [
     { fecha: obj.fechaSalida, fechaRegreso: obj.fechaRegreso, precio: obj.precio },
-    ...getFechasExtra('paq-fechas-list')
+    ...getFechasExtra(cfg.lists.fechas)
   ];
   if (!obj.titulo) { showToast('El título es obligatorio','error'); return; }
-  if (idx !== '') DATA.paquetes[idx] = obj; else DATA.paquetes.push(obj);
-  saveData(); renderPaq(); updateStats(); closeModal('modal-paq');
-  showToast('Paquete guardado ✓','success');
+  if (obj.precio <= 0) { showToast('El precio debe ser mayor a 0','error'); return; }
+  if (obj.img && !/^https?:\/\//i.test(obj.img)) { showToast('La URL de la imagen debe empezar con http:// o https://','error'); return; }
+  if (obj.fechaSalida && obj.fechaRegreso && obj.fechaRegreso < obj.fechaSalida) { showToast('La fecha de regreso no puede ser anterior a la de salida','error'); return; }
+  if (idx !== '') list[idx] = obj; else list.push(obj);
+  saveData();
+  if (kind === 'mini') renderMini(); else renderPaq();
+  updateStats(); closeModal('modal-'+cfg.prefix);
+  showToast(cfg.label + ' guardado ✓','success');
 }
+function savePaq() { savePaqLike('paq'); }
+function saveMini() { savePaqLike('mini'); }
 
-function deletePaq(i) {
-  if (!confirm('¿Eliminar este paquete?')) return;
-  DATA.paquetes.splice(i,1); saveData(); renderPaq(); updateStats();
-  showToast('Paquete eliminado','success');
+function deletePaqLike(kind, i) {
+  const cfg = PAQ_LIKE[kind];
+  if (!confirm('¿Eliminar este ' + cfg.label.toLowerCase() + '?')) return;
+  DATA[cfg.dataKey].splice(i,1); saveData();
+  if (kind === 'mini') renderMini(); else renderPaq();
+  updateStats();
+  showToast(cfg.label + ' eliminado','success');
 }
-
-// ===== MINITURISMO CRUD (mismas caracteristicas que Paquetes) =====
-function openNewMini() {
-  document.getElementById('mini-edit-id').value = '';
-  document.getElementById('modal-mini-title').textContent = 'Nuevo miniturismo';
-  ['mini-titulo','mini-dest','mini-dur','mini-precio','mini-img','mini-badge','mini-desc-corta','mini-desc-full','mini-fecha-salida','mini-fecha-regreso','mini-operador','mini-orden'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-  document.getElementById('mini-img-preview').removeAttribute('src');
-  document.getElementById('mini-moneda').value = 'USD';
-  document.getElementById('mini-vuelo').value = 'si';
-  document.getElementById('mini-hotel').value = 'si';
-  document.getElementById('mini-traslado').value = 'si';
-  document.getElementById('mini-lugar-salida').value = 'Rosario (ROS)';
-  document.getElementById('mini-destacado').checked = false;
-  document.getElementById('mini-feat').checked = false;
-  document.getElementById('mini-vuelos-list').innerHTML = '';
-  document.getElementById('mini-itinerario-list').innerHTML = '';
-  document.getElementById('mini-hoteles-list').innerHTML = '';
-  document.getElementById('mini-pagos-list').innerHTML = '';
-  document.getElementById('mini-fechas-list').innerHTML = '';
-  setIncLines('mini-inc-si-list',[]);
-  setIncLines('mini-inc-no-list',[]);
-  setIncLines('mini-excursiones-list',[]);
-  setIncLines('mini-resumen-list',[]);
-  openModal('modal-mini');
-}
-
-function editMini(i) {
-  const p = DATA.miniturismo[i];
-  document.getElementById('mini-edit-id').value = i;
-  document.getElementById('modal-mini-title').textContent = 'Editar miniturismo';
-  document.getElementById('mini-titulo').value = p.titulo||'';
-  document.getElementById('mini-dest').value = p.dest||'';
-  document.getElementById('mini-dur').value = p.dur||'';
-  document.getElementById('mini-precio').value = p.precio||'';
-  document.getElementById('mini-moneda').value = p.moneda||'USD';
-  document.getElementById('mini-desc-corta').value = p.descCorta||'';
-  document.getElementById('mini-desc-full').value = p.descFull||'';
-  document.getElementById('mini-img').value = p.img||'';
-  document.getElementById('mini-img-preview').src = p.img||'';
-  document.getElementById('mini-badge').value = p.badge||'';
-  document.getElementById('mini-operador').value = p.operador||'';
-  document.getElementById('mini-vuelo').value = p.vuelo||'si';
-  document.getElementById('mini-hotel').value = p.hotelIncluido || ((p.hoteles||[]).length ? 'si' : 'no');
-  document.getElementById('mini-traslado').value = p.traslado ? 'si' : 'no';
-  document.getElementById('mini-destacado').checked = !!p.destacado;
-  document.getElementById('mini-feat').checked = !!p.feat;
-  document.getElementById('mini-orden').value = p.orden||'';
-  document.getElementById('mini-fecha-salida').value = p.fechaSalida||'';
-  document.getElementById('mini-fecha-regreso').value = p.fechaRegreso||'';
-  document.getElementById('mini-lugar-salida').value = p.lugarSalida||'Rosario (ROS)';
-  // Vuelos
-  document.getElementById('mini-vuelos-list').innerHTML = '';
-  document.getElementById('mini-itinerario-list').innerHTML = '';
-  (p.vuelos||[]).forEach(v => addVueloRow(v, 'mini-vuelos-list'));
-  // Resumen por ciudad (debe cargarse antes que Hoteles para que el desplegable de ciudad tenga las opciones)
-  setIncLines('mini-resumen-list', p.resumen||[]);
-  // Hoteles
-  document.getElementById('mini-hoteles-list').innerHTML = '';
-  (p.hoteles||[]).forEach(h => addHotelRow(h, 'mini-hoteles-list', 'mini-resumen-list'));
-  // Pagos
-  document.getElementById('mini-pagos-list').innerHTML = '';
-  (p.pagos||[]).forEach(pg => addPagoLine(pg.label + ' · ' + pg.monto, 'mini-pagos-list'));
-  // Otras fechas de salida (la primera fecha ya está en los campos principales)
-  document.getElementById('mini-fechas-list').innerHTML = '';
-  (p.fechas||[]).slice(1).forEach(f => addFechaRow(f, 'mini-fechas-list'));
-  // Itinerario
-  document.getElementById('mini-itinerario-list').innerHTML = '';
-  (p.itinerario||[]).forEach(d => addItinRow('mini-itinerario-list', d));
-  setIncLines('mini-inc-si-list', p.incSi||[]);
-  setIncLines('mini-inc-no-list', p.incNo||[]);
-  setIncLines('mini-excursiones-list', p.excursiones||[]);
-  openModal('modal-mini');
-}
-
-function saveMini() {
-  const idx = document.getElementById('mini-edit-id').value;
-  const obj = {
-    id: idx !== '' ? DATA.miniturismo[idx].id : 'mini_'+Date.now(),
-    titulo: document.getElementById('mini-titulo').value,
-    dest: document.getElementById('mini-dest').value,
-    cat: 'nacional',
-    dur: document.getElementById('mini-dur').value,
-    precio: parseFloat(document.getElementById('mini-precio').value)||0,
-    descCorta: document.getElementById('mini-desc-corta').value,
-    descFull: document.getElementById('mini-desc-full').value,
-    img: document.getElementById('mini-img').value,
-    badge: document.getElementById('mini-badge').value,
-    operador: document.getElementById('mini-operador').value,
-    vuelo: document.getElementById('mini-vuelo').value,
-    hotelIncluido: document.getElementById('mini-hotel').value,
-    moneda: document.getElementById('mini-moneda').value,
-    traslado: document.getElementById('mini-traslado').value === 'si',
-    destacado: document.getElementById('mini-destacado').checked,
-    feat: document.getElementById('mini-feat').checked,
-    orden: parseFloat(document.getElementById('mini-orden').value)||0,
-    fechaSalida: document.getElementById('mini-fecha-salida').value || (idx !== '' ? DATA.miniturismo[idx].fechaSalida : ''),
-    fechaRegreso: document.getElementById('mini-fecha-regreso').value || (idx !== '' ? DATA.miniturismo[idx].fechaRegreso : ''),
-    lugarSalida: document.getElementById('mini-lugar-salida').value,
-    vuelos: getVuelos('mini-vuelos-list'),
-    hoteles: getHoteles('mini-hoteles-list'),
-    pagos: getPagos('mini-pagos-list'),
-    incSi: getIncLines('mini-inc-si-list'),
-    incNo: getIncLines('mini-inc-no-list'),
-    itinerario: getItinerario('mini-itinerario-list'),
-    excursiones: getIncLines('mini-excursiones-list'),
-    resumen: getIncLines('mini-resumen-list')
-  };
-  obj.fechas = [
-    { fecha: obj.fechaSalida, fechaRegreso: obj.fechaRegreso, precio: obj.precio },
-    ...getFechasExtra('mini-fechas-list')
-  ];
-  if (!obj.titulo) { showToast('El título es obligatorio','error'); return; }
-  if (idx !== '') DATA.miniturismo[idx] = obj; else DATA.miniturismo.push(obj);
-  saveData(); renderMini(); updateStats(); closeModal('modal-mini');
-  showToast('Miniturismo guardado ✓','success');
-}
-
-function deleteMini(i) {
-  if (!confirm('¿Eliminar este miniturismo?')) return;
-  DATA.miniturismo.splice(i,1); saveData(); renderMini(); updateStats();
-  showToast('Miniturismo eliminado','success');
-}
+function deletePaq(i) { deletePaqLike('paq', i); }
+function deleteMini(i) { deletePaqLike('mini', i); }
 
 // ===== GRUPALES CRUD =====
 function openNewGrup() {
@@ -2109,6 +2024,9 @@ function saveGrup() {
     ...getFechasExtra('grup-fechas-list')
   ];
   if (!obj.titulo) { showToast('El título es obligatorio','error'); return; }
+  if (obj.precio <= 0) { showToast('El precio debe ser mayor a 0','error'); return; }
+  if (obj.img && !/^https?:\/\//i.test(obj.img)) { showToast('La URL de la imagen debe empezar con http:// o https://','error'); return; }
+  if (obj.fecha && obj.fechaRegreso && obj.fechaRegreso < obj.fecha) { showToast('La fecha de regreso no puede ser anterior a la de salida','error'); return; }
   if (idx !== '') DATA.grupales[idx] = obj; else DATA.grupales.push(obj);
   saveData(); renderGrup(); updateStats(); closeModal('modal-grup');
   showToast('Grupal guardado ✓','success');
@@ -2384,7 +2302,10 @@ function deleteAsistencia(i) {
 async function loadStats() {
   document.getElementById('stats-top-views').innerHTML = 'Cargando...';
   document.getElementById('stats-top-wa').innerHTML = 'Cargando...';
-  const { data, error } = await sb.from('page_events').select('type,package_id,package_title').limit(5000);
+  document.getElementById('stats-conversion').innerHTML = 'Cargando...';
+  // Orden explícito por fecha (más recientes primero): sin .order(), Postgres no garantiza
+  // qué filas devuelve si el volumen supera el límite pedido.
+  const { data, error } = await sb.from('page_events').select('type,package_id,package_title').order('created_at', { ascending: false }).limit(10000);
   if (error) { showToast('Error cargando estadísticas: ' + error.message, 'error'); return; }
   const rows = data || [];
   const views = rows.filter(r => r.type === 'view');
@@ -2414,6 +2335,34 @@ async function loadStats() {
   }
   renderTop('stats-top-views', topList(views));
   renderTop('stats-top-wa', topList(wa));
+
+  // Conversión: cruza vistas y clicks a WhatsApp por paquete para ver qué propuestas
+  // generan interés pero no consultas (antes eran dos rankings independientes, sin cruzar).
+  const conv = {};
+  views.forEach(r => {
+    const key = r.package_id || '(desconocido)';
+    if (!conv[key]) conv[key] = { title: r.package_title || key, views: 0, wa: 0 };
+    conv[key].views++;
+  });
+  wa.forEach(r => {
+    const key = r.package_id || '(desconocido)';
+    if (!conv[key]) conv[key] = { title: r.package_title || key, views: 0, wa: 0 };
+    conv[key].wa++;
+  });
+  const convList = Object.values(conv)
+    .map(c => ({ ...c, rate: c.views ? Math.round((c.wa / c.views) * 100) : (c.wa ? 100 : 0) }))
+    .sort((a, b) => b.views - a.views)
+    .slice(0, 15);
+  const convEl = document.getElementById('stats-conversion');
+  if (!convList.length) {
+    convEl.innerHTML = '<p style="color:var(--gray);padding:1rem 0">Todavía no hay datos.</p>';
+  } else {
+    convEl.innerHTML = convList.map(c => `
+      <div class="item-card">
+        <div class="item-card-body"><div class="item-card-title">${c.title}</div><div style="font-size:0.78rem;color:var(--gray)">${c.views} vista${c.views===1?'':'s'} · ${c.wa} consulta${c.wa===1?'':'s'} por WhatsApp</div></div>
+        <div class="item-card-actions"><strong style="color:${c.rate===0?'#B91C1C':'var(--navy)'}">${c.rate}%</strong></div>
+      </div>`).join('');
+  }
 }
 
 // ===== CONTACTO =====
