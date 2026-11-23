@@ -2087,6 +2087,7 @@ function renderDetallePrecio(p) {
 
 // paquetes se llena en runtime con los datos reales desde Supabase (ver loadFromAdmin y adminPaqToDetalle)
 const paquetes = {};
+const DEFAULT_HOTEL_IMG = 'https://i.pinimg.com/736x/c8/92/5a/c8925ab2d3526ec934ed01ac2a099b10.jpg';
 
 function logEvent(type, packageId, packageTitle) {
   try { sb.from('page_events').insert({ type, package_id: packageId||null, package_title: packageTitle||null }).then(()=>{}); } catch(e) {}
@@ -2233,7 +2234,7 @@ function showDetalle(id) {
         ${ciudad ? `<div class="hotel-city-label">${escapeHtml(ciudad)}</div>` : ""}
         ${grupos[ciudad].map((h,i) => `
         <div class="hotel-option ${i===0?"selected":""}" data-group="${gi}" data-ciudad="${escapeHtml(ciudad)}" onclick="selectHotel(this,${h.precio},${gi})" role="button" tabindex="0">
-          <img class="hotel-option-img" src="${h.img}" alt="${h.nombre}" onerror="this.style.background='#EEE'">
+          <img class="hotel-option-img" src="${escapeHtml(h.img||DEFAULT_HOTEL_IMG)}" alt="${escapeHtml(h.nombre||'')}" onerror="this.style.background='#EEE'">
           <div class="hotel-option-body">
             <div class="hotel-option-name">${h.nombre}</div>
             <div class="hotel-option-detail">${h.detail}</div>
@@ -2583,7 +2584,8 @@ function nl2br(s) {
 
 function adminPaqToDetalle(p, isGrupal) {
   const mon = (p.moneda||'USD') === 'ARS' ? '$ ' : 'USD ';
-  const badges = [p.dur, p.badge, p.vuelo==='si'?'Vuelo incluido':null].filter(Boolean);
+  const trasladoTag = p.trasladoTipo === 'aereo' ? '✈️ Traslado aéreo' : p.trasladoTipo === 'bus' ? '🚌 Traslado en bus' : null;
+  const badges = [p.dur, p.badge, p.vuelo==='si'?'Vuelo incluido':null, trasladoTag].filter(Boolean);
   const si = p.incSi || p.inc || [];
   return {
     title: p.titulo, sub: `${p.dur||''} · ${joinDest(p.dest)}`,
@@ -2636,15 +2638,17 @@ function renderPaqCard(p) {
     p.vuelo === 'si' ? 'Vuelo' : '',
     (p.hotelIncluido !== undefined ? p.hotelIncluido === 'si' : (p.hoteles && p.hoteles.length > 0)) ? 'Hotel' : '',
     si.some(i=>i.toLowerCase().includes('traslado')) ? 'Traslados' : '',
+    p.trasladoTipo === 'aereo' ? '✈️ Traslado aéreo' : p.trasladoTipo === 'bus' ? '🚌 Traslado en bus' : '',
     si.some(i=>i.toLowerCase().includes('desayuno')) ? 'Desayuno' : '',
     si.some(i=>i.toLowerCase().includes('seguro')||i.toLowerCase().includes('asistencia')) ? 'Asistencia' : ''
   ].filter(Boolean).map(t=>`<span class="paq-tag">${escapeHtml(t)}</span>`).join('');
   const badge = dateBadge(p.fechaSalida) || escapeHtml(p.dur||'');
+  const especial = escapeHtml(p.badge||'');
   const salida = p.lugarSalida ? `Salida desde <strong>${escapeHtml(p.lugarSalida)}</strong>` : '';
   const dur = p.dur ? ` · ${escapeHtml(p.dur)}` : '';
   return `<div class="paq-card" data-cat="${escapeHtml(p.cat||'')}">
     <div class="paq-img"><img src="${escapeHtml(p.img||'')}" alt="${escapeHtml(p.titulo||'')}" loading="lazy">
-    <div class="paq-badges">${badge?`<span class="paq-badge">${escapeHtml(badge)}</span>`:''}</div></div>
+    <div class="paq-badges">${especial?`<span class="paq-badge hot">${especial}</span>`:''}${badge?`<span class="paq-badge">${escapeHtml(badge)}</span>`:''}</div></div>
     <div class="paq-body">
       ${salida?`<p class="paq-salida">${salida}</p>`:''}
       <p class="paq-dest">${escapeHtml(p.dest||'')}</p>
@@ -2663,6 +2667,7 @@ function renderPaqCard(p) {
 function renderGrupCard(g) {
   const mon = (g.moneda||'USD') === 'ARS' ? '$ ' : 'USD ';
   const badge = dateBadge(g.fecha) || escapeHtml(g.dur||'');
+  const especial = escapeHtml(g.badge||'');
   const salida = g.lugarSalida ? `Salida desde <strong>${escapeHtml(g.lugarSalida)}</strong>` : '';
   const dur = g.dur ? ` · ${escapeHtml(g.dur)}` : '';
   const cupos = g.cupos ? `<span class="paq-tag">${escapeHtml(g.cupos)}</span>` : '';
@@ -2671,12 +2676,13 @@ function renderGrupCard(g) {
     'Vuelo',
     (g.hotelIncluido !== undefined ? g.hotelIncluido === 'si' : (g.hoteles && g.hoteles.length > 0)) ? 'Hotel' : '',
     inc.some(i=>i.toLowerCase().includes('traslado')) ? 'Traslados' : '',
+    g.trasladoTipo === 'aereo' ? '✈️ Traslado aéreo' : g.trasladoTipo === 'bus' ? '🚌 Traslado en bus' : '',
     'Guía incluido',
     inc.some(i=>i.toLowerCase().includes('seguro')||i.toLowerCase().includes('asistencia')) ? 'Asistencia' : ''
   ].filter(Boolean).map(t=>`<span class="paq-tag">${escapeHtml(t)}</span>`).join('') + cupos;
   return `<div class="paq-card" data-cat="${escapeHtml(g.cat||'internacional')}">
     <div class="paq-img"><img src="${escapeHtml(g.img||'')}" alt="${escapeHtml(g.titulo||'')}" loading="lazy">
-    <div class="paq-badges">${badge?`<span class="paq-badge">${escapeHtml(badge)}</span>`:''}</div></div>
+    <div class="paq-badges">${especial?`<span class="paq-badge hot">${especial}</span>`:''}${badge?`<span class="paq-badge">${escapeHtml(badge)}</span>`:''}</div></div>
     <div class="paq-body">
       ${salida?`<p class="paq-salida">${salida}</p>`:''}
       <p class="paq-dest">${escapeHtml(joinDest(g.dest))}</p>
@@ -2771,37 +2777,42 @@ async function loadFromAdmin() {
   if (errorBanner) errorBanner.style.display = loadError ? 'block' : 'none';
   if (settings.currency && settings.currency !== currentCurrency) setCurrency(settings.currency);
   applyContactSettings(settings);
-  blogPosts = (stored && stored.blog) || [];
+  blogPosts = ((stored && stored.blog) || []).filter(b => b.activo !== false);
   renderBlogGrid();
-  asistencias = (stored && stored.asistencias) || [];
+  asistencias = ((stored && stored.asistencias) || []).filter(a => a.activo !== false);
   renderAsistenciaGrid();
-  quinceItems = (stored && stored.quince) || [];
+  quinceItems = ((stored && stored.quince) || []).filter(q => q.activo !== false);
   renderQuinceGrid();
-  if (stored && stored.servicios && stored.servicios.length) renderServiciosGrid(stored.servicios);
+  if (stored && stored.servicios && stored.servicios.length) renderServiciosGrid(stored.servicios.filter(s => s.activo !== false));
   if (stored && stored.quienes) renderQuienesInfo(stored.quienes);
-  if (stored && stored.team && stored.team.length) renderTeamGrid(stored.team);
+  if (stored && stored.team && stored.team.length) renderTeamGrid(stored.team.filter(m => m.activo !== false));
 
   const emptyMsg = loadError
     ? 'No pudimos cargar el catálogo en este momento. Probá recargar la página en unos minutos.'
     : 'Muy pronto vamos a sumar nuevas propuestas acá.';
 
+  const paquetesActivos = (stored?.paquetes||[]).filter(p => p.activo !== false);
+  const grupalesActivos = (stored?.grupales||[]).filter(g => g.activo !== false);
+  const miniturismoActivo = (stored?.miniturismo||[]).filter(m => m.activo !== false);
+  const destinosActivos = (stored?.destinos||[]).filter(d => d.activo !== false);
+
   // Merge admin data into paquetes object (used por showDetalle)
-  (stored?.paquetes||[]).forEach(p => { paquetes[p.id] = adminPaqToDetalle(p, false); });
-  (stored?.grupales||[]).forEach(g => { paquetes[g.id] = adminPaqToDetalle(g, true); });
-  (stored?.miniturismo||[]).forEach(m => { paquetes[m.id] = adminPaqToDetalle(m, false); });
+  paquetesActivos.forEach(p => { paquetes[p.id] = adminPaqToDetalle(p, false); });
+  grupalesActivos.forEach(g => { paquetes[g.id] = adminPaqToDetalle(g, true); });
+  miniturismoActivo.forEach(m => { paquetes[m.id] = adminPaqToDetalle(m, false); });
 
   // Render grids — ordenados cronologicamente por fecha de salida
-  renderGridOrEmpty(document.getElementById('paq-grid'), [...(stored?.paquetes||[])].sort(porFechaSalida), renderPaqCard, emptyMsg);
-  renderGridOrEmpty(document.getElementById('grup-grid'), [...(stored?.grupales||[])].sort(porFechaSalida), renderGrupCard, emptyMsg);
-  renderGridOrEmpty(document.getElementById('mini-grid'), [...(stored?.miniturismo||[])].sort(porFechaSalida), renderPaqCard, emptyMsg);
+  renderGridOrEmpty(document.getElementById('paq-grid'), [...paquetesActivos].sort(porFechaSalida), renderPaqCard, emptyMsg);
+  renderGridOrEmpty(document.getElementById('grup-grid'), [...grupalesActivos].sort(porFechaSalida), renderGrupCard, emptyMsg);
+  renderGridOrEmpty(document.getElementById('mini-grid'), [...miniturismoActivo].sort(porFechaSalida), renderPaqCard, emptyMsg);
 
   const destGrid = document.getElementById('destinos-grid');
   if (destGrid) {
     const cards = [
-      ...(stored?.destinos||[]).map(d => ({ type:'destino', id:d.id, pais:d.pais, nombre:d.nombre, precio:d.precio, tag:d.tag, img:d.img, feat: d.feat==='si', orden: d.orden||0 })),
-      ...(stored?.paquetes||[]).filter(p => p.destacado).map(p => ({ type:'paquete', id:p.id, pais:p.dest, nombre:p.titulo, precio:p.precio, tag:p.badge, img:p.img, moneda:p.moneda, feat: !!p.feat, orden: p.orden||0 })),
-      ...(stored?.grupales||[]).filter(g => g.destacado).map(g => ({ type:'grupal', id:g.id, pais:joinDest(g.dest), nombre:g.titulo, precio:g.precio, tag:g.badge, img:g.img, moneda:g.moneda, feat: !!g.feat, orden: g.orden||0 })),
-      ...(stored?.miniturismo||[]).filter(m => m.destacado).map(m => ({ type:'miniturismo', id:m.id, pais:m.dest, nombre:m.titulo, precio:m.precio, tag:m.badge, img:m.img, moneda:m.moneda, feat: !!m.feat, orden: m.orden||0 }))
+      ...destinosActivos.map(d => ({ type:'destino', id:d.id, pais:d.pais, nombre:d.nombre, precio:d.precio, tag:d.tag, img:d.img, feat: d.feat==='si', orden: d.orden||0 })),
+      ...paquetesActivos.filter(p => p.destacado).map(p => ({ type:'paquete', id:p.id, pais:p.dest, nombre:p.titulo, precio:p.precio, tag:p.badge, img:p.img, moneda:p.moneda, feat: !!p.feat, orden: p.orden||0 })),
+      ...grupalesActivos.filter(g => g.destacado).map(g => ({ type:'grupal', id:g.id, pais:joinDest(g.dest), nombre:g.titulo, precio:g.precio, tag:g.badge, img:g.img, moneda:g.moneda, feat: !!g.feat, orden: g.orden||0 })),
+      ...miniturismoActivo.filter(m => m.destacado).map(m => ({ type:'miniturismo', id:m.id, pais:m.dest, nombre:m.titulo, precio:m.precio, tag:m.badge, img:m.img, moneda:m.moneda, feat: !!m.feat, orden: m.orden||0 }))
     ];
     cards.sort((a, b) => a.orden - b.orden);
     if (cards.length) {
@@ -2822,7 +2833,7 @@ async function loadFromAdmin() {
       destGrid.innerHTML = `<p class="grid-empty-msg">${escapeHtml(emptyMsg)}</p>`;
     }
   }
-  renderGridOrEmpty(document.getElementById('test-grid'), stored?.testimonios||[], t => `
+  renderGridOrEmpty(document.getElementById('test-grid'), (stored?.testimonios||[]).filter(t => t.activo !== false), t => `
       <div class="test-card">
         <div class="estrellas">${'★'.repeat(Math.min(5,t.estrellas||5))}</div>
         <p>${nl2br(t.texto||'')}</p>

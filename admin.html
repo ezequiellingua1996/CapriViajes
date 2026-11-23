@@ -622,6 +622,7 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
     </div>
     <div class="modal-body">
       <input type="hidden" id="paq-edit-id">
+      <div class="field" style="background:#ECFDF5;border:1px solid #A7F3D0;border-radius:6px;padding:0.75rem 1rem"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="paq-activo" style="width:16px;height:16px" checked> ✅ Visible en la web (desmarcá para ocultarlo sin borrarlo)</label></div>
 
       <!-- Identificación -->
       <div style="background:#F8FAFC;border-radius:8px;padding:1rem;margin-bottom:1rem">
@@ -703,9 +704,13 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
         <div id="vuelos-list" style="display:flex;flex-direction:column;gap:0.75rem"></div>
         <button class="btn btn-ghost btn-sm" style="margin-top:0.5rem" onclick="addVueloRow()">+ Agregar tramo</button>
         <div class="hint" style="margin-top:0.3rem">Agregá ida y vuelta como tramos separados</div>
-        <div class="field" style="margin-top:0.75rem">
-          <label>Traslados in/out incluidos</label>
-          <select id="paq-traslado"><option value="si">Sí — incluidos en el paquete</option><option value="no">No</option></select>
+        <div class="field-row" style="margin-top:0.75rem">
+          <div class="field"><label>Traslados in/out incluidos</label>
+            <select id="paq-traslado"><option value="si">Sí — incluidos en el paquete</option><option value="no">No</option></select>
+          </div>
+          <div class="field"><label>Medio de traslado</label>
+            <select id="paq-traslado-tipo"><option value="aereo">✈️ Aéreo</option><option value="bus">🚌 Bus</option></select>
+          </div>
         </div>
       </div>
 
@@ -773,6 +778,7 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
     </div>
     <div class="modal-body">
       <input type="hidden" id="mini-edit-id">
+      <div class="field" style="background:#ECFDF5;border:1px solid #A7F3D0;border-radius:6px;padding:0.75rem 1rem"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="mini-activo" style="width:16px;height:16px" checked> ✅ Visible en la web (desmarcá para ocultarlo sin borrarlo)</label></div>
 
       <!-- Identificación -->
       <div style="background:#F8FAFC;border-radius:8px;padding:1rem;margin-bottom:1rem">
@@ -918,6 +924,7 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
     </div>
     <div class="modal-body">
       <input type="hidden" id="grup-edit-id">
+      <div class="field" style="background:#ECFDF5;border:1px solid #A7F3D0;border-radius:6px;padding:0.75rem 1rem"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="grup-activo" style="width:16px;height:16px" checked> ✅ Visible en la web (desmarcá para ocultarlo sin borrarlo)</label></div>
       <div class="field"><label>Título</label><input type="text" id="grup-titulo" placeholder="Ej: Madrid, Barcelona & Sevilla"></div>
       <div class="field"><label>Países / Destinos (podés agregar varios)</label>
         <div class="includes-editor" id="grup-dest-list"></div>
@@ -959,6 +966,12 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
             <option value="internacional">Internacional</option>
             <option value="nacional">Nacional</option>
           </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Badge especial</label><input type="text" id="grup-badge" placeholder="Ej: Oferta, Último cupo"></div>
+        <div class="field"><label>Medio de traslado</label>
+          <select id="grup-traslado-tipo"><option value="aereo">✈️ Aéreo</option><option value="bus">🚌 Bus</option></select>
         </div>
       </div>
       <div class="field-row">
@@ -1043,6 +1056,7 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
     </div>
     <div class="modal-body">
       <input type="hidden" id="quince-edit-id">
+      <div class="field" style="background:#ECFDF5;border:1px solid #A7F3D0;border-radius:6px;padding:0.75rem 1rem"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="quince-activo" style="width:16px;height:16px" checked> ✅ Visible en la web (desmarcá para ocultarlo sin borrarlo)</label></div>
       <div class="field"><label>Título</label><input type="text" id="quince-titulo" placeholder="Ej: Cancún para tus 15"></div>
       <div class="field"><label>URL imagen</label><input type="url" id="quince-img" placeholder="https://images.unsplash.com/..." oninput="this.nextElementSibling.src=this.value"><img class="img-preview" id="quince-img-preview" onerror="this.removeAttribute('src')"></div>
       <div class="field"><label>Descripción</label><textarea id="quince-desc" rows="3" placeholder="Breve descripción de la opción de viaje..."></textarea></div>
@@ -1064,6 +1078,7 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
     </div>
     <div class="modal-body">
       <input type="hidden" id="test-edit-id">
+      <div class="field" style="background:#ECFDF5;border:1px solid #A7F3D0;border-radius:6px;padding:0.75rem 1rem"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="test-activo" style="width:16px;height:16px" checked> ✅ Visible en la web (desmarcá para ocultarlo sin borrarlo)</label></div>
       <div class="field"><label>Nombre del cliente</label><input type="text" id="test-nombre" placeholder="Ej: Valentina R."></div>
       <div class="field"><label>Viaje realizado</label><input type="text" id="test-viaje" placeholder="Ej: Luna de miel en Santorini"></div>
       <div class="field"><label>Testimonio</label><textarea id="test-texto" placeholder="Escribí el comentario del cliente..." style="min-height:100px"></textarea></div>
@@ -1092,6 +1107,7 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
     </div>
     <div class="modal-body">
       <input type="hidden" id="dest-edit-id">
+      <div class="field" style="background:#ECFDF5;border:1px solid #A7F3D0;border-radius:6px;padding:0.75rem 1rem"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="dest-activo" style="width:16px;height:16px" checked> ✅ Visible en la web (desmarcá para ocultarlo sin borrarlo)</label></div>
       <div class="field-row">
         <div class="field"><label>País</label><input type="text" id="dest-pais" placeholder="Ej: Grecia"></div>
         <div class="field"><label>Ciudad / Nombre</label><input type="text" id="dest-nombre" placeholder="Ej: Santorini"></div>
@@ -1124,6 +1140,7 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
     </div>
     <div class="modal-body">
       <input type="hidden" id="blog-edit-id">
+      <div class="field" style="background:#ECFDF5;border:1px solid #A7F3D0;border-radius:6px;padding:0.75rem 1rem"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="blog-activo" style="width:16px;height:16px" checked> ✅ Visible en la web (desmarcá para ocultarlo sin borrarlo)</label></div>
       <div class="field"><label>Título</label><input type="text" id="blog-titulo" placeholder="Ej: 5 destinos para conocer en 2026"></div>
       <div class="field-row">
         <div class="field"><label>Slug (URL, sin espacios)</label><input type="text" id="blog-slug" placeholder="ej-5-destinos-2026"></div>
@@ -1149,6 +1166,7 @@ body{font-family:"Inter",sans-serif;background:#F1F5F9;color:#1E293B;min-height:
     </div>
     <div class="modal-body">
       <input type="hidden" id="asist-edit-id">
+      <div class="field" style="background:#ECFDF5;border:1px solid #A7F3D0;border-radius:6px;padding:0.75rem 1rem"><label style="display:flex;align-items:center;gap:0.6rem;cursor:pointer"><input type="checkbox" id="asist-activo" style="width:16px;height:16px" checked> ✅ Visible en la web (desmarcá para ocultarlo sin borrarlo)</label></div>
       <div class="field"><label>Nombre</label><input type="text" id="asist-nombre" placeholder="Ej: Asiscard"></div>
       <div class="field"><label>URL logo</label><input type="url" id="asist-logo" placeholder="https://..." oninput="this.nextElementSibling.src=this.value"><img class="img-preview" id="asist-logo-preview" onerror="this.removeAttribute('src')"></div>
       <div class="field"><label>Descripción</label><textarea id="asist-descripcion" rows="3" placeholder="Cobertura médica internacional, asistencia 24hs..."></textarea></div>
@@ -1350,6 +1368,17 @@ function showPanel(id, triggerEl) {
   window.scrollTo(0,0);
 }
 
+// Imagen genérica usada para todos los hoteles — evita tener que cargar una foto manualmente por cada hotel.
+const DEFAULT_HOTEL_IMG = 'https://i.pinimg.com/736x/c8/92/5a/c8925ab2d3526ec934ed01ac2a099b10.jpg';
+
+// Activa/oculta un ítem de cualquier lista (paquetes, grupales, testimonios, etc.) sin abrir su modal.
+function toggleActivo(list, i, renderFn) {
+  list[i].activo = list[i].activo === false ? true : false;
+  saveData();
+  renderFn();
+  showToast(list[i].activo ? 'Mostrado en la web ✓' : 'Ocultado de la web ✓', 'success');
+}
+
 // ===== RENDER =====
 function renderAll() {
   renderPaq(); renderGrup(); renderMini(); renderTest(); renderDest(); renderBlog(); renderAsistencia(); renderQuince();
@@ -1390,16 +1419,17 @@ function updateStats() {
 function renderPaq() {
   const el = document.getElementById('paq-list');
   el.innerHTML = DATA.paquetes.map((p,i) => `
-    <div class="item-card">
+    <div class="item-card" style="${p.activo===false?'opacity:0.55':''}">
       <img class="item-card-img" src="${p.img}" alt="${p.titulo}" onerror="this.style.background='#EEE'">
       <div class="item-card-body">
-        <div class="item-card-title">${p.titulo}</div>
+        <div class="item-card-title">${p.titulo}${p.activo===false?' <span style="color:#DC2626;font-size:0.75rem;font-weight:700">🚫 Oculto</span>':''}</div>
         <div class="item-card-sub">${p.dest} · ${p.dur} · <strong>${p.moneda||'USD'} ${p.precio.toLocaleString()}</strong></div>
         <div style="margin-top:0.3rem"><span class="badge-cat">${p.cat.split(' ')[0]}</span></div>
       </div>
       <div class="item-card-actions">
         <button class="btn btn-ghost btn-sm" onclick="editPaq(${i})">✏️ Editar</button>
         <button class="btn btn-ghost btn-sm" onclick="duplicatePaq(${i})">📋 Duplicar</button>
+        <button class="btn btn-ghost btn-sm" onclick="toggleActivo(DATA.paquetes,${i},renderPaq)">${p.activo===false?'👁 Mostrar':'🚫 Ocultar'}</button>
         <button class="btn btn-danger btn-sm" onclick="deletePaq(${i})">🗑</button>
       </div>
     </div>`).join('');
@@ -1419,16 +1449,17 @@ function duplicatePaq(i) {
 function renderMini() {
   const el = document.getElementById('mini-list');
   el.innerHTML = (DATA.miniturismo||[]).map((p,i) => `
-    <div class="item-card">
+    <div class="item-card" style="${p.activo===false?'opacity:0.55':''}">
       <img class="item-card-img" src="${p.img}" alt="${p.titulo}" onerror="this.style.background='#EEE'">
       <div class="item-card-body">
-        <div class="item-card-title">${p.titulo}</div>
+        <div class="item-card-title">${p.titulo}${p.activo===false?' <span style="color:#DC2626;font-size:0.75rem;font-weight:700">🚫 Oculto</span>':''}</div>
         <div class="item-card-sub">${p.dest} · ${p.dur} · <strong>${p.moneda||'USD'} ${p.precio.toLocaleString()}</strong></div>
         <div style="margin-top:0.3rem"><span class="badge-cat">${(p.cat||'').split(' ')[0]}</span></div>
       </div>
       <div class="item-card-actions">
         <button class="btn btn-ghost btn-sm" onclick="editMini(${i})">✏️ Editar</button>
         <button class="btn btn-ghost btn-sm" onclick="duplicateMini(${i})">📋 Duplicar</button>
+        <button class="btn btn-ghost btn-sm" onclick="toggleActivo(DATA.miniturismo,${i},renderMini)">${p.activo===false?'👁 Mostrar':'🚫 Ocultar'}</button>
         <button class="btn btn-danger btn-sm" onclick="deleteMini(${i})">🗑</button>
       </div>
     </div>`).join('');
@@ -1448,15 +1479,16 @@ function duplicateMini(i) {
 function renderGrup() {
   const el = document.getElementById('grup-list');
   el.innerHTML = DATA.grupales.map((g,i) => `
-    <div class="item-card">
+    <div class="item-card" style="${g.activo===false?'opacity:0.55':''}">
       <img class="item-card-img" src="${g.img}" alt="${g.titulo}" onerror="this.style.background='#EEE'">
       <div class="item-card-body">
-        <div class="item-card-title">${g.titulo}</div>
+        <div class="item-card-title">${g.titulo}${g.activo===false?' <span style="color:#DC2626;font-size:0.75rem;font-weight:700">🚫 Oculto</span>':''}</div>
         <div class="item-card-sub">${Array.isArray(g.dest)?g.dest.join(' · '):(g.dest||'')} · ${g.fecha} · <strong>${g.moneda||'USD'} ${g.precio.toLocaleString()}</strong> · ${g.cupos}</div>
       </div>
       <div class="item-card-actions">
         <button class="btn btn-ghost btn-sm" onclick="editGrup(${i})">✏️ Editar</button>
         <button class="btn btn-ghost btn-sm" onclick="duplicateGrup(${i})">📋 Duplicar</button>
+        <button class="btn btn-ghost btn-sm" onclick="toggleActivo(DATA.grupales,${i},renderGrup)">${g.activo===false?'👁 Mostrar':'🚫 Ocultar'}</button>
         <button class="btn btn-danger btn-sm" onclick="deleteGrup(${i})">🗑</button>
       </div>
     </div>`).join('');
@@ -1476,15 +1508,16 @@ function duplicateGrup(i) {
 function renderQuince() {
   const el = document.getElementById('quince-list');
   el.innerHTML = (DATA.quince||[]).map((q,i) => `
-    <div class="item-card">
+    <div class="item-card" style="${q.activo===false?'opacity:0.55':''}">
       <img class="item-card-img" src="${q.img||''}" alt="${q.titulo||''}" onerror="this.style.background='#EEE'">
       <div class="item-card-body">
-        <div class="item-card-title">${q.titulo||''}</div>
+        <div class="item-card-title">${q.titulo||''}${q.activo===false?' <span style="color:#DC2626;font-size:0.75rem;font-weight:700">🚫 Oculto</span>':''}</div>
         <div class="item-card-sub">${q.driveLink ? '📄 Con link de Drive cargado' : 'Sin link de Drive cargado'}</div>
       </div>
       <div class="item-card-actions">
         <button class="btn btn-ghost btn-sm" onclick="editQuince(${i})">✏️ Editar</button>
         <button class="btn btn-ghost btn-sm" onclick="duplicateQuince(${i})">📋 Duplicar</button>
+        <button class="btn btn-ghost btn-sm" onclick="toggleActivo(DATA.quince,${i},renderQuince)">${q.activo===false?'👁 Mostrar':'🚫 Ocultar'}</button>
         <button class="btn btn-danger btn-sm" onclick="deleteQuince(${i})">🗑</button>
       </div>
     </div>`).join('');
@@ -1504,15 +1537,16 @@ function duplicateQuince(i) {
 function renderTest() {
   const el = document.getElementById('test-list');
   el.innerHTML = DATA.testimonios.map((t,i) => `
-    <div class="item-card">
+    <div class="item-card" style="${t.activo===false?'opacity:0.55':''}">
       <div style="border-radius:50%;width:50px;height:50px;background:var(--navy);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem;flex-shrink:0">${(t.nombre||'?').trim().charAt(0).toUpperCase()}</div>
       <div class="item-card-body">
-        <div class="item-card-title">${t.nombre}</div>
+        <div class="item-card-title">${t.nombre}${t.activo===false?' <span style="color:#DC2626;font-size:0.75rem;font-weight:700">🚫 Oculto</span>':''}</div>
         <div class="item-card-sub">${t.viaje} · ${'★'.repeat(t.estrellas)}</div>
         <div style="font-size:0.75rem;color:var(--gray);margin-top:0.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:400px">"${t.texto.substring(0,80)}..."</div>
       </div>
       <div class="item-card-actions">
         <button class="btn btn-ghost btn-sm" onclick="editTest(${i})">✏️ Editar</button>
+        <button class="btn btn-ghost btn-sm" onclick="toggleActivo(DATA.testimonios,${i},renderTest)">${t.activo===false?'👁 Mostrar':'🚫 Ocultar'}</button>
         <button class="btn btn-danger btn-sm" onclick="deleteTest(${i})">🗑</button>
       </div>
     </div>`).join('');
@@ -1522,14 +1556,15 @@ function renderTest() {
 function renderDest() {
   const el = document.getElementById('dest-list');
   el.innerHTML = DATA.destinos.map((d,i) => `
-    <div class="item-card">
+    <div class="item-card" style="${d.activo===false?'opacity:0.55':''}">
       <img class="item-card-img" src="${d.img}" alt="${d.nombre}" onerror="this.style.background='#EEE'">
       <div class="item-card-body">
-        <div class="item-card-title">${d.nombre}, ${d.pais}</div>
+        <div class="item-card-title">${d.nombre}, ${d.pais}${d.activo===false?' <span style="color:#DC2626;font-size:0.75rem;font-weight:700">🚫 Oculto</span>':''}</div>
         <div class="item-card-sub">Desde USD ${d.precio.toLocaleString()} · ${d.feat==='si'?'⭐ Destacado':'Normal'}${d.tag?' · '+d.tag:''} · Orden: ${d.orden||0}</div>
       </div>
       <div class="item-card-actions">
         <button class="btn btn-ghost btn-sm" onclick="editDest(${i})">✏️ Editar</button>
+        <button class="btn btn-ghost btn-sm" onclick="toggleActivo(DATA.destinos,${i},renderDest)">${d.activo===false?'👁 Mostrar':'🚫 Ocultar'}</button>
         <button class="btn btn-danger btn-sm" onclick="deleteDest(${i})">🗑</button>
       </div>
     </div>`).join('');
@@ -1538,10 +1573,11 @@ function renderDest() {
 function renderTeam() {
   const el = document.getElementById('team-list');
   el.innerHTML = DATA.team.map((m,i) => `
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:0.5rem;align-items:end;background:var(--light);padding:0.75rem;border-radius:6px">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto auto;gap:0.5rem;align-items:end;background:var(--light);padding:0.75rem;border-radius:6px">
       <div class="field" style="margin:0"><label>Nombre</label><input value="${m.nombre}" oninput="DATA.team[${i}].nombre=this.value"></div>
       <div class="field" style="margin:0"><label>Rol</label><input value="${m.rol}" oninput="DATA.team[${i}].rol=this.value"></div>
       <div class="field" style="margin:0"><label>URL foto</label><input value="${m.foto}" oninput="DATA.team[${i}].foto=this.value"></div>
+      <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;font-size:0.8rem;white-space:nowrap"><input type="checkbox" ${m.activo===false?'':'checked'} onchange="DATA.team[${i}].activo=this.checked"> Visible</label>
       <button class="btn btn-danger btn-sm" onclick="DATA.team.splice(${i},1);renderTeam()">🗑</button>
     </div>`).join('');
 }
@@ -1556,10 +1592,11 @@ function renderServicios() {
   const el = document.getElementById('servicios-list');
   if (!el) return;
   el.innerHTML = (DATA.servicios||[]).map((s,i) => `
-    <div style="display:grid;grid-template-columns:0.6fr 1fr 2fr auto;gap:0.5rem;align-items:end;background:var(--light);padding:0.75rem;border-radius:6px">
+    <div style="display:grid;grid-template-columns:0.6fr 1fr 2fr auto auto;gap:0.5rem;align-items:end;background:var(--light);padding:0.75rem;border-radius:6px">
       <div class="field" style="margin:0"><label>Ícono (emoji)</label><input value="${s.icono||''}" oninput="DATA.servicios[${i}].icono=this.value" placeholder="🤝"></div>
       <div class="field" style="margin:0"><label>Título</label><input value="${s.titulo||''}" oninput="DATA.servicios[${i}].titulo=this.value"></div>
       <div class="field" style="margin:0"><label>Texto</label><input value="${s.texto||''}" oninput="DATA.servicios[${i}].texto=this.value"></div>
+      <label style="display:flex;align-items:center;gap:0.4rem;cursor:pointer;font-size:0.8rem;white-space:nowrap"><input type="checkbox" ${s.activo===false?'':'checked'} onchange="DATA.servicios[${i}].activo=this.checked"> Visible</label>
       <button class="btn btn-danger btn-sm" onclick="DATA.servicios.splice(${i},1);renderServicios()">🗑</button>
     </div>`).join('');
 }
@@ -1668,10 +1705,8 @@ function addHotelRow(h, listId, resumenListId) {
       <div class="field" style="margin:0"><label>Precio</label><input type="number" style="width:100%;padding:0.45rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${h?h.precio:''}" placeholder="1490"></div>
       <button class="btn btn-danger btn-sm" onclick="this.closest('div[style*=flex-direction]').remove()" style="margin-bottom:2px">✕</button>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.4rem">
-      <div class="field" style="margin:0"><label>URL foto</label><input style="width:100%;padding:0.45rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${h?h.img||'':''}" placeholder="https://..."></div>
-      <div class="field" style="margin:0"><label>Tags (separados por coma)</label><input style="width:100%;padding:0.45rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${h&&h.tags?h.tags.join(', '):''}" placeholder="Desayuno, Piscina, Spa"></div>
-    </div>`;
+    <div class="field" style="margin:0"><label>Tags (separados por coma)</label><input style="width:100%;padding:0.45rem;border:1.5px solid #DDD;border-radius:6px;font-size:0.82rem" value="${h&&h.tags?h.tags.join(', '):''}" placeholder="Desayuno, Piscina, Spa"></div>
+    <div class="hint" style="margin:0">🏨 La foto del hotel se muestra automáticamente — no hace falta cargarla.</div>`;
   c.appendChild(row);
 }
 
@@ -1685,8 +1720,8 @@ function getHoteles(listId) {
       nombre: nombre,
       detail: inputs[1].value,
       precio: parseFloat(inputs[2].value)||0,
-      img: inputs[3].value,
-      tags: inputs[4].value.split(',').map(t=>t.trim()).filter(Boolean)
+      img: DEFAULT_HOTEL_IMG,
+      tags: inputs[3].value.split(',').map(t=>t.trim()).filter(Boolean)
     };
   });
 }
@@ -1791,9 +1826,11 @@ function openNewPaqLike(kind) {
   document.getElementById(pl(kind,'vuelo')).value = 'si';
   document.getElementById(pl(kind,'hotel')).value = 'si';
   document.getElementById(pl(kind,'traslado')).value = 'si';
+  const tt = document.getElementById(pl(kind,'traslado-tipo')); if (tt) tt.value = 'aereo';
   document.getElementById(pl(kind,'lugar-salida')).value = 'Rosario (ROS)';
   document.getElementById(pl(kind,'destacado')).checked = false;
   document.getElementById(pl(kind,'feat')).checked = false;
+  const act = document.getElementById(pl(kind,'activo')); if (act) act.checked = true;
   document.getElementById(cfg.lists.vuelos).innerHTML = '';
   document.getElementById(cfg.lists.itinerario).innerHTML = '';
   document.getElementById(cfg.lists.hoteles).innerHTML = '';
@@ -1828,6 +1865,8 @@ function editPaqLike(kind, i) {
   document.getElementById(pl(kind,'vuelo')).value = p.vuelo||'si';
   document.getElementById(pl(kind,'hotel')).value = p.hotelIncluido || ((p.hoteles||[]).length ? 'si' : 'no');
   document.getElementById(pl(kind,'traslado')).value = p.traslado ? 'si' : 'no';
+  const tt = document.getElementById(pl(kind,'traslado-tipo')); if (tt) tt.value = p.trasladoTipo || 'aereo';
+  const act = document.getElementById(pl(kind,'activo')); if (act) act.checked = p.activo !== false;
   document.getElementById(pl(kind,'destacado')).checked = !!p.destacado;
   document.getElementById(pl(kind,'feat')).checked = !!p.feat;
   document.getElementById(pl(kind,'orden')).value = p.orden||'';
@@ -1876,6 +1915,8 @@ function savePaqLike(kind) {
     hotelIncluido: document.getElementById(pl(kind,'hotel')).value,
     moneda: document.getElementById(pl(kind,'moneda')).value,
     traslado: document.getElementById(pl(kind,'traslado')).value === 'si',
+    trasladoTipo: document.getElementById(pl(kind,'traslado-tipo'))?.value || 'aereo',
+    activo: document.getElementById(pl(kind,'activo'))?.checked !== false,
     destacado: document.getElementById(pl(kind,'destacado')).checked,
     feat: document.getElementById(pl(kind,'feat')).checked,
     orden: parseFloat(document.getElementById(pl(kind,'orden')).value)||0,
@@ -1923,7 +1964,7 @@ function deleteMini(i) { deletePaqLike('mini', i); }
 function openNewGrup() {
   document.getElementById('grup-edit-id').value = '';
   document.getElementById('modal-grup-title').textContent = 'Nuevo grupal';
-  ['grup-titulo','grup-fecha','grup-fecha-regreso','grup-dur','grup-precio','grup-cupos','grup-desc','grup-img','grup-lugar-salida','grup-operador'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['grup-titulo','grup-fecha','grup-fecha-regreso','grup-dur','grup-precio','grup-cupos','grup-desc','grup-img','grup-lugar-salida','grup-operador','grup-badge'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('grup-img-preview').removeAttribute('src');
   const gm=document.getElementById('grup-moneda'); if(gm) gm.value='USD';
   const gc=document.getElementById('grup-cat'); if(gc) gc.value='internacional';
@@ -1933,7 +1974,9 @@ function openNewGrup() {
   const go=document.getElementById('grup-orden'); if(go) go.value='';
   const ghc=document.getElementById('grup-hab-compartir'); if(ghc) ghc.checked=false;
   const gtr=document.getElementById('grup-traslado'); if(gtr) gtr.value='si';
+  const gtt=document.getElementById('grup-traslado-tipo'); if(gtt) gtt.value='aereo';
   const gho=document.getElementById('grup-hotel'); if(gho) gho.value='si';
+  const gac=document.getElementById('grup-activo'); if(gac) gac.checked=true;
   setIncLines('grup-dest-list',[]);
   setIncLines('grup-inc-list',[]);
   setIncLines('grup-no-list',[]);
@@ -1963,6 +2006,8 @@ function editGrup(i) {
   document.getElementById('grup-desc').value = g.desc||'';
   document.getElementById('grup-img').value = g.img||'';
   document.getElementById('grup-img-preview').src = g.img||'';
+  const gba=document.getElementById('grup-badge'); if(gba) gba.value = g.badge||'';
+  const gac=document.getElementById('grup-activo'); if(gac) gac.checked = g.activo !== false;
   const ls = document.getElementById('grup-lugar-salida'); if(ls) ls.value = g.lugarSalida||'Rosario (ROS)';
   setIncLines('grup-inc-list', g.inc||[]);
   const gitl=document.getElementById('grup-itin-list'); if(gitl){gitl.innerHTML='';(g.itinerario||[]).forEach(d=>addItinRow('grup-itin-list',d));}
@@ -1974,6 +2019,7 @@ function editGrup(i) {
   const ghce=document.getElementById('grup-hab-compartir'); if(ghce) ghce.checked=!!g.habCompartir;
   document.getElementById('grup-operador').value = g.operador||'';
   const gtr=document.getElementById('grup-traslado'); if(gtr) gtr.value = g.traslado===false ? 'no' : 'si';
+  const gtt=document.getElementById('grup-traslado-tipo'); if(gtt) gtt.value = g.trasladoTipo || 'aereo';
   const gho=document.getElementById('grup-hotel'); if(gho) gho.value = g.hotelIncluido || ((g.hoteles||[]).length ? 'si' : 'no');
   const gvl=document.getElementById('grup-vuelos-list'); if(gvl){gvl.innerHTML='';(g.vuelos||[]).forEach(v=>addVueloRow(v,'grup-vuelos-list'));}
   const gpl=document.getElementById('grup-pagos-list'); if(gpl){gpl.innerHTML='';(g.pagos||[]).forEach(pg=>addPagoLine(pg.label+' · '+pg.monto,'grup-pagos-list'));}
@@ -2003,12 +2049,15 @@ function saveGrup() {
     cupos: document.getElementById('grup-cupos').value,
     desc: document.getElementById('grup-desc').value,
     img: document.getElementById('grup-img').value,
+    badge: document.getElementById('grup-badge')?.value || '',
+    activo: document.getElementById('grup-activo')?.checked !== false,
     destacado: document.getElementById('grup-destacado')?.checked || false,
     feat: document.getElementById('grup-feat')?.checked || false,
     orden: parseFloat(document.getElementById('grup-orden')?.value)||0,
     habCompartir: document.getElementById('grup-hab-compartir')?.checked || false,
     operador: document.getElementById('grup-operador').value,
     traslado: (document.getElementById('grup-traslado')?.value || 'si') !== 'no',
+    trasladoTipo: document.getElementById('grup-traslado-tipo')?.value || 'aereo',
     hotelIncluido: document.getElementById('grup-hotel')?.value || 'si',
     inc: getIncLines('grup-inc-list'),
     incNo: getIncLines('grup-no-list'),
@@ -2044,6 +2093,7 @@ function openNewQuince() {
   document.getElementById('modal-quince-title').textContent = 'Nueva opción de 15';
   ['quince-titulo','quince-img','quince-desc','quince-drive-link'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   document.getElementById('quince-img-preview').removeAttribute('src');
+  const qac=document.getElementById('quince-activo'); if(qac) qac.checked=true;
   openModal('modal-quince');
 }
 
@@ -2056,6 +2106,7 @@ function editQuince(i) {
   document.getElementById('quince-img-preview').src = q.img||'';
   document.getElementById('quince-desc').value = q.descripcion||q.desc||'';
   document.getElementById('quince-drive-link').value = q.driveLink||'';
+  const qac=document.getElementById('quince-activo'); if(qac) qac.checked = q.activo !== false;
   openModal('modal-quince');
 }
 
@@ -2066,7 +2117,8 @@ function saveQuince() {
     titulo: document.getElementById('quince-titulo').value,
     img: document.getElementById('quince-img').value,
     descripcion: document.getElementById('quince-desc').value,
-    driveLink: document.getElementById('quince-drive-link').value
+    driveLink: document.getElementById('quince-drive-link').value,
+    activo: document.getElementById('quince-activo')?.checked !== false
   };
   if (!obj.titulo) { showToast('El título es obligatorio','error'); return; }
   if (idx !== '') DATA.quince[idx] = obj; else DATA.quince.push(obj);
@@ -2086,6 +2138,7 @@ function openNewTest() {
   document.getElementById('modal-test-title').textContent = 'Nuevo testimonio';
   ['test-nombre','test-viaje','test-texto'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('test-estrellas').value = '5';
+  const tac=document.getElementById('test-activo'); if(tac) tac.checked=true;
   openModal('modal-test');
 }
 
@@ -2097,6 +2150,7 @@ function editTest(i) {
   document.getElementById('test-viaje').value = t.viaje;
   document.getElementById('test-texto').value = t.texto;
   document.getElementById('test-estrellas').value = t.estrellas;
+  const tac=document.getElementById('test-activo'); if(tac) tac.checked = t.activo !== false;
   openModal('modal-test');
 }
 
@@ -2107,7 +2161,8 @@ function saveTest() {
     nombre: document.getElementById('test-nombre').value,
     viaje: document.getElementById('test-viaje').value,
     texto: document.getElementById('test-texto').value,
-    estrellas: parseInt(document.getElementById('test-estrellas').value)
+    estrellas: parseInt(document.getElementById('test-estrellas').value),
+    activo: document.getElementById('test-activo')?.checked !== false
   };
   if (!obj.nombre || !obj.texto) { showToast('Completá nombre y testimonio','error'); return; }
   if (idx !== '') DATA.testimonios[idx] = obj; else DATA.testimonios.push(obj);
@@ -2128,6 +2183,7 @@ function openNewDest() {
   ['dest-pais','dest-nombre','dest-precio','dest-tag','dest-img','dest-orden'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('dest-img-preview').removeAttribute('src');
   document.getElementById('dest-feat').value = 'no';
+  const dac=document.getElementById('dest-activo'); if(dac) dac.checked=true;
   openModal('modal-dest');
 }
 
@@ -2143,6 +2199,7 @@ function editDest(i) {
   document.getElementById('dest-img-preview').src = d.img||'';
   document.getElementById('dest-feat').value = d.feat;
   document.getElementById('dest-orden').value = d.orden||'';
+  const dac=document.getElementById('dest-activo'); if(dac) dac.checked = d.activo !== false;
   openModal('modal-dest');
 }
 
@@ -2156,7 +2213,8 @@ function saveDest() {
     tag: document.getElementById('dest-tag').value,
     img: document.getElementById('dest-img').value,
     feat: document.getElementById('dest-feat').value,
-    orden: parseFloat(document.getElementById('dest-orden').value)||0
+    orden: parseFloat(document.getElementById('dest-orden').value)||0,
+    activo: document.getElementById('dest-activo')?.checked !== false
   };
   if (!obj.nombre) { showToast('El nombre es obligatorio','error'); return; }
   if (idx !== '') DATA.destinos[idx] = obj; else DATA.destinos.push(obj);
@@ -2174,14 +2232,15 @@ function deleteDest(i) {
 function renderBlog() {
   const el = document.getElementById('blog-list');
   el.innerHTML = (DATA.blog||[]).map((b,i) => `
-    <div class="item-card">
+    <div class="item-card" style="${b.activo===false?'opacity:0.55':''}">
       <img class="item-card-img" src="${b.cover||''}" alt="${b.titulo||''}" onerror="this.style.background='#EEE'">
       <div class="item-card-body">
-        <div class="item-card-title">${b.titulo||''}</div>
+        <div class="item-card-title">${b.titulo||''}${b.activo===false?' <span style="color:#DC2626;font-size:0.75rem;font-weight:700">🚫 Oculto</span>':''}</div>
         <div class="item-card-sub">${b.fecha||''} · /${b.slug||b.id}</div>
       </div>
       <div class="item-card-actions">
         <button class="btn btn-ghost btn-sm" onclick="editBlogPost(${i})">✏️ Editar</button>
+        <button class="btn btn-ghost btn-sm" onclick="toggleActivo(DATA.blog,${i},renderBlog)">${b.activo===false?'👁 Mostrar':'🚫 Ocultar'}</button>
         <button class="btn btn-danger btn-sm" onclick="deleteBlogPost(${i})">🗑</button>
       </div>
     </div>`).join('');
@@ -2196,6 +2255,7 @@ function openNewBlog() {
   document.getElementById('modal-blog-title').textContent = 'Nueva entrada';
   ['blog-titulo','blog-slug','blog-fecha','blog-cover','blog-excerpt','blog-contenido'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('blog-cover-preview').removeAttribute('src');
+  const bac=document.getElementById('blog-activo'); if(bac) bac.checked=true;
   openModal('modal-blog');
 }
 
@@ -2210,6 +2270,7 @@ function editBlogPost(i) {
   document.getElementById('blog-cover-preview').src = b.cover||'';
   document.getElementById('blog-excerpt').value = b.excerpt||'';
   document.getElementById('blog-contenido').value = b.contenido||'';
+  const bac=document.getElementById('blog-activo'); if(bac) bac.checked = b.activo !== false;
   openModal('modal-blog');
 }
 
@@ -2224,7 +2285,8 @@ function saveBlogPost() {
     fecha: document.getElementById('blog-fecha').value || (idx !== '' ? DATA.blog[idx].fecha : ''),
     cover: document.getElementById('blog-cover').value,
     excerpt: document.getElementById('blog-excerpt').value,
-    contenido: document.getElementById('blog-contenido').value
+    contenido: document.getElementById('blog-contenido').value,
+    activo: document.getElementById('blog-activo')?.checked !== false
   };
   if (idx !== '') DATA.blog[idx] = obj; else DATA.blog.push(obj);
   saveData(); renderBlog(); updateStats(); closeModal('modal-blog');
@@ -2241,14 +2303,15 @@ function deleteBlogPost(i) {
 function renderAsistencia() {
   const el = document.getElementById('asistencia-list');
   el.innerHTML = (DATA.asistencias||[]).map((a,i) => `
-    <div class="item-card">
+    <div class="item-card" style="${a.activo===false?'opacity:0.55':''}">
       <img class="item-card-img" src="${a.logo||''}" alt="${a.nombre||''}" onerror="this.style.background='#EEE'">
       <div class="item-card-body">
-        <div class="item-card-title">${a.nombre||''}</div>
+        <div class="item-card-title">${a.nombre||''}${a.activo===false?' <span style="color:#DC2626;font-size:0.75rem;font-weight:700">🚫 Oculto</span>':''}</div>
         <div class="item-card-sub">${a.telefono||'Sin teléfono cargado'}</div>
       </div>
       <div class="item-card-actions">
         <button class="btn btn-ghost btn-sm" onclick="editAsistencia(${i})">✏️ Editar</button>
+        <button class="btn btn-ghost btn-sm" onclick="toggleActivo(DATA.asistencias,${i},renderAsistencia)">${a.activo===false?'👁 Mostrar':'🚫 Ocultar'}</button>
         <button class="btn btn-danger btn-sm" onclick="deleteAsistencia(${i})">🗑</button>
       </div>
     </div>`).join('');
@@ -2259,6 +2322,7 @@ function openNewAsistencia() {
   document.getElementById('modal-asistencia-title').textContent = 'Nueva empresa';
   ['asist-nombre','asist-logo','asist-descripcion','asist-telefono','asist-web'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('asist-logo-preview').removeAttribute('src');
+  const aac=document.getElementById('asist-activo'); if(aac) aac.checked=true;
   openModal('modal-asistencia');
 }
 
@@ -2272,6 +2336,7 @@ function editAsistencia(i) {
   document.getElementById('asist-descripcion').value = a.descripcion||'';
   document.getElementById('asist-telefono').value = a.telefono||'';
   document.getElementById('asist-web').value = a.web||'';
+  const aac=document.getElementById('asist-activo'); if(aac) aac.checked = a.activo !== false;
   openModal('modal-asistencia');
 }
 
@@ -2285,7 +2350,8 @@ function saveAsistencia() {
     logo: document.getElementById('asist-logo').value,
     descripcion: document.getElementById('asist-descripcion').value,
     telefono: document.getElementById('asist-telefono').value,
-    web: document.getElementById('asist-web').value
+    web: document.getElementById('asist-web').value,
+    activo: document.getElementById('asist-activo')?.checked !== false
   };
   if (idx !== '') DATA.asistencias[idx] = obj; else DATA.asistencias.push(obj);
   saveData(); renderAsistencia(); closeModal('modal-asistencia');
